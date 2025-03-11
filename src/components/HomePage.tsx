@@ -20,11 +20,18 @@ const HomePage = () => {
             </div>
 
             <div className="flex justify-center rounded-lg overflow-hidden">
-              {['Home', 'Ver Localidades', 'Destaques', 'Perguntas Frequentes'].map((item, index) => (
-                <button key={index} className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
-                  {item}
-                </button>
-              ))}
+              <Link href="/" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
+                Home
+              </Link>
+              <Link href="/local" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
+                Ver Localidades
+              </Link>
+              <Link href="/" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
+                Destaques
+              </Link>
+              <Link href="/" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
+                Perguntas Frequentes
+              </Link>
               <Link href="/sobreNos" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
                 Sobre Nós
               </Link>

@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 
 const SobreNosPage = () => {
-    const logado = false; // alterar
+    const logado = true; // alterar
 
     return (
         <div className="relative w-full h-full" style={{ backgroundImage: 'linear-gradient(to right, #E05F30, #7f3815)' }}>
@@ -20,11 +20,18 @@ const SobreNosPage = () => {
                             <Link href="/" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
                                 Home
                             </Link>
-                            {['Ver Localidades', 'Destaques', 'Perguntas Frequentes', 'Sobre Nós'].map((item, index) => (
-                                <button key={index} className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
-                                    {item}
-                                </button>
-                            ))}
+                            <Link href="/local" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
+                                Ver Localidades
+                            </Link>
+                            <Link href="/" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
+                                Destaques
+                            </Link>
+                            <Link href="/" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
+                                Perguntas Frequentes
+                            </Link>
+                            <Link href="/sobreNos" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
+                                Sobre Nós
+                            </Link>
                         </div>
 
                         <div id="login-container" style={{ display: logado ? 'none' : 'block' }}>
@@ -43,7 +50,9 @@ const SobreNosPage = () => {
                                 <img className="imagem-perfil" src="img/placeholder-perfil.png" alt="Foto de Perfil" />
                                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                                     <p style={{ color: 'white', marginBottom: '2px', marginTop: '2px' }}>User Teste</p>
-                                    <a style={{ color: 'white' }} href="perfil.html">Ver Perfil</a>
+                                    <Link href="/perfil" className="text-white">
+                                        Ver Perfil
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -125,9 +134,6 @@ const SobreNosPage = () => {
                     <Image src={"/img/img-mureta.png"} width="1000" height="1000" className="w-full" alt="muretas-santos" />
                 </footer>
             </div>
-
-
-
 
             <style jsx>{`
                 .form-container {

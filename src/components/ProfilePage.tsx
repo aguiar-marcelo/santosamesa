@@ -1,14 +1,13 @@
-"use client"
+"use client";
 import Link from 'next/link';
 import React from 'react';
-import { CSSProperties } from 'react';
+import Image from 'next/image';
 
 const ProfilePage = () => {
     return (
-
         <div className="relative w-full h-full">
             <div className="bg-cover bg-center h-[350px] w-full">
-                <div className="flex flex-col items-center" style={{ backgroundImage: 'linear-gradient(to right, #37ADE4, #1F607E)' }}>
+                <div className="flex flex-col items-center bg-gradient-to-r from-[#37ADE4] to-[#1F607E]">
                     {/* Header */}
                     <div className="w-full flex justify-between gap-4 p-4 items-center">
                         <div className="flex justify-center items-center gap-2">
@@ -20,22 +19,25 @@ const ProfilePage = () => {
                             <Link href="/" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
                                 Home
                             </Link>
-                            {['Ver Localidades', 'Destaques', 'Perguntas Frequentes'].map((item, index) => (
-                                <button key={index} className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
-                                    {item}
-                                </button>
-                            ))}
+                            <Link href="/local" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
+                                Ver Localidades
+                            </Link>
+                            <Link href="/" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
+                                Destaques
+                            </Link>
+                            <Link href="/" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
+                                Perguntas Frequentes
+                            </Link>
                             <Link href="/sobreNos" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
                                 Sobre Nós
                             </Link>
                         </div>
 
-
-                        <div style={{ ...styles.justifyCenter, ...styles.gap5, alignItems: 'center' }}>
-                            <img style={styles.imagemPerfil} src="img/placeholder-perfil.png" alt="Foto de Perfil" />
-                            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                <p style={{ color: 'white', marginBottom: '2px', marginTop: '2px' }}>User Teste</p>
-                                <a style={{ color: 'white' }} href="perfil.html">
+                        <div className="flex justify-center gap-[5%] items-center">
+                            <img className="rounded-full w-[50px] h-[50px] object-cover border-2 border-white/50" src="img/placeholder-perfil.png" alt="Foto de Perfil" />
+                            <div className="flex flex-col">
+                                <p className="text-white mb-[2px] mt-[2px]">User Teste</p>
+                                <a className="text-white" href="perfil.html">
                                     Ver Perfil
                                 </a>
                             </div>
@@ -43,234 +45,121 @@ const ProfilePage = () => {
                     </div>
                 </div>
 
-                <div style={{ marginLeft: '70px', marginRight: '70px' }}>
-                    <div style={{ ...styles.gap5, display: 'flex', alignItems: 'center', marginTop: '30px', marginBottom: '30px' }}>
+                <div className="ml-[70px] mr-[70px]">
+                    <div className="flex gap-[5%] items-center mt-[30px] mb-[30px]">
                         <img
-                            style={{ ...styles.imagemPerfil, width: '100px', height: '100px' }}
+                            className="rounded-full w-[100px] h-[100px] object-cover"
                             src="img/placeholder-perfil.png"
                             alt="Foto de Perfil"
                         />
-                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <h1 style={{ marginBottom: '4px', marginTop: '4px' }}>User Teste</h1>
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <div className="flex flex-col">
+                            <h1 className="mb-[4px] mt-[4px]">User Teste</h1>
+                            <div className="flex items-center">
                                 <img
-                                    style={{ ...styles.imgEstrela, marginRight: '5px' }}
+                                    className="w-[25px] h-[25px] mr-[5px]"
                                     src="img/estrela.png"
                                     alt="Estrela"
                                 />
-                                <h4 style={styles.fadedColor}>3 avaliações</h4>
+                                <h4 className="text-[#9D9393]">3 avaliações</h4>
                             </div>
                         </div>
                     </div>
 
-                    <div style={styles.gridContainer2}>
+                    <div className="grid grid-cols-[20%_68%_10%] gap-[1%] items-center">
                         <h2>Minhas Avaliações</h2>
-                        <div>
-                            <button style={{ ...styles.btnStyle, width: '10%' }}>
-                                5 <img style={styles.imgEstrela2} src="img/estrela-preenchida.png" alt="Estrela" />
+                        <div className="flex items-center gap-2">
+                            <button className="bg-[#31afe1] text-white rounded-lg flex items-center px-4">
+                                5 <img className="w-[15px] h-[15px]" src="img/estrela-preenchida.png" alt="Estrela" />
                             </button>
-                            <button style={{ ...styles.btnStyle, width: '10%' }}>
-                                4 <img style={styles.imgEstrela2} src="img/estrela-preenchida.png" alt="Estrela" />
+                            <button className="bg-[#31afe1] text-white rounded-lg flex items-center px-4">
+                                4 <img className="w-[15px] h-[15px]" src="img/estrela-preenchida.png" alt="Estrela" />
                             </button>
-                            <button style={{ ...styles.btnStyle, width: '10%' }}>
-                                3 <img style={styles.imgEstrela2} src="img/estrela-preenchida.png" alt="Estrela" />
+                            <button className="bg-[#31afe1] text-white rounded-lg flex items-center px-4">
+                                3 <img className="w-[15px] h-[15px]" src="img/estrela-preenchida.png" alt="Estrela" />
                             </button>
-                            <button style={{ ...styles.btnStyle, width: '10%' }}>
-                                2 <img style={styles.imgEstrela2} src="img/estrela-preenchida.png" alt="Estrela" />
+                            <button className="bg-[#31afe1] text-white rounded-lg flex items-center px-4">
+                                2 <img className="w-[15px] h-[15px]" src="img/estrela-preenchida.png" alt="Estrela" />
                             </button>
-                            <button style={{ ...styles.btnStyle, width: '10%' }}>
-                                1 <img style={styles.imgEstrela2} src="img/estrela-preenchida.png" alt="Estrela" />
+                            <button className="bg-[#31afe1] text-white rounded-lg flex items-center px-4">
+                                1 <img className="w-[15px] h-[15px]" src="img/estrela-preenchida.png" alt="Estrela" />
                             </button>
                         </div>
-                        <button style={styles.btnStyle2}>Editar Perfil</button>
+                        <button className="bg-[#55798E] text-white rounded-md">Editar Perfil</button>
                     </div>
-
-                    <div style={{ border: '2px solid #666565', borderRadius: '8px', padding: '30px', height: 'auto', marginTop: '15px' }}>
+                    <div className="border-2 border-[#666565] rounded-lg p-[30px] mt-[15px]">
                         <div>
-                            <div style={{ display: 'flex' }}>
-                                <img style={styles.reviewImage} src="img/img-placeholder.jpg" alt="Review" />
-                                <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px', gap: '3%' }}>
-                                    <h3 style={{ marginTop: '0', marginBottom: '3px' }}>Burgman</h3>
+                            <div className="flex">
+                                <img className="w-[100px] h-[100px]" src="img/img-placeholder.jpg" alt="Review" />
+                                <div className="flex flex-col ml-[10px] gap-[3%]">
+                                    <h3 className="mt-0 mb-[3px]">Burgman</h3>
                                     <img
-                                        style={{ ...styles.imgEstrela, marginRight: '5px' }}
+                                        className="w-[25px] h-[25px] mr-[5px]"
                                         src="img/estrela-preenchida.png"
                                         alt="Estrela"
                                     />
-                                    <h5 style={styles.fadedColor}>01/03/2025</h5>
+                                    <h5 className="text-[#9D9393]">01/03/2025</h5>
                                 </div>
                             </div>
-                            <h4 style={{ marginBottom: '0' }}>
+                            <h4 className="mb-0">
                                 Um dos bares mais únicos da Tolentino! O ambiente é muito bonito e estilizado. A comida é ótima, mas achei
                                 caro demais.
                             </h4>
                         </div>
                     </div>
 
-                    <div style={{ border: '2px solid #666565', borderRadius: '8px', padding: '30px', height: 'auto', marginTop: '15px' }}>
+                    <div className="border-2 border-[#666565] rounded-lg p-[30px] mt-[15px]">
                         <div>
-                            <div style={{ display: 'flex' }}>
-                                <img style={styles.reviewImage} src="img/img-placeholder-2.jpg" alt="Review" />
-                                <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px', gap: '3%' }}>
-                                    <h3 style={{ marginTop: '0', marginBottom: '3px' }}>Padrela</h3>
+                            <div className="flex">
+                                <img className="w-[100px] h-[100px]" src="img/img-placeholder-2.jpg" alt="Review" />
+                                <div className="flex flex-col ml-[10px] gap-[3%]">
+                                    <h3 className="mt-0 mb-[3px]">Padrela</h3>
                                     <img
-                                        style={{ ...styles.imgEstrela, marginRight: '5px' }}
+                                        className="w-[25px] h-[25px] mr-[5px]"
                                         src="img/estrela-preenchida.png"
                                         alt="Estrela"
                                     />
-                                    <h5 style={styles.fadedColor}>02/03/2025</h5>
+                                    <h5 className="text-[#9D9393]">02/03/2025</h5>
                                 </div>
                             </div>
-                            <h4 style={{ marginBottom: '0' }}>
+                            <h4 className="mb-0">
                                 Adorei o local. A variedade do cardápio é ótima, o ambiente é aconchegante e os atendentes são super
                                 atenciosos! Recomendo.
                             </h4>
                         </div>
                     </div>
 
-                    <div style={{ border: '2px solid #666565', borderRadius: '8px', padding: '30px', height: 'auto', marginTop: '15px' }}>
+                    <div className="border-2 border-[#666565] rounded-lg p-[30px] mt-[15px]">
                         <div>
-                            <div style={{ display: 'flex' }}>
-                                <img style={styles.reviewImage} src="img/img-placeholder-3.jpg" alt="Review" />
-                                <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px', gap: '3%' }}>
-                                    <h3 style={{ marginTop: '0', marginBottom: '3px' }}>Van Gogh</h3>
+                            <div className="flex">
+                                <img className="w-[100px] h-[100px]" src="img/img-placeholder-3.jpg" alt="Review" />
+                                <div className="flex flex-col ml-[10px] gap-[3%]">
+                                    <h3 className="mt-0 mb-[3px]">Van Gogh</h3>
                                     <img
-                                        style={{ ...styles.imgEstrela, marginRight: '5px' }}
+                                        className="w-[25px] h-[25px] mr-[5px]"
                                         src="img/estrela-preenchida.png"
                                         alt="Estrela"
                                     />
-                                    <h5 style={styles.fadedColor}>03/03/2025</h5>
+                                    <h5 className="text-[#9D9393]">03/03/2025</h5>
                                 </div>
                             </div>
-                            <h4 style={{ marginBottom: '0' }}>Pizzaria super aconchegante!</h4>
+                            <h4 className="mb-0">Pizzaria super aconchegante!</h4>
                         </div>
                     </div>
                 </div>
 
-                <div style={{ ...styles.bottomRow, marginTop: '30px' }}>
-                    <div style={{ ...styles.centerContainer, color: 'rgb(232, 232, 236)', padding: '15px' }}>
+                <div className="bg-[#247895] mt-[30px] w-full">
+                    <div className="flex flex-col items-center text-[#e8e8ec] p-[15px]">
                         <h3>SANTOS À MESA</h3>
                         ©2025, Santos à Mesa. Todos os direitos reservados.
                     </div>
-                    <div style={styles.imgMureta} />
+                    <Image src={"/img/img-mureta.png"} width="1000" height="1000" className="w-full" alt="muretas-santos" />
                 </div>
             </div>
         </div>
     );
+
 };
+
+
 
 export default ProfilePage;
-
-const styles: { [key: string]: CSSProperties } = {
-    form: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        marginTop: '-40px',
-    },
-    imgMureta: {
-        backgroundImage: "url('img/img-mureta.png')",
-        height: '45px',
-        width: '100%',
-    },
-    imgEstrela: {
-        width: '25px',
-        height: '25px',
-    },
-    imgEstrela2: {
-        width: '15px',
-        height: '15px',
-    },
-    reviewImage: {
-        width: '100px',
-        height: '100px',
-    },
-    fadedColor: {
-        color: '#9D9393',
-    },
-    gridContainer: {
-        display: 'grid',
-        gridTemplateColumns: '22% 55% 21%',
-        gridGap: '1%',
-        padding: '10px',
-        alignItems: 'center',
-        marginLeft: '12px',
-        marginRight: '12px',
-    },
-    gridContainer2: {
-        display: 'grid',
-        gridTemplateColumns: '20% 68% 10%',
-        gridGap: '1%',
-        alignItems: 'center',
-    },
-    centerContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    button: {
-        padding: '5px',
-        fontSize: 'medium',
-        transition: '0.4s',
-        display: 'inline-block',
-        border: '0',
-    },
-    inputText: {
-        width: '100%',
-        padding: '12px 20px',
-        borderRadius: '12px',
-        border: '0',
-    },
-    row: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    btnBorderStart: {
-        borderEndStartRadius: '10px',
-        borderStartStartRadius: '10px',
-    },
-    btnBorderEnd: {
-        borderStartEndRadius: '10px',
-        borderEndEndRadius: '10px',
-    },
-    btnMenu: {
-        border: '1.5px solid #a4a3ab',
-        color: 'rgb(0, 0, 0)',
-        padding: '15px',
-    },
-    btnMenuHover: {
-        backgroundColor: '#cccbd2',
-    },
-    btnStyle: {
-        backgroundColor: '#31afe1',
-        color: 'white',
-        borderRadius: '12px',
-    },
-    btnStyleHover: {
-        backgroundColor: '#2681d6',
-    },
-    btnStyle2: {
-        backgroundColor: '#55798E',
-        color: 'white',
-        borderRadius: '4px',
-    },
-    imagemPerfil: {
-        borderRadius: '50%',
-        width: '50px',
-        height: '50px',
-        objectFit: 'cover',
-        border: '2px solid rgba(255, 255, 255, 0.5)',
-    },
-    bottomRow: {
-        backgroundColor: '#247895',
-        marginTop: 'auto',
-        width: '100%',
-    },
-    justifyCenter: {
-        display: 'flex',
-        justifyContent: 'center',
-    },
-    gap5: {
-        columnGap: '5%',
-    },
-};
