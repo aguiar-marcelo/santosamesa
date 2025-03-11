@@ -1,3 +1,5 @@
+"use client"
+import Link from 'next/link';
 import React from 'react';
 
 const LoginPage = () => {
@@ -27,9 +29,7 @@ const LoginPage = () => {
                             >
                                 LOGIN
                             </button>
-                            <a href="index.html" style={styles.a}>
-                                CANCELAR
-                            </a>
+                            <Link href="/" style={styles.a}>CANCELAR</Link>
                         </div>
                     </div>
                 </div>

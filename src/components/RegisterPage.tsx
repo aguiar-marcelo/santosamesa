@@ -1,3 +1,5 @@
+"use client"
+import Link from 'next/link';
 import { useState } from 'react';
 
 const Cadastro = () => {
@@ -28,7 +30,7 @@ const Cadastro = () => {
                             <p className="w-4/5 mb-2 text-left">Confirme sua senha *</p>
                             <input type="password" placeholder="Digite sua senha novamente" className="w-4/5 p-3 border-4 border-gray-200 rounded-lg mb-6" />
                             <div className="flex gap-5 w-4/5 justify-between">
-                                <a href="index.html" className="text-gray-500">Voltar</a>
+                                <Link href="/" className="text-gray-500">Voltar</Link>
                                 <button
                                     type="button"
                                     className="bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600"

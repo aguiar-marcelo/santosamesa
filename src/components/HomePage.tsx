@@ -3,12 +3,13 @@
 import Image from "../../node_modules/next/image";
 import React from "react";
 import { Search } from 'lucide-react';
+import Link from "next/link";
 
 const HomePage = () => {
   return (
     <div className="relative w-full h-full">
       <div className="bg-cover bg-center h-[350px] w-full"
-      style={{ backgroundImage: "url('img/img-homepage.jpg')" }}
+        style={{ backgroundImage: "url('img/img-homepage.jpg')" }}
       >
         <div className="flex flex-col items-center ">
           {/* Header */}
@@ -19,16 +20,23 @@ const HomePage = () => {
             </div>
 
             <div className="flex justify-center rounded-lg overflow-hidden">
-              {['Home', 'Ver Localidades', 'Destaques', 'Perguntas Frequentes', 'Quem somos nós'].map((item, index) => (
+              {['Home', 'Ver Localidades', 'Destaques', 'Perguntas Frequentes'].map((item, index) => (
                 <button key={index} className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
                   {item}
                 </button>
               ))}
+              <Link href="/sobreNos" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
+                Sobre Nós
+              </Link>
             </div>
 
             <div className="flex justify-center gap-4">
-              <button className="text-white underline">Login</button>
-              <button className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-600">Cadastrar</button>
+              <Link href="/login" className="text-white underline">
+                Login
+              </Link>
+              <Link href="/cadastro" className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                Cadastrar
+              </Link>
             </div>
           </div>
 
@@ -68,7 +76,7 @@ const HomePage = () => {
       <footer className="bg-[#247895] w-full absolute bottom-0 text-center  text-white pt-8">
         <h3 className="text-lg font-bold">SANTOS À MESA</h3>
         <p>©2025, Santos à Mesa. Todos os direitos reservados.</p>
-        <Image src={"/img/img-mureta.png"} width="1000" height="1000" className="w-full" alt="muretas-santos" /> 
+        <Image src={"/img/img-mureta.png"} width="1000" height="1000" className="w-full" alt="muretas-santos" />
       </footer>
     </div>
   );
