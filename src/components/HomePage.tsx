@@ -30,7 +30,7 @@ const HomePage = () => {
               </Link>
             </div>
 
-            <div className="flex justify-center gap-4">
+            <div className="flex justify-center gap-4 items-center">
               <Link href="/login" className="text-white underline">
                 Login
               </Link>
@@ -43,7 +43,7 @@ const HomePage = () => {
           <div className="flex flex-col items-center mt-6 text-white">
             <h2 className="text-xl">Descubra lugares incríveis para comer em Santos</h2>
             <div className="flex gap-4 mt-4 w-full ">
-              <input type="text" placeholder="Descubra restaurantes, cafés..." className="w-full px-4 py-2 rounded-md border border-gray-400" />
+              <input type="text" placeholder="Descubra restaurantes, cafés..." className="w-full px-4 py-2 rounded-md border border-gray-400 text-black" />
               <button className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-600 flex items-center gap-2">
                 <Search /> Pesquisar
               </button>

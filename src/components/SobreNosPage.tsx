@@ -28,7 +28,7 @@ const SobreNosPage = () => {
                         </div>
 
                         <div id="login-container" style={{ display: logado ? 'none' : 'block' }}>
-                            <div className="flex justify-center gap-4">
+                            <div className="flex justify-center gap-4 items-center">
                                 <Link href="/login" className="text-white underline">
                                     Login
                                 </Link>
