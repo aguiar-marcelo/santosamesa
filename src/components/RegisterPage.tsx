@@ -27,8 +27,8 @@ const Cadastro = () => {
                             <input type="email" placeholder="Digite seu e-mail" className="w-4/5 p-3 border-4 border-gray-200 rounded-lg mb-4" />
                             <p className="w-4/5 mb-2 text-left">Crie sua senha *</p>
                             <input type="password" placeholder="Digite a senha que deseja criar" className="w-4/5 p-3 border-4 border-gray-200 rounded-lg mb-4" />
-                            <p className="w-4/5 mb-2 text-left">Confirme sua senha *</p>
-                            <input type="password" placeholder="Digite sua senha novamente" className="w-4/5 p-3 border-4 border-gray-200 rounded-lg mb-6" />
+                            {/* <p className="w-4/5 mb-2 text-left">Confirme sua senha *</p>
+                            <input type="password" placeholder="Digite sua senha novamente" className="w-4/5 p-3 border-4 border-gray-200 rounded-lg mb-6" /> */}
                             <div className="flex gap-5 w-4/5 justify-between">
                                 <Link href="/" className="text-gray-500">Voltar</Link>
                                 <button
