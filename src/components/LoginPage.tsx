@@ -25,16 +25,16 @@ const LoginPage = () => {
         <div style={styles.gridContainer}>
           <div style={{ ...styles.imgBackground }}>
             <div style={{ ...styles.column, ...styles.centerContainer }}>
-              <h1 style={{ ...styles.fadeIn, color: "white" }}>
+              <h1 style={{ ...styles.fadeIn, color: "white" }} className="font-bold">
                 SANTOS À MESA
               </h1>
-              <h2 style={{ ...styles.fadeIn, color: "white" }} className="mt-0">
+              <h2 style={{ ...styles.fadeIn, color: "white" }} className="font-bold mt-0">
                 Descubra lugares incríveis para comer em Santos
               </h2>
             </div>
           </div>
           <div style={{ ...styles.column, ...styles.centerContainer }}>
-            <h1>Login</h1>
+            <h1 className="font-bold">Login</h1>
             <p style={styles.p}>E-mail</p>
             <input
               type="text"

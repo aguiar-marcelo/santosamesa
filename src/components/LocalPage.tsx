@@ -8,8 +8,7 @@ const LocalPage = () => {
     return (
         <div className="relative w-full h-full" style={{ backgroundImage: "url('img/localidade.jpg')", backgroundSize: 'cover' }}>
             <div className="bg-cover bg-center h-[350px] w-full">
-                <div className="flex flex-col items-center ">
-                    {/* Header */}
+                <div className="flex flex-col items-center mx-8">
                     <div className="w-full flex justify-between gap-4 p-4 items-center">
                         <div className="flex justify-center items-center gap-2">
                             <img src="img/img-logo.png" alt="Logo" width={45} height={40} />
@@ -107,7 +106,7 @@ const LocalPage = () => {
                                 <div className="p-4 text-center text-gray-800">
                                     <b className="text-lg">{place.name}</b>
                                     <p className="text-gray-600">{place.category}</p>
-                                    <button className="mt-2 bg-primary text-white px-4 py-1 text-sm rounded-md hover:bg-blue-600">Saiba mais</button>
+                                    <Link href="/localInfo" className="mt-2 bg-primary text-white px-4 py-1 text-sm rounded-md hover:bg-blue-600">Saiba mais</Link>
                                 </div>
                             </div>
                         ))}

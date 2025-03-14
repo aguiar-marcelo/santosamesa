@@ -43,12 +43,6 @@ const ProfilePage = () => {
                     </div>
                 </div>
 
-
-
-
-
-
-
                 <div className="ml-[70px] mr-[70px]">
                     <div className="flex gap-[5%] items-center mt-[30px] mb-[30px]">
                         <img
@@ -70,7 +64,7 @@ const ProfilePage = () => {
                     </div>
 
                     <div className="grid grid-cols-[20%_68%_10%] gap-[1%] items-center">
-                        <h2>Minhas Avaliações</h2>
+                        <h2 className="font-bold">Minhas Avaliações</h2>
                         <div className="flex items-center gap-2">
                             <button className="bg-[#31afe1] text-white rounded-lg flex items-center px-4">
                                 5 <img className="w-[15px] h-[15px]" src="img/estrela-preenchida.png" alt="Estrela" />
@@ -95,13 +89,13 @@ const ProfilePage = () => {
                             <div className="flex">
                                 <img className="w-[100px] h-[100px]" src="img/img-placeholder.jpg" alt="Review" />
                                 <div className="flex flex-col ml-[10px] gap-[3%]">
-                                    <h3 className="mt-0 mb-[3px]">Burgman</h3>
+                                    <h3 className="mt-0 mb-[3px] font-bold">Burgman</h3>
                                     <img
                                         className="w-[25px] h-[25px] mr-[5px]"
                                         src="img/estrela-preenchida.png"
                                         alt="Estrela"
                                     />
-                                    <h5 className="text-[#9D9393]">01/03/2025</h5>
+                                    <h5 className="text-[#9D9393] mt-2">01/03/2025</h5>
                                 </div>
                             </div>
                             <h4 className="mb-0">
@@ -116,13 +110,13 @@ const ProfilePage = () => {
                             <div className="flex">
                                 <img className="w-[100px] h-[100px]" src="img/img-placeholder-2.jpg" alt="Review" />
                                 <div className="flex flex-col ml-[10px] gap-[3%]">
-                                    <h3 className="mt-0 mb-[3px]">Padrela</h3>
+                                    <h3 className="mt-0 mb-[3px] font-bold">Padrela</h3>
                                     <img
                                         className="w-[25px] h-[25px] mr-[5px]"
                                         src="img/estrela-preenchida.png"
                                         alt="Estrela"
                                     />
-                                    <h5 className="text-[#9D9393]">02/03/2025</h5>
+                                    <h5 className="text-[#9D9393] mt-2">02/03/2025</h5>
                                 </div>
                             </div>
                             <h4 className="mb-0">
@@ -137,13 +131,13 @@ const ProfilePage = () => {
                             <div className="flex">
                                 <img className="w-[100px] h-[100px]" src="img/img-placeholder-3.jpg" alt="Review" />
                                 <div className="flex flex-col ml-[10px] gap-[3%]">
-                                    <h3 className="mt-0 mb-[3px]">Van Gogh</h3>
+                                    <h3 className="mt-0 mb-[3px] font-bold">Van Gogh</h3>
                                     <img
                                         className="w-[25px] h-[25px] mr-[5px]"
                                         src="img/estrela-preenchida.png"
                                         alt="Estrela"
                                     />
-                                    <h5 className="text-[#9D9393]">03/03/2025</h5>
+                                    <h5 className="text-[#9D9393] mt-2">03/03/2025</h5>
                                 </div>
                             </div>
                             <h4 className="mb-0">Pizzaria super aconchegante!</h4>

@@ -74,7 +74,7 @@ const HomePage = () => {
             <div className="p-4 text-center text-gray-800">
               <b className="text-lg">{place.name}</b>
               <p className="text-gray-600">{place.category}</p>
-              <button className="mt-2 bg-primary text-white px-4 py-1 text-sm rounded-md hover:bg-blue-600">Saiba mais</button>
+              <Link href="/localInfo" className="mt-2 bg-primary text-white px-4 py-1 text-sm rounded-md hover:bg-blue-600">Saiba mais</Link>
             </div>
           </div>
         ))}
