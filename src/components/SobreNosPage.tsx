@@ -4,12 +4,31 @@ import React from 'react';
 import Image from 'next/image';
 
 const SobreNosPage = () => {
+    const styles = {
+        fadeIn: {
+            animation: "1.5s fadeInUp",
+        }
+    };
+
+    const fadeInUpKeyframes = `
+      @keyframes fadeInUp {
+        0% {
+          transform: translateY(10%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0%);
+          opacity: 1;
+        }
+      }
+    `;
+
     const logado = true; // alterar
 
     return (
         <div className="relative w-full h-full" style={{ backgroundImage: 'linear-gradient(to right, #E05F30, #7f3815)' }}>
-            <div className="bg-cover bg-center h-[350px] w-full">
-                <div className="flex flex-col items-center">
+            <div className="bg-cover bg-center h-[350px] w-full" >
+                <div className="flex flex-col items-center mx-8">
                     <div className="w-full flex justify-between gap-4 p-4 items-center">
                         <div className="flex justify-center items-center gap-2">
                             <img src="img/img-logo.png" alt="Logo" width={45} height={40} />
@@ -34,20 +53,18 @@ const SobreNosPage = () => {
                             </Link>
                         </div>
 
-                        <div id="login-container" style={{ display: logado ? 'none' : 'block' }}>
-                            <div className="flex justify-center gap-4 items-center">
-                                <Link href="/login" className="text-white underline">
-                                    Login
-                                </Link>
-                                <Link href="/cadastro" className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-600">
-                                    Cadastrar
-                                </Link>
-                            </div>
-                        </div>
+                        {/* <div className="flex justify-center gap-4 items-center">
+                            <Link href="/login" className="text-white underline">
+                                Login
+                            </Link>
+                            <Link href="/cadastro" className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                                Cadastrar
+                            </Link>
+                        </div> */}
 
                         <div id="usuario-logado" style={{ display: logado ? 'block' : 'none' }}>
-                            <div className="justify-center gap-5" style={{ alignItems: 'center' }}>
-                                <img className="imagem-perfil" src="img/placeholder-perfil.png" alt="Foto de Perfil" />
+                            <div className="justify-center" style={{ alignItems: 'center' }}>
+                                <img className="imagem-perfil mr-4" src="img/placeholder-perfil.png" alt="Foto de Perfil" />
                                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                                     <p style={{ color: 'white', marginBottom: '2px', marginTop: '2px' }}>User Teste</p>
                                     <Link href="/perfil" className="text-white">
@@ -59,9 +76,9 @@ const SobreNosPage = () => {
                     </div>
 
                     <div className="center-container main-content">
-                        <div className="center-container" style={{ marginTop: '72px' }}>
-                            <h2 style={{ marginBottom: '0' }}>Sobre Nós</h2>
-                            <h4>Conectando santistas e turistas para as melhores experiências gastronômicas desde 2025</h4>
+                        <div className="center-container" style={{ marginTop: '70px', ...styles.fadeIn }} >
+                            <h2 className='my-0'>Sobre Nós</h2>
+                            <h4 className='mt-2'>Conectando santistas e turistas para as melhores experiências gastronômicas desde 2025</h4>
                         </div>
 
                         <div className="grid-container-1">
@@ -90,12 +107,12 @@ const SobreNosPage = () => {
                             </div>
                         </div>
 
-                        <div className="center-container">
-                            <h2 style={{ marginBottom: '0' }}>Nosso valores</h2>
-                            <h4>Princípios que guiam o nosso trabalho</h4>
+                        <div className="center-container" style={{ ...styles.fadeIn }}>
+                            <h2 className='mt-10 mb-0'>Nosso valores</h2>
+                            <h4 className='mt-2'>Princípios que guiam o nosso trabalho</h4>
                         </div>
 
-                        <div className="grid-container-2" style={{ marginBottom: '72px' }}>
+                        <div className="grid-container-2" style={{ marginBottom: '60px' }}>
                             <div className="center-container section">
                                 <div>
                                     <h3 style={{ marginTop: '0', marginBottom: '3px' }}>Autenticidade</h3>
@@ -134,6 +151,8 @@ const SobreNosPage = () => {
                     <Image src={"/img/img-mureta.png"} width="1000" height="1000" className="w-full" alt="muretas-santos" />
                 </footer>
             </div>
+
+            <style>{fadeInUpKeyframes}</style>
 
             <style jsx>{`
                 .form-container {
@@ -211,12 +230,6 @@ const SobreNosPage = () => {
                     align-items: center;
                     background-color: #333;
                 }
-                
-                .footer-text {
-                    color: rgb(232, 232, 236);
-                    padding: 15px;
-                }
-
                 .btn-menu, .btn-style, .txt-login {
                     background-color: white;
                     border: none;
@@ -278,6 +291,10 @@ const SobreNosPage = () => {
                     background-image: url('img/img-mureta.png');
                     background-size: cover;
                     background-repeat: no-repeat;
+                }
+
+                .h3, h4, h5 {
+                    color: #737373;
                 }
             `}</style>
         </div >

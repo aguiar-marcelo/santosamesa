@@ -7,12 +7,12 @@ import Link from "next/link";
 
 const HomePage = () => {
   return (
+    <><style>{fadeInUpKeyframes}</style>
     <div className="relative w-full h-full">
       <div className="bg-cover bg-center h-[350px] w-full"
         style={{ backgroundImage: "url('img/img-homepage.jpg')" }}
       >
-        <div className="flex flex-col items-center ">
-          {/* Header */}
+        <div className="flex flex-col items-center mx-8">
           <div className="w-full flex justify-between gap-4 p-4 items-center">
             <div className="flex justify-center items-center gap-2">
               <img src="img/img-logo.png" alt="Logo" width={45} height={40} />
@@ -47,7 +47,7 @@ const HomePage = () => {
             </div>
           </div>
 
-          <div className="flex flex-col items-center mt-6 text-white">
+          <div className="flex flex-col items-center mt-6 text-white" style={{ ...styles.fadeIn}}>
             <h2 className="text-xl">Descubra lugares incríveis para comer em Santos</h2>
             <div className="flex gap-4 mt-4 w-full ">
               <input type="text" placeholder="Descubra restaurantes, cafés..." className="w-full px-4 py-2 rounded-md border border-gray-400 text-black" />
@@ -63,7 +63,7 @@ const HomePage = () => {
         <h2 className="text-2xl text-gray-800 font-bold">Melhores avaliados</h2>
       </div>
 
-      <div className="grid grid-cols-3 gap-6 justify-items-center mb-10 px-8">
+      <div className="grid grid-cols-3 gap-6 justify-items-center mb-10 px-8" style={{ ...styles.fadeIn}}>
         {[
           { name: "Burgman", category: "Bar", img: "img/img-placeholder.jpg" },
           { name: "Padrela", category: "Padaria", img: "img/img-placeholder-2.jpg" },
@@ -85,8 +85,27 @@ const HomePage = () => {
         <p>©2025, Santos à Mesa. Todos os direitos reservados.</p>
         <Image src={"/img/img-mureta.png"} width="1000" height="1000" className="w-full" alt="muretas-santos" />
       </footer>
-    </div>
+    </div></>
   );
 };
 
 export default HomePage;
+
+const styles = {
+  fadeIn: {
+    animation: "1.5s fadeInUp",
+  }
+};
+
+const fadeInUpKeyframes = `
+@keyframes fadeInUp {
+  0% {
+    transform: translateY(10%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+`;

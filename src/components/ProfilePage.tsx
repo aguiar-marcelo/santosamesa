@@ -8,8 +8,7 @@ const ProfilePage = () => {
         <div className="relative w-full h-full">
             <div className="bg-cover bg-center h-[350px] w-full">
                 <div className="flex flex-col items-center bg-gradient-to-r from-[#37ADE4] to-[#1F607E]">
-                    {/* Header */}
-                    <div className="w-full flex justify-between gap-4 p-4 items-center">
+                    <div className="w-full flex justify-between gap-4 p-4 items-center ">
                         <div className="flex justify-center items-center gap-2">
                             <img src="img/img-logo.png" alt="Logo" width={45} height={40} />
                             <h1 className="text-white text-2xl font-bold">SANTOS À MESA</h1>
@@ -33,17 +32,22 @@ const ProfilePage = () => {
                             </Link>
                         </div>
 
-                        <div className="flex justify-center gap-[5%] items-center">
-                            <img className="rounded-full w-[50px] h-[50px] object-cover border-2 border-white/50" src="img/placeholder-perfil.png" alt="Foto de Perfil" />
-                            <div className="flex flex-col">
-                                <p className="text-white mb-[2px] mt-[2px]">User Teste</p>
-                                <a className="text-white" href="perfil.html">
-                                    Ver Perfil
-                                </a>
-                            </div>
+                        <div className="flex justify-center gap-4 items-center">
+                            <Link href="/login" className="text-white underline">
+                                Login
+                            </Link>
+                            <Link href="/cadastro" className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                                Cadastrar
+                            </Link>
                         </div>
                     </div>
                 </div>
+
+
+
+
+
+
 
                 <div className="ml-[70px] mr-[70px]">
                     <div className="flex gap-[5%] items-center mt-[30px] mb-[30px]">
@@ -161,5 +165,24 @@ const ProfilePage = () => {
 };
 
 
-
 export default ProfilePage;
+
+const styles = {
+    fadeIn: {
+      animation: "1.5s fadeInUp",
+    }
+  };
+  
+  const fadeInUpKeyframes = `
+  @keyframes fadeInUp {
+    0% {
+      transform: translateY(10%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0%);
+      opacity: 1;
+    }
+  }
+  `;
+  

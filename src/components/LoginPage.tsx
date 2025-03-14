@@ -28,7 +28,7 @@ const LoginPage = () => {
               <h1 style={{ ...styles.fadeIn, color: "white" }}>
                 SANTOS À MESA
               </h1>
-              <h2 style={{ ...styles.fadeIn, color: "white" }}>
+              <h2 style={{ ...styles.fadeIn, color: "white" }} className="mt-0">
                 Descubra lugares incríveis para comer em Santos
               </h2>
             </div>
@@ -41,6 +41,7 @@ const LoginPage = () => {
               name="email"
               placeholder="Digite o seu e-mail"
               style={styles.input}
+              className="mb-4"
             />
             <p style={styles.p}>Senha</p>
             <input
@@ -145,7 +146,6 @@ const styles = {
     boxSizing: "border-box" as "border-box",
   },
   p: {
-    marginBottom: "6px",
     width: "80%",
     justifyContent: "flex-start" as "flex-start",
   },
