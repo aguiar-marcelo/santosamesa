@@ -58,7 +58,7 @@ const ProfilePage = () => {
                                     src="img/estrela.png"
                                     alt="Estrela"
                                 />
-                                <h4 className="text-[#9D9393]">3 avaliações</h4>
+                                <h4 className="text-[#9D9393] my-0">3 avaliações</h4>
                             </div>
                         </div>
                     </div>

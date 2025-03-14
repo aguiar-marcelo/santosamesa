@@ -1,6 +1,6 @@
-"use client";
+'use client';
+import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import React from 'react';
 import Image from 'next/image';
 
 const SobreNosPage = () => {
@@ -11,19 +11,44 @@ const SobreNosPage = () => {
     };
 
     const fadeInUpKeyframes = `
-      @keyframes fadeInUp {
-        0% {
-          transform: translateY(10%);
-          opacity: 0;
+        @keyframes fadeInUp {
+            0% {
+                transform: translateY(10%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0%);
+                opacity: 1;
+            }
         }
-        100% {
-          transform: translateY(0%);
-          opacity: 1;
-        }
-      }
     `;
 
     const logado = true; // alterar
+
+    const [isOpen, setIsOpen] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
+    const popupRef = useRef<HTMLDivElement | null>(null);
+    const hoverRef = useRef<HTMLDivElement | null>(null);
+
+    const togglePopup = () => {
+        setIsOpen(!isOpen);
+        if (!isOpen) {
+            setIsHovered(true);
+        }
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (popupRef.current && e.target instanceof Node && !popupRef.current.contains(e.target)) {
+                setIsOpen(false);
+                setIsHovered(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
 
     return (
         <div className="relative w-full h-full" style={{ backgroundImage: 'linear-gradient(to right, #E05F30, #7f3815)' }}>
@@ -62,21 +87,41 @@ const SobreNosPage = () => {
                             </Link>
                         </div> */}
 
-                        <div id="usuario-logado" style={{ display: logado ? 'block' : 'none' }}>
-                            <div className="justify-center" style={{ alignItems: 'center' }}>
-                                <img className="imagem-perfil mr-4" src="img/placeholder-perfil.png" alt="Foto de Perfil" />
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <p style={{ color: 'white', marginBottom: '2px', marginTop: '2px' }}>User Teste</p>
-                                    <Link href="/perfil" className="text-white">
-                                        Ver Perfil
-                                    </Link>
+                        <div className="relative">
+                            <div
+                                ref={hoverRef}
+                                className={`flex items-center cursor-pointer transition-colors duration-300 rounded-t-md p-2 ${isHovered ? 'bg-[#62A4BE]' : ''}`}
+                                onClick={togglePopup}
+                                onMouseEnter={() => setIsHovered(true)}
+                                onMouseLeave={() => {
+                                    if (!isOpen) {
+                                        setIsHovered(false);
+                                    }
+                                }}
+                            >
+                                <img
+                                    className="rounded-full w-12 h-12 mr-4"
+                                    src="img/placeholder-perfil.png"
+                                    alt="Foto de Perfil"
+                                    style={{ border: '2px solid rgba(255, 255, 255, 0.5)' }}
+                                />
+                                <p className="text-white">User Teste</p>
+                            </div>
+                            <div
+                                ref={popupRef}
+                                className={`absolute top-full left-0 bg-[#62A4BE] p-2 rounded-b-md z-10 ${isOpen ? 'block' : 'hidden'} w-full`} // Adicionado w-full
+                                style={{ width: hoverRef.current ? `${hoverRef.current.clientWidth}px` : 'auto' }}
+                            >
+                                <div className="flex flex-col items-center"> {/* Adicionado flex flex-col items-center */}
+                                    <Link href="/perfil" className="block text-white mb-2 hover:bg-[#426b7b] w-full text-center">Ver Perfil</Link>
+                                    <button className="block text-white hover:bg-[#4D7787] w-full text-center">Logout</button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div className="center-container main-content">
-                        <div className="center-container" style={{ marginTop: '70px'}} >
+                        <div className="center-container" style={{ marginTop: '70px' }} >
                             <h2 className='my-0 font-bold'>Sobre Nós</h2>
                             <h4 className='mt-2'>Conectando santistas e turistas para as melhores experiências gastronômicas desde 2025</h4>
                         </div>
@@ -145,47 +190,18 @@ const SobreNosPage = () => {
                         </div>
                     </div>
                 </div>
-                <footer className="bg-[#247895] w-full absolute bottom-0 text-center  text-white pt-8">
-                    <h3 className="text-lg font-bold">SANTOS À MESA</h3>
-                    <p>©2025, Santos à Mesa. Todos os direitos reservados.</p>
+                <div className="bg-[#247895] mt-[30px] w-full">
+                    <div className="flex flex-col items-center text-[#e8e8ec] p-[15px]">
+                        <h3>SANTOS À MESA</h3>
+                        ©2025, Santos à Mesa. Todos os direitos reservados.
+                    </div>
                     <Image src={"/img/img-mureta.png"} width="1000" height="1000" className="w-full" alt="muretas-santos" />
-                </footer>
+                </div>
             </div>
 
             <style>{fadeInUpKeyframes}</style>
 
             <style jsx>{`
-                .form-container {
-                    position: relative;
-                    min-height: 100vh;
-                }
-
-                .form {
-                    position: absolute;
-                    left: 0;
-                    right: 0;
-                    margin-top: -40px;
-                    background-image: linear-gradient(to right, #E05F30, #7f3815);
-                }
-
-                .imagem-perfil {
-                    border-radius: 50%;
-                    width: 50px;
-                    height: 50px;
-                    object-fit: cover;
-                    border: 2px solid rgba(255, 255, 255, 0.500);
-                }
-
-                .grid-container {
-                    display: grid;
-                    grid-template-columns: 22% 55% 21%;
-                    grid-gap: 1%;
-                    padding: 10px;
-                    align-items: center;
-                    margin-left: 12px;
-                    margin-right: 12px;
-                }
-
                 .grid-container-1, .grid-container-2 {
                     display: grid;
                     grid-template-columns: 47.5% 47.5%;
@@ -197,18 +213,15 @@ const SobreNosPage = () => {
                     margin-left: 12px;
                     margin-right: 12px;
                 }
-                
                 .grid-container-2 {
                     grid-template-columns: repeat(3, 1fr);
                 }
-
                 .center-container {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
                     justify-content: center;
-                }
-                
+                }  
                 .main-content {
                     background-color: white;
                     margin-left: 20px;
@@ -216,83 +229,12 @@ const SobreNosPage = () => {
                     margin-bottom: 40px;
                     border-radius: 8px;
                 }
-                
                 .section {
                     border: 2px solid #666565;
                     border-radius: 8px;
                     padding: 30px;
                     height: -webkit-fill-available;
                 }
-
-                .bottom-row {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    background-color: #333;
-                }
-                .btn-menu, .btn-style, .txt-login {
-                    background-color: white;
-                    border: none;
-                    padding: 10px 15px;
-                    margin: 5px;
-                    cursor: pointer;
-                    text-decoration: none;
-                    color: black;
-                }
-
-                .btn-style {width: 45%;
-                    padding: 15px;
-                    text-align: center;
-                    text-decoration: none;
-                }
-
-                .btn-menu {
-                    background-color: white;
-                    border: none;
-                    padding: 10px 15px;
-                    margin: 5px;
-                    cursor: pointer;
-                    text-decoration: none;
-                    color: black;
-                }
-
-                .btn-border-start {
-                    border-top-left-radius: 8px;
-                    border-bottom-left-radius: 8px;
-                }
-
-                .btn-border-end {
-                    border-top-right-radius: 8px;
-                    border-bottom-right-radius: 8px;
-                }
-
-                .txt-login {
-                    text-decoration: none;
-                    color: black;
-                }
-
-                .justify-center {
-                    display: flex;
-                    justify-content: center;
-                }
-
-                .gap-5 {
-                    gap: 5%;
-                }
-
-                .row {
-                    display: flex;
-                    flex-direction: row;
-                }
-                
-                .img-mureta {
-                    width: 100%;
-                    height: 100px;
-                    background-image: url('img/img-mureta.png');
-                    background-size: cover;
-                    background-repeat: no-repeat;
-                }
-
                 .h3, h4, h5 {
                     color: #636363;
                 }

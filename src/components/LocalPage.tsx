@@ -102,13 +102,13 @@ const LocalPage = () => {
                             { name: "Burgman", category: "Bar", img: "img/img-placeholder.jpg" },
                         ].map((place, index) => (
                             <div key={index} className="shadow-lg border border-gray-400 rounded-lg bg-white w-full max-w-xs">
-                                <img src={place.img} alt={place.name} className="w-full h-40 object-cover rounded-t-lg" />
-                                <div className="p-4 text-center text-gray-800">
-                                    <b className="text-lg">{place.name}</b>
-                                    <p className="text-gray-600">{place.category}</p>
-                                    <Link href="/localInfo" className="mt-2 bg-primary text-white px-4 py-1 text-sm rounded-md hover:bg-blue-600">Saiba mais</Link>
-                                </div>
+                            <img src={place.img} alt={place.name} className="w-full h-40 object-cover rounded-t-lg" />
+                            <div className="p-4 text-gray-800">
+                              <b className="text-lg ">{place.name}</b>
+                              <p className="text-gray-600 mb-2">{place.category}</p>
+                              <Link href="/localInfo" className=" bg-primary text-white px-4 py-1 text-sm rounded-md hover:bg-blue-600">Saiba mais</Link>
                             </div>
+                          </div>
                         ))}
                     </div>
 
