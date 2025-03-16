@@ -47,8 +47,12 @@ const LocalPage = () => {
                 <div className="bg-white mx-10 rounded-xl px-12 overflow-hidden">
 
                     <div className="mt-10">
-                        <h2 className="text-xl text-gray-800 font-bold">Explorar Locais</h2>
-
+                        <div className="flex flex-row justify-between">
+                            <h2 className="text-xl text-gray-800 font-bold m-0">Explorar Locais</h2>
+                            <Link href="/localCadastro" className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                                Cadastrar Local
+                            </Link>
+                        </div>
                         <div className="flex gap-4 mt-4 w-1/2">
                             <input type="text" placeholder="Buscar restaurantes" className="w-full px-4 py-2 rounded-md border border-gray-400 text-black" />
                             <button className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-600 flex items-center gap-2">
@@ -102,13 +106,13 @@ const LocalPage = () => {
                             { name: "Burgman", category: "Bar", img: "img/img-placeholder.jpg" },
                         ].map((place, index) => (
                             <div key={index} className="shadow-lg border border-gray-400 rounded-lg bg-white w-full max-w-xs">
-                            <img src={place.img} alt={place.name} className="w-full h-40 object-cover rounded-t-lg" />
-                            <div className="p-4 text-gray-800">
-                              <b className="text-lg ">{place.name}</b>
-                              <p className="text-gray-600 mb-2">{place.category}</p>
-                              <Link href="/localInfo" className=" bg-primary text-white px-4 py-1 text-sm rounded-md hover:bg-blue-600">Saiba mais</Link>
+                                <img src={place.img} alt={place.name} className="w-full h-40 object-cover rounded-t-lg" />
+                                <div className="p-4 text-gray-800">
+                                    <b className="text-lg ">{place.name}</b>
+                                    <p className="text-gray-600 mb-2">{place.category}</p>
+                                    <Link href="/localInfo" className=" bg-primary text-white px-4 py-1 text-sm rounded-md hover:bg-blue-600">Saiba mais</Link>
+                                </div>
                             </div>
-                          </div>
                         ))}
                     </div>
 

@@ -1,8 +1,5 @@
 "use client"
-import Image from "next/image";
 import React from "react";
-import { Search } from 'lucide-react';
-import Link from "next/link";
 
 const LocalInfoPage = () => {
     return (
