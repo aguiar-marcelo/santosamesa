@@ -27,10 +27,10 @@ export async function postLogin(
   return data;
 }
 
-  // export async function getPlants(): Promise<any[]> {
-  //   const { data } = await api.get("/scheduling/plants");
-  //   return data;
-  // }
+  export async function getRestaurants(): Promise<any[]> {
+    const { data } = await api.get("/restaurant");
+    return data;
+  }
   
   // export async function putEditDriver(
   //   id: number,
