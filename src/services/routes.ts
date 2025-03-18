@@ -2,14 +2,14 @@ import { axiosClient as api } from "./api";
 
 
 export async function postRegister(
-  username: string,
   email: string,
-  password: string
+  password: string,
+  role: string
 ) {
   const { data } = await api.post("/auth/register", {
-    username,
     email,
     password,
+    role,
   });
 
   return data;

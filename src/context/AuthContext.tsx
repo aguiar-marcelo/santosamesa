@@ -11,10 +11,7 @@ import Cookies from "js-cookie";
 import { postLogin } from "@/services/routes";
 
 interface User {
-  userId: number;
-  nome: string;
   email: string;
-  status: string;
 }
 
 interface AuthContextData {
@@ -34,41 +31,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const savedToken = Cookies.get("token");
-  //   const savedUser = Cookies.get("user");
+  useEffect(() => {
+    const savedToken = Cookies.get("token");
+    const savedUser = Cookies.get("user");
 
-  //   if (savedToken && savedUser) {
-  //     setToken(savedToken);
-  //     setUser(JSON.parse(savedUser));
-  //   } else {
-  //     router.push("/login");
-  //   }
-  // }, [router]);
+    if (savedToken && savedUser) {
+      setToken(savedToken);
+      setUser(JSON.parse(savedUser));
+    } 
+    // else {
+    //   router.push("/login");
+    // }
+  }, [router]);
 
   const signIn = async (email: string, password: string) => {
     setError(null);
     try {
       const response = await postLogin(email, password);
-
-      if (!response.ok) {
-        if (response.status === 401) {
-          throw new Error("Usuário e/ou senha inválidos");
-        } else {
-          throw new Error("Falha no login. Tente novamente.");
-        }
-      }
+      console.log(response);
 
       // Salvar token nos cookies
-      Cookies.set("token", response.data.token, { expires: 1 }); // Expiração de 1 dia
-      Cookies.set("user", JSON.stringify(response.data.user), { expires: 1 });
+      Cookies.set("token", response.access_token, { expires: 1 }); // Expiração de 1 dia
+      Cookies.set("user", JSON.stringify({ email: email }), { expires: 1 });
 
-      setUser(response.data.user);
-      setToken(response.data.token);
+      setUser({ email: email });
+      setToken(response.access_token);
 
-      // router.push("/");
+      router.push("/");
     } catch (error: any) {
-      setError(error.message || "An error occurred");
+      setError("Email e/ou senha incorretos");
     }
   };
 
