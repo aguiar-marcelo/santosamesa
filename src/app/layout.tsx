@@ -32,9 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="w-full h-full">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${plusJakartaSans.variable} antialiased bg-white h-full`}
-      >
+      <body className={`${geistSans.className} ${geistMono.className} ${plusJakartaSans.className} antialiased bg-white h-full`}>
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
