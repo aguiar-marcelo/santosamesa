@@ -12,6 +12,14 @@ const LoginPage = () => {
   const { signIn, error } = useAuth();
 
   const login = async () => {
+    if (!email) {
+      alert("Digite o email");
+      return;
+    }
+    if (!password) {
+      alert("Digite a senha");
+      return;
+    }
     setLoading(true);
     await signIn(email, password).then(() => setLoading(false));
   };

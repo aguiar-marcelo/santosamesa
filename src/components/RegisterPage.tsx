@@ -19,17 +19,25 @@ const Cadastro = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>("null");
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const register = async () => {
+    if (!email) {
+      alert("Digite o email");
+      return;
+    }
+    if (!password) {
+      alert("Digite a senha");
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
       const response = await postRegister(email, password, "user");
       console.log(response);
 
-    
+      alert("Usuário cadastrado com sucesso!");
       router.push("/");
     } catch (error: any) {
       setError("Email e/ou senha incorretos");
@@ -54,16 +62,24 @@ const Cadastro = () => {
                 type="email"
                 placeholder="Digite seu e-mail"
                 className="w-4/5 p-3 border-4 border-[#E5DCDC] rounded-lg mb-4"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <p className="w-4/5 mb-2 text-left">Crie sua senha *</p>
               <input
                 type="password"
                 placeholder="Digite a senha que deseja criar"
                 className="w-4/5 p-3 border-4 border-[#E5DCDC] rounded-lg mb-4"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               {/* <p className="w-4/5 mb-2 text-left">Confirme sua senha *</p>
                             <input type="password" placeholder="Digite sua senha novamente" className="w-4/5 p-3 border-4 border-gray-200 rounded-lg mb-6" /> */}
-              {error && <div  className="border-red-600 text-red-50 p-2 border">{error}</div>}
+              {error && (
+                <div className="border-red-600 rounded text-red-600  px-2 border">
+                  {error}
+                </div>
+              )}
               <div className="flex gap-5 w-4/5 justify-between items-center">
                 <Link href="/" className="text-gray-500">
                   Voltar
@@ -71,22 +87,23 @@ const Cadastro = () => {
                 <button
                   type="button"
                   className="bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600"
+                  disabled={loading}
                   onClick={register}
                 >
                   {loading ? (
-                  <OrbitProgress
-                    style={{
-                      fontSize: 5,
-                      display: "flex",
-                      justifyItems: "center",
-                    }}
-                    color="#fff"
-                    dense
-                    speedPlus={1}
-                  />
-                ) : (
-                  "Cadastrar"
-                )}
+                    <OrbitProgress
+                      style={{
+                        fontSize: 5,
+                        display: "flex",
+                        justifyItems: "center",
+                      }}
+                      color="#fff"
+                      dense
+                      speedPlus={1}
+                    />
+                  ) : (
+                    "Cadastrar"
+                  )}
                 </button>
               </div>
             </div>
