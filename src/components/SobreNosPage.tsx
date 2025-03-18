@@ -2,8 +2,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useAuth } from '@/context/AuthContext';
+import { LogOut, User } from 'lucide-react';
 
 const SobreNosPage = () => {
+    const { user, token, signOut } = useAuth();
     const styles = {
         fadeIn: {
             animation: "1.5s fadeInUp",
@@ -87,7 +90,7 @@ const SobreNosPage = () => {
                             </Link>
                         </div> */}
 
-                        <div className="relative">
+                        {/*   <div className="relative">
                             <div
                                 ref={hoverRef}
                                 className={`flex items-center cursor-pointer transition-colors duration-300 rounded-t-md p-2 ${isHovered ? 'bg-[#62A4BE]' : ''}`}
@@ -112,11 +115,34 @@ const SobreNosPage = () => {
                                 className={`absolute top-full left-0 bg-[#62A4BE] p-2 rounded-b-md z-10 ${isOpen ? 'block' : 'hidden'} w-full`} // Adicionado w-full
                                 style={{ width: hoverRef.current ? `${hoverRef.current.clientWidth}px` : 'auto' }}
                             >
-                                <div className="flex flex-col items-center"> {/* Adicionado flex flex-col items-center */}
+                                <div className="flex flex-col items-center"> {/* Adicionado flex flex-col items-center
                                     <Link href="/perfil" className="block text-white mb-2 hover:bg-[#426b7b] w-full text-center">Ver Perfil</Link>
                                     <button className="block text-white hover:bg-[#4D7787] w-full text-center">Logout</button>
                                 </div>
                             </div>
+                        </div> */}
+                        <div className="flex justify-center gap-4 items-center">
+                            {user && token ? (
+                                <div className="flex gap-3">
+                                    <Link href="/perfil" className="text-blue-500 hover:underline">
+                      <User />
+                    </Link>
+                                    {user.email} <button className="hover:text-red-700" onClick={signOut}><LogOut /></button>
+                                </div>
+                            ) : (
+                                <>
+                                    {" "}
+                                    <Link href="/login" className="text-white underline">
+                                        Login
+                                    </Link>
+                                    <Link
+                                        href="/cadastro"
+                                        className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                                    >
+                                        Cadastrar
+                                    </Link>
+                                </>
+                            )}
                         </div>
                     </div>
 

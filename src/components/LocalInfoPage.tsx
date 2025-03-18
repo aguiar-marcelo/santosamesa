@@ -1,21 +1,23 @@
 "use client"
+import Link from "next/link";
 import React from "react";
+import { ArrowLeft } from "lucide-react";
 
-const LocalInfoPage = () => {
+const LocalInfoPage = ({ data, setData }: { data?: any; setData?: any }) => {
     return (
         <div>
             <div className="relative w-full h-full">
                 <div className="relative bg-cover bg-center h-[350px] w-full overflow-hidden">
-                    <img src="img/img-placeholder-4.png" alt="Local" className="w-full h-full object-cover" />
+                    <img src={data.url_img} alt="Local" className="w-full h-full object-cover" />
                     <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-b from-transparent to-white pointer-events-none"></div>
                 </div>
             </div>
-
             <div className="flex">
                 <div className="w-[60%] ml-[70px] mr-[70px] mt-4">
+            <button onClick={() => setData(undefined)} className="text-gray-500"><ArrowLeft/></button>
                     <div className="flex flex-col">
                         <div className="flex flex-row items-center">
-                            <h1 className="mb-[4px] mt-[4px] mr-4 font-bold">Boteco Burgman</h1>
+                            <h1 className="mb-[4px] mt-[4px] mr-4 font-bold">{data.name}</h1>
                             {Array(4).fill(0).map((_, starIndex) => (
                                 <img
                                     key={starIndex}
@@ -30,10 +32,9 @@ const LocalInfoPage = () => {
 
 
                     <div>
-                        <h3>UM POUQUINHO DE TUDO EM UM SÓ BAR</h3>
+                        {/* <h3>UM POUQUINHO DE TUDO EM UM SÓ BAR</h3> */}
                         <h4>
-                            Fundada em 2010, em Sorocaba/SP, por Amanda Bazzo e sua mãe Edite Bazzo, a Burgman vem se consolidando como uma das mais sólidas cervejarias da região. Sendo uma das pioneiras, ajudou a desbravar o caminho e hoje segue com o compromisso de difundir a cultura cervejeira.
-                        </h4>
+                            {data.aboutUs}                        </h4>
                     </div>
 
                     <div>

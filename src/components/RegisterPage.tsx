@@ -41,6 +41,8 @@ const Cadastro = () => {
       router.push("/");
     } catch (error: any) {
       setError("Email e/ou senha incorretos");
+    }finally{
+      setLoading(false);
     }
   };
 

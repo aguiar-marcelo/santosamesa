@@ -2,8 +2,10 @@
 import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
+import { useAuth } from '@/context/AuthContext';
 
 const ProfilePage = () => {
+    const { user, token, signOut } = useAuth();
     return (
         <div className="relative w-full h-full">
             <div className="bg-cover bg-center h-[350px] w-full">
@@ -51,7 +53,35 @@ const ProfilePage = () => {
                             alt="Foto de Perfil"
                         />
                         <div className="flex flex-col">
-                            <h1 className="mb-[4px] mt-[4px]">User Teste</h1>
+                            <div className="ml-[70px] mr-[70px]">
+                                <div className="flex gap-[5%] items-center mt-[30px] mb-[30px]">
+                                   {/*  <img
+                                        className="rounded-full w-[100px] h-[100px] object-cover"
+                                        src="img/placeholder-perfil.png"
+                                        alt="Foto de Perfil"
+                                    /> */}
+                                    <div className="flex flex-col">
+
+                                        {/* <h1 className="mb-[4px] mt-[4px]"></h1> */}
+
+                                        {user && token ? (
+                                            <span>{user.email}</span>
+                                        ) : (
+                                            <>
+                                                {" "}
+                                                <div className="flex items-center">
+                                                    <img
+                                                        className="w-[25px] h-[25px] mr-[5px]"
+                                                        src="img/estrela.png"
+                                                        alt="Estrela"
+                                                    />
+                                                    <h4 className="text-[#9D9393] my-0">3 avaliações</h4>
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
                             <div className="flex items-center">
                                 <img
                                     className="w-[25px] h-[25px] mr-[5px]"
@@ -163,11 +193,11 @@ export default ProfilePage;
 
 const styles = {
     fadeIn: {
-      animation: "1.5s fadeInUp",
+        animation: "1.5s fadeInUp",
     }
-  };
-  
-  const fadeInUpKeyframes = `
+};
+
+const fadeInUpKeyframes = `
   @keyframes fadeInUp {
     0% {
       transform: translateY(10%);
@@ -179,4 +209,3 @@ const styles = {
     }
   }
   `;
-  

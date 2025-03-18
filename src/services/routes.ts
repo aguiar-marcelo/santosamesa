@@ -31,6 +31,21 @@ export async function postLogin(
     const { data } = await api.get("/restaurant");
     return data;
   }
+
+  
+export async function postLocalregister(
+  name: string,
+  aboutUs: string,
+  url_img: string
+) {
+  const { data } = await api.post("/restaurant", {
+    name,
+    aboutUs,
+    url_img
+  });
+
+  return data;
+}
   
   // export async function putEditDriver(
   //   id: number,

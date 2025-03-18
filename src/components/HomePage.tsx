@@ -1,7 +1,7 @@
 "use client";
-import Image from "../../node_modules/next/image";
+import Image from "next/image";
 import React from "react";
-import { Search, User,LogOut } from "lucide-react";
+import { Search, User, LogOut } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 
@@ -58,7 +58,9 @@ const HomePage = () => {
               <div className="flex justify-center gap-4 items-center">
                 {user && token ? (
                   <div className="flex gap-3">
-                    <User />
+                    <Link href="/perfil" className="text-blue-500 hover:underline">
+                      <User />
+                    </Link>
                     {user.email} <button className="hover:text-red-700" onClick={signOut}><LogOut /></button>
                   </div>
                 ) : (
