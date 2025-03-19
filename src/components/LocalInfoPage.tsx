@@ -1,5 +1,4 @@
 "use client"
-import Link from "next/link";
 import React from "react";
 import { ArrowLeft } from "lucide-react";
 
@@ -13,11 +12,11 @@ const LocalInfoPage = ({ data, setData }: { data?: any; setData?: any }) => {
                 </div>
             </div>
             <div className="flex">
-                <div className="w-[60%] ml-[70px] mr-[70px] mt-4">
-            <button onClick={() => setData(undefined)} className="text-gray-500"><ArrowLeft/></button>
+                <div className="w-[60%] ml-[70px] mr-[70px] mt-5">
                     <div className="flex flex-col">
                         <div className="flex flex-row items-center">
-                            <h1 className="mb-[4px] mt-[4px] mr-4 font-bold">{data.name}</h1>
+                            <button onClick={() => setData(undefined)} className="text-gray-500"><ArrowLeft /></button>
+                            <h1 className="my-[4px] mx-4 font-bold">{data.name}</h1>
                             {Array(4).fill(0).map((_, starIndex) => (
                                 <img
                                     key={starIndex}
@@ -32,9 +31,7 @@ const LocalInfoPage = ({ data, setData }: { data?: any; setData?: any }) => {
 
 
                     <div>
-                        {/* <h3>UM POUQUINHO DE TUDO EM UM SÓ BAR</h3> */}
-                        <h4>
-                            {data.aboutUs}                        </h4>
+                        <h4>{data.aboutUs}</h4>
                     </div>
 
                     <div>
@@ -77,7 +74,7 @@ const LocalInfoPage = ({ data, setData }: { data?: any; setData?: any }) => {
                     </div>
                 </div>
 
-                <div className="w-[40%] ml-[70px] mr-[70px] mt-4">
+                <div className="w-[40%] ml-[70px] mr-[70px] mt-5">
                     <div className="rounded-lg p-8" style={{ backgroundColor: '#b6defc' }}>
                         <h2 className="mb-6 mt-[4px] font-bold">Deixe sua avaliação!</h2>
                         <textarea

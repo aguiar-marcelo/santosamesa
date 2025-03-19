@@ -8,10 +8,6 @@ import { OrbitProgress } from "react-loading-indicators";
 const Cadastro = () => {
   const [etapa, setEtapa] = useState(1);
 
-  const proximaEtapa = () => {
-    setEtapa(2);
-  };
-
   const etapaAnterior = () => {
     setEtapa(1);
   };
@@ -41,7 +37,7 @@ const Cadastro = () => {
       router.push("/");
     } catch (error: any) {
       setError("Email e/ou senha incorretos");
-    }finally{
+    } finally {
       setLoading(false);
     }
   };

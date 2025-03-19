@@ -1,14 +1,9 @@
 'use client';
-import React, { useState, useRef, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useAuth } from '@/context/AuthContext';
-import { LogOut, User } from 'lucide-react';
+import React from 'react';
 import MenuSection from './MenuSection';
 import FooterSection from './FooterSection';
 
 const SobreNosPage = () => {
-    const { user, token, signOut } = useAuth();
     const styles = {
         fadeIn: {
             animation: "1.5s fadeInUp",
@@ -27,32 +22,6 @@ const SobreNosPage = () => {
             }
         }
     `;
-
-    const logado = true; // alterar
-
-    const [isOpen, setIsOpen] = useState(false);
-    const [isHovered, setIsHovered] = useState(false);
-    const popupRef = useRef<HTMLDivElement | null>(null);
-    const hoverRef = useRef<HTMLDivElement | null>(null);
-
-    const togglePopup = () => {
-        setIsOpen(!isOpen);
-        if (!isOpen) {
-            setIsHovered(true);
-        }
-    };
-
-    useEffect(() => {
-        const handleClickOutside = (e: MouseEvent) => {
-            if (popupRef.current && e.target instanceof Node && !popupRef.current.contains(e.target)) {
-                setIsOpen(false);
-                setIsHovered(false);
-            }
-        };
-
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
 
     return (
         <div className="relative w-full min-h-screen flex flex-col overflow-x-hidden" style={{ backgroundImage: 'linear-gradient(to right, #E05F30, #7f3815)' }}>

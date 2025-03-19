@@ -1,5 +1,4 @@
 "use client";
-import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
@@ -22,26 +21,26 @@ const ProfilePage = () => {
                             alt="Foto de Perfil"
                         />
                         <div className="flex flex-col">
-     {/*                        <div className="flex gap-[5%] items-center mt-[30px] mb-[30px]"> */}
+                            {/*                        <div className="flex gap-[5%] items-center mt-[30px] mb-[30px]"> */}
 
-                                <div className="flex flex-col">
-                                    {user && token ? (
-                                        <h1 className="mb-[4px] mt-[4px]">{user.email}</h1>
-                                    ) : (
-                                        <>
-                                            {" "}
-                                            <div className="flex items-center">
-                                                <img
-                                                    className="w-[25px] h-[25px] mr-[5px]"
-                                                    src="img/estrela.png"
-                                                    alt="Estrela"
-                                                />
-                                                <h4 className="text-[#9D9393] my-0">3 avaliações</h4>
-                                            </div>
-                                        </>
-                                    )}
-                                </div>
-             {/*                </div> */}
+                            <div className="flex flex-col">
+                                {user && token ? (
+                                    <h1 className="mb-[4px] mt-[4px]">{user.email}</h1>
+                                ) : (
+                                    <>
+                                        {" "}
+                                        <div className="flex items-center">
+                                            <img
+                                                className="w-[25px] h-[25px] mr-[5px]"
+                                                src="img/estrela.png"
+                                                alt="Estrela"
+                                            />
+                                            <h4 className="text-[#9D9393] my-0">3 avaliações</h4>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                            {/*                </div> */}
                             <div className="flex items-center">
                                 <img
                                     className="w-[25px] h-[25px] mr-[5px]"
@@ -147,7 +146,6 @@ const ProfilePage = () => {
     );
 
 };
-
 
 export default ProfilePage;
 

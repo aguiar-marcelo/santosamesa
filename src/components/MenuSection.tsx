@@ -26,7 +26,7 @@ const MenuSection = () => {
                             href="/local"
                             className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300"
                         >
-                            Ver Localidades
+                            Ver Locais
                         </Link>
                         <Link
                             href="/"

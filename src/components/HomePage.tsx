@@ -1,15 +1,13 @@
 "use client";
-import Image from "next/image";
 import React from "react";
-import { Search, User, LogOut } from "lucide-react";
+import { Search } from "lucide-react";
 import Link from "next/link";
-import { useAuth } from "@/context/AuthContext";
 import MenuSection from "./MenuSection";
 import FooterSection from "./FooterSection";
 
 const HomePage = () => {
   return (
-    <div className="flex flex-col min-h-screen"> {/* Alterado para flex e min-h-screen */}
+    <div className="flex flex-col min-h-screen">
       <style>{fadeInUpKeyframes}</style>
       <div className="relative w-full">
         <div
