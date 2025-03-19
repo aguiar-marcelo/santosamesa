@@ -33,15 +33,30 @@ export async function postLogin(
   }
 
   
-export async function postLocalregister(
-  name: string,
-  aboutUs: string,
-  url_img: string
+  export async function postLocalregister(
+    name: string,
+    aboutUs: string,
+    url_img: string
+  ) {
+    const { data } = await api.post("/restaurant", {
+      name,
+      aboutUs,
+      url_img
+    });
+  
+    return data;
+  }
+  
+    
+export async function postLocalReview(
+  value: number,
+  restaurantId: string,
+  userId: string
 ) {
   const { data } = await api.post("/restaurant", {
-    name,
-    aboutUs,
-    url_img
+    value,
+    restaurantId,
+    userId
   });
 
   return data;
