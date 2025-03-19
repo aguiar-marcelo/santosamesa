@@ -5,12 +5,13 @@ import { Search, User, LogOut } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import MenuSection from "./MenuSection";
+import FooterSection from "./FooterSection";
 
 const HomePage = () => {
   return (
-    <>
+    <div className="flex flex-col min-h-screen"> {/* Alterado para flex e min-h-screen */}
       <style>{fadeInUpKeyframes}</style>
-      <div className="relative w-full h-full">
+      <div className="relative w-full">
         <div
           className="bg-cover bg-center h-[350px] w-full"
           style={{ backgroundImage: "url('img/img-homepage.jpg')" }}
@@ -87,22 +88,9 @@ const HomePage = () => {
             </div>
           ))}
         </div>
-
-        <div className="bg-[#247895] mt-[30px] w-full">
-          <div className="flex flex-col items-center text-[#e8e8ec] p-[15px]">
-            <h3>SANTOS À MESA</h3>
-            ©2025, Santos à Mesa. Todos os direitos reservados.
-          </div>
-          <Image
-            src={"/img/img-mureta.png"}
-            width="1000"
-            height="1000"
-            className="w-full"
-            alt="muretas-santos"
-          />
-        </div>
       </div>
-    </>
+      <FooterSection />
+    </div>
   );
 };
 

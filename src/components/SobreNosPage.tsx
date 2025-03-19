@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 import { LogOut, User } from 'lucide-react';
 import MenuSection from './MenuSection';
+import FooterSection from './FooterSection';
 
 const SobreNosPage = () => {
     const { user, token, signOut } = useAuth();
@@ -53,92 +54,81 @@ const SobreNosPage = () => {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-
     return (
-        <div className="relative w-full h-full" style={{ backgroundImage: 'linear-gradient(to right, #E05F30, #7f3815)' }}>
-            <div className="bg-cover bg-center h-[350px] w-full" >
+        <div className="relative w-full min-h-screen flex flex-col overflow-x-hidden" style={{ backgroundImage: 'linear-gradient(to right, #E05F30, #7f3815)' }}>
             <MenuSection />
-                <div className="flex flex-col items-center mx-8">
-        
+            <div className="flex flex-col items-center mx-8 flex-grow">
+                <div className="center-container main-content">
+                    <div className="center-container" style={{ marginTop: '70px' }} >
+                        <h2 className='my-0 font-bold'>Sobre Nós</h2>
+                        <h4 className='mt-2'>Conectando santistas e turistas para as melhores experiências gastronômicas desde 2025</h4>
+                    </div>
 
-                    <div className="center-container main-content">
-                        <div className="center-container" style={{ marginTop: '70px' }} >
-                            <h2 className='my-0 font-bold'>Sobre Nós</h2>
-                            <h4 className='mt-2'>Conectando santistas e turistas para as melhores experiências gastronômicas desde 2025</h4>
-                        </div>
-
-                        <div className="grid-container-1" style={{ ...styles.fadeIn }}>
-                            <div className="center-container section">
-                                <div>
-                                    <h3 className='mt-0 mb-3 font-bold'>Nossa missão</h3>
-                                    <h4 style={{ marginTop: '0' }}>O que nos motiva</h4>
-                                    <h5 style={{ marginBottom: '0' }}>
-                                        Conectar pessoas e incentivar o descobrimento de novas experiências gastronômicas da cidade de Santos,
-                                        incentivando o turismo. Acreditamos que não há coisa mais valiosa que descobrir o novo e criar novas
-                                        memórias no processo.
-                                    </h5>
-                                </div>
-                            </div>
-
-                            <div className="center-container section">
-                                <div>
-                                    <h3 className='mt-0 mb-3 font-bold'>Nossa história</h3>
-                                    <h4 style={{ marginTop: '0' }}>Como começou</h4>
-                                    <h5 style={{ marginBottom: '0' }}>
-                                        O projeto Santos à Mesa surgiu como o trabalho de conclusão de curso de 7 estudantes da Universidade
-                                        Santa Cecília, que tinham muito carinho pela cidade de Santos e queriam incentivar mais as pessoas a
-                                        explorarem mais do que a cidade tinha para oferecer, focando na facilidade do processo.
-                                    </h5>
-                                </div>
+                    <div className="grid-container-1" style={{ ...styles.fadeIn }}>
+                        <div className="center-container section">
+                            <div>
+                                <h3 className='mt-0 mb-3 font-bold'>Nossa missão</h3>
+                                <h4 style={{ marginTop: '0' }}>O que nos motiva</h4>
+                                <h5 style={{ marginBottom: '0' }}>
+                                    Conectar pessoas e incentivar o descobrimento de novas experiências gastronômicas da cidade de Santos,
+                                    incentivando o turismo. Acreditamos que não há coisa mais valiosa que descobrir o novo e criar novas
+                                    memórias no processo.
+                                </h5>
                             </div>
                         </div>
 
-                        <div className="center-container">
-                            <h2 className='mt-10 mb-0 font-bold'>Nosso valores</h2>
-                            <h4 className='mt-2'>Princípios que guiam o nosso trabalho</h4>
-                        </div>
-
-                        <div className="grid-container-2" style={{ marginBottom: '60px', ...styles.fadeIn }}>
-                            <div className="center-container section">
-                                <div>
-                                    <h3 className='mt-0 mb-3 font-bold'>Autenticidade</h3>
-                                    <h5 style={{ marginBottom: '0' }}>
-                                        Valorizamos experiências genuínas e avaliações honestas. Nosso compromisso é com a verdade, mesmo
-                                        quando ela não é perfeita.
-                                    </h5>
-                                </div>
-                            </div>
-
-                            <div className="center-container section">
-                                <div>
-                                    <h3 className='mt-0 mb-3 font-bold'>Comunidade</h3>
-                                    <h5 style={{ marginBottom: '0' }}>
-                                        Acreditamos no poder da inteligência coletiva. Nossa plataforma é construída pela comunidade e para a
-                                        comunidade.
-                                    </h5>
-                                </div>
-                            </div>
-
-                            <div className="center-container section">
-                                <div>
-                                    <h3 className='mt-0 mb-3 font-bold'>Diversidade</h3>
-                                    <h5 style={{ marginBottom: '0' }}>
-                                        Celebramos a rica diversidade gastronômica de Santos, desde a tradicional comida caiçara até as mais
-                                        recentes inovações culinárias.
-                                    </h5>
-                                </div>
+                        <div className="center-container section">
+                            <div>
+                                <h3 className='mt-0 mb-3 font-bold'>Nossa história</h3>
+                                <h4 style={{ marginTop: '0' }}>Como começou</h4>
+                                <h5 style={{ marginBottom: '0' }}>
+                                    O projeto Santos à Mesa surgiu como o trabalho de conclusão de curso de 7 estudantes da Universidade
+                                    Santa Cecília, que tinham muito carinho pela cidade de Santos e queriam incentivar mais as pessoas a
+                                    explorarem mais do que a cidade tinha para oferecer, focando na facilidade do processo.
+                                </h5>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="bg-[#247895] mt-[30px] w-full">
-                    <div className="flex flex-col items-center text-[#e8e8ec] p-[15px]">
-                        <h3>SANTOS À MESA</h3>
-                        ©2025, Santos à Mesa. Todos os direitos reservados.
+
+                    <div className="center-container">
+                        <h2 className='mt-10 mb-0 font-bold'>Nosso valores</h2>
+                        <h4 className='mt-2'>Princípios que guiam o nosso trabalho</h4>
                     </div>
-                    <Image src={"/img/img-mureta.png"} width="1000" height="1000" className="w-full" alt="muretas-santos" />
+
+                    <div className="grid-container-2" style={{ marginBottom: '60px', ...styles.fadeIn }}>
+                        <div className="center-container section">
+                            <div>
+                                <h3 className='mt-0 mb-3 font-bold'>Autenticidade</h3>
+                                <h5 style={{ marginBottom: '0' }}>
+                                    Valorizamos experiências genuínas e avaliações honestas. Nosso compromisso é com a verdade, mesmo
+                                    quando ela não é perfeita.
+                                </h5>
+                            </div>
+                        </div>
+
+                        <div className="center-container section">
+                            <div>
+                                <h3 className='mt-0 mb-3 font-bold'>Comunidade</h3>
+                                <h5 style={{ marginBottom: '0' }}>
+                                    Acreditamos no poder da inteligência coletiva. Nossa plataforma é construída pela comunidade e para a
+                                    comunidade.
+                                </h5>
+                            </div>
+                        </div>
+
+                        <div className="center-container section">
+                            <div>
+                                <h3 className='mt-0 mb-3 font-bold'>Diversidade</h3>
+                                <h5 style={{ marginBottom: '0' }}>
+                                    Celebramos a rica diversidade gastronômica de Santos, desde a tradicional comida caiçara até as mais
+                                    recentes inovações culinárias.
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <FooterSection/>
 
             <style>{fadeInUpKeyframes}</style>
 
@@ -162,7 +152,7 @@ const SobreNosPage = () => {
                     flex-direction: column;
                     align-items: center;
                     justify-content: center;
-                }  
+                } 
                 .main-content {
                     background-color: white;
                     margin-left: 20px;

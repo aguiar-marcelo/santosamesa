@@ -49,31 +49,31 @@ const MenuSection = () => {
                     </div>
 
                     <div className="flex justify-center gap-4 items-center">
-  {user && token ? (
-    <div className="flex gap-3">
-      <Link href="/perfil" className="text-white hover:underline"> {/* Adicionado text-white aqui */}
-        <User />
-      </Link>
-      <span className="text-white">{user.email}</span>
-      <button className="text-white hover:text-red-700" onClick={signOut}> {/* Adicionado text-white aqui */}
-        <LogOut />
-      </button>
-    </div>
-  ) : (
-    <>
-      {" "}
-      <Link href="/login" className="text-white underline">
-        Login
-      </Link>
-      <Link
-        href="/cadastro"
-        className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-600"
-      >
-        Cadastrar
-      </Link>
-    </>
-  )}
-</div>
+                        {user && token ? (
+                            <div className="flex gap-3">
+                                <Link href="/perfil" className="text-white hover:underline"> {/* Adicionado text-white aqui */}
+                                    <User />
+                                </Link>
+                                <span className="text-white">{user.email}</span>
+                                <button className="text-white hover:text-red-700" onClick={signOut}> {/* Adicionado text-white aqui */}
+                                    <LogOut />
+                                </button>
+                            </div>
+                        ) : (
+                            <>
+                                {" "}
+                                <Link href="/login" className="text-white underline">
+                                    Login
+                                </Link>
+                                <Link
+                                    href="/cadastro"
+                                    className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                                >
+                                    Cadastrar
+                                </Link>
+                            </>
+                        )}
+                    </div>
                 </div>
             </div>
         </>
