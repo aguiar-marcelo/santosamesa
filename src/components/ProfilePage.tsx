@@ -3,46 +3,15 @@ import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
+import MenuSection from './MenuSection';
 
 const ProfilePage = () => {
     const { user, token, signOut } = useAuth();
     return (
         <div className="relative w-full h-full">
             <div className="bg-cover bg-center h-[350px] w-full">
-                <div className="flex flex-col items-center bg-gradient-to-r from-[#37ADE4] to-[#1F607E]">
-                    <div className="w-full flex justify-between gap-4 p-4 items-center ">
-                        <div className="flex justify-center items-center gap-2">
-                            <img src="img/img-logo.png" alt="Logo" width={45} height={40} />
-                            <h1 className="text-white text-2xl font-bold">SANTOS À MESA</h1>
-                        </div>
-
-                        <div className="flex justify-center rounded-lg overflow-hidden">
-                            <Link href="/" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
-                                Home
-                            </Link>
-                            <Link href="/local" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
-                                Ver Localidades
-                            </Link>
-                            <Link href="/" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
-                                Destaques
-                            </Link>
-                            <Link href="/" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
-                                Perguntas Frequentes
-                            </Link>
-                            <Link href="/sobreNos" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
-                                Sobre Nós
-                            </Link>
-                        </div>
-
-                        <div className="flex justify-center gap-4 items-center">
-                            <Link href="/login" className="text-white underline">
-                                Login
-                            </Link>
-                            <Link href="/cadastro" className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-600">
-                                Cadastrar
-                            </Link>
-                        </div>
-                    </div>
+                <div className="bg-gradient-to-r from-[#37ADE4] to-[#1F607E]">
+                    <MenuSection />
                 </div>
 
                 <div className="ml-[70px] mr-[70px]">
@@ -53,35 +22,26 @@ const ProfilePage = () => {
                             alt="Foto de Perfil"
                         />
                         <div className="flex flex-col">
-                            <div className="ml-[70px] mr-[70px]">
-                                <div className="flex gap-[5%] items-center mt-[30px] mb-[30px]">
-                                   {/*  <img
-                                        className="rounded-full w-[100px] h-[100px] object-cover"
-                                        src="img/placeholder-perfil.png"
-                                        alt="Foto de Perfil"
-                                    /> */}
-                                    <div className="flex flex-col">
+     {/*                        <div className="flex gap-[5%] items-center mt-[30px] mb-[30px]"> */}
 
-                                        {/* <h1 className="mb-[4px] mt-[4px]"></h1> */}
-
-                                        {user && token ? (
-                                            <span>{user.email}</span>
-                                        ) : (
-                                            <>
-                                                {" "}
-                                                <div className="flex items-center">
-                                                    <img
-                                                        className="w-[25px] h-[25px] mr-[5px]"
-                                                        src="img/estrela.png"
-                                                        alt="Estrela"
-                                                    />
-                                                    <h4 className="text-[#9D9393] my-0">3 avaliações</h4>
-                                                </div>
-                                            </>
-                                        )}
-                                    </div>
+                                <div className="flex flex-col">
+                                    {user && token ? (
+                                        <h1 className="mb-[4px] mt-[4px]">{user.email}</h1>
+                                    ) : (
+                                        <>
+                                            {" "}
+                                            <div className="flex items-center">
+                                                <img
+                                                    className="w-[25px] h-[25px] mr-[5px]"
+                                                    src="img/estrela.png"
+                                                    alt="Estrela"
+                                                />
+                                                <h4 className="text-[#9D9393] my-0">3 avaliações</h4>
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
-                            </div>
+             {/*                </div> */}
                             <div className="flex items-center">
                                 <img
                                     className="w-[25px] h-[25px] mr-[5px]"

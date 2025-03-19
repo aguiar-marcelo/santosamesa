@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 import { LogOut, User } from 'lucide-react';
+import MenuSection from './MenuSection';
 
 const SobreNosPage = () => {
     const { user, token, signOut } = useAuth();
@@ -56,95 +57,9 @@ const SobreNosPage = () => {
     return (
         <div className="relative w-full h-full" style={{ backgroundImage: 'linear-gradient(to right, #E05F30, #7f3815)' }}>
             <div className="bg-cover bg-center h-[350px] w-full" >
+            <MenuSection />
                 <div className="flex flex-col items-center mx-8">
-                    <div className="w-full flex justify-between gap-4 p-4 items-center">
-                        <div className="flex justify-center items-center gap-2">
-                            <img src="img/img-logo.png" alt="Logo" width={45} height={40} />
-                            <h1 className="text-white text-2xl font-bold">SANTOS À MESA</h1>
-                        </div>
-
-                        <div className="flex justify-center rounded-lg overflow-hidden">
-                            <Link href="/" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
-                                Home
-                            </Link>
-                            <Link href="/local" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
-                                Ver Localidades
-                            </Link>
-                            <Link href="/" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
-                                Destaques
-                            </Link>
-                            <Link href="/" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
-                                Perguntas Frequentes
-                            </Link>
-                            <Link href="/sobreNos" className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300">
-                                Sobre Nós
-                            </Link>
-                        </div>
-
-                        {/* <div className="flex justify-center gap-4 items-center">
-                            <Link href="/login" className="text-white underline">
-                                Login
-                            </Link>
-                            <Link href="/cadastro" className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-600">
-                                Cadastrar
-                            </Link>
-                        </div> */}
-
-                        {/*   <div className="relative">
-                            <div
-                                ref={hoverRef}
-                                className={`flex items-center cursor-pointer transition-colors duration-300 rounded-t-md p-2 ${isHovered ? 'bg-[#62A4BE]' : ''}`}
-                                onClick={togglePopup}
-                                onMouseEnter={() => setIsHovered(true)}
-                                onMouseLeave={() => {
-                                    if (!isOpen) {
-                                        setIsHovered(false);
-                                    }
-                                }}
-                            >
-                                <img
-                                    className="rounded-full w-12 h-12 mr-4"
-                                    src="img/placeholder-perfil.png"
-                                    alt="Foto de Perfil"
-                                    style={{ border: '2px solid rgba(255, 255, 255, 0.5)' }}
-                                />
-                                <p className="text-white">User Teste</p>
-                            </div>
-                            <div
-                                ref={popupRef}
-                                className={`absolute top-full left-0 bg-[#62A4BE] p-2 rounded-b-md z-10 ${isOpen ? 'block' : 'hidden'} w-full`} // Adicionado w-full
-                                style={{ width: hoverRef.current ? `${hoverRef.current.clientWidth}px` : 'auto' }}
-                            >
-                                <div className="flex flex-col items-center"> {/* Adicionado flex flex-col items-center
-                                    <Link href="/perfil" className="block text-white mb-2 hover:bg-[#426b7b] w-full text-center">Ver Perfil</Link>
-                                    <button className="block text-white hover:bg-[#4D7787] w-full text-center">Logout</button>
-                                </div>
-                            </div>
-                        </div> */}
-                        <div className="flex justify-center gap-4 items-center">
-                            {user && token ? (
-                                <div className="flex gap-3">
-                                    <Link href="/perfil" className="text-blue-500 hover:underline">
-                      <User />
-                    </Link>
-                                    {user.email} <button className="hover:text-red-700" onClick={signOut}><LogOut /></button>
-                                </div>
-                            ) : (
-                                <>
-                                    {" "}
-                                    <Link href="/login" className="text-white underline">
-                                        Login
-                                    </Link>
-                                    <Link
-                                        href="/cadastro"
-                                        className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-600"
-                                    >
-                                        Cadastrar
-                                    </Link>
-                                </>
-                            )}
-                        </div>
-                    </div>
+        
 
                     <div className="center-container main-content">
                         <div className="center-container" style={{ marginTop: '70px' }} >
