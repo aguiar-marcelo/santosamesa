@@ -13,6 +13,8 @@ const LocalPage = () => {
   const [visibleRestaurants, setVisibleRestaurants] = React.useState<any[]>([]);
   const [itemsPerPage, setItemsPerPage] = React.useState(8);
   const [currentPage, setCurrentPage] = React.useState(1);
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const [filteredRestaurants, setFilteredRestaurants] = React.useState<any[]>([]);
 
   const FetchUsers = async () => {
     try {
@@ -33,11 +35,30 @@ const LocalPage = () => {
   React.useEffect(() => {
     const startIndex = 0;
     const endIndex = currentPage * itemsPerPage;
-    setVisibleRestaurants(restaurants.slice(startIndex, endIndex));
-  }, [restaurants, currentPage, itemsPerPage]);
+    setVisibleRestaurants(
+      (filteredRestaurants.length > 0 ? filteredRestaurants : restaurants).slice(
+        startIndex,
+        endIndex
+      )
+    );
+  }, [restaurants, currentPage, itemsPerPage, filteredRestaurants]);
 
   const handleLoadMore = () => {
     setCurrentPage(currentPage + 1);
+  };
+
+  const handleSearch = () => {
+    const filteredResults = restaurants.filter((restaurant) =>
+      restaurant.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredRestaurants(filteredResults);
+    setCurrentPage(1);
+  };
+
+  const handleKeyDown = (event: { key: string; }) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
   };
 
   return (
@@ -49,8 +70,7 @@ const LocalPage = () => {
           <div
             className="fixed inset-0"
             style={{
-              backgroundImage:
-                "url('img/localidade.jpg')",
+              backgroundImage: "url('img/localidade.jpg')",
               backgroundSize: "cover, 100% 100%",
               backgroundRepeat: "no-repeat, no-repeat",
               zIndex: -1,
@@ -77,8 +97,14 @@ const LocalPage = () => {
                       type="text"
                       placeholder="Buscar restaurantes"
                       className="w-full px-4 py-2 rounded-md border border-gray-400 text-black"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      onKeyDown={handleKeyDown}
                     />
-                    <button className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-600 flex items-center gap-2">
+                    <button
+                      className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-600 flex items-center gap-2"
+                      onClick={handleSearch}
+                    >
                       <Search /> Pesquisar
                     </button>
                   </div>
@@ -164,16 +190,19 @@ const LocalPage = () => {
                   ))}
                 </div>
 
-                {visibleRestaurants.length < restaurants.length && (
-                  <div className="m-10 flex justify-center">
-                    <button
-                      className="px-4 py-1 rounded-md flex items-center gap-2 border-2 border-black font-bold"
-                      onClick={handleLoadMore}
-                    >
-                      Carregar Mais
-                    </button>
-                  </div>
-                )}
+                {visibleRestaurants.length <
+                  (filteredRestaurants.length > 0
+                    ? filteredRestaurants.length
+                    : restaurants.length) && (
+                    <div className="m-10 flex justify-center">
+                      <button
+                        className="px-4 py-1 rounded-md flex items-center gap-2 border-2 border-black font-bold"
+                        onClick={handleLoadMore}
+                      >
+                        Carregar Mais
+                      </button>
+                    </div>
+                  )}
               </div>
             </div>
             <FooterSection />
