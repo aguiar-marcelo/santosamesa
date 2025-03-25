@@ -8,10 +8,13 @@ import React, {
 } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import { postLogin } from "@/services/routes";
+import { getUser, postLogin } from "@/services/routes";
 
 interface User {
+  id: number;
   email: string;
+  role: string;
+  profilePicture?: string;
 }
 
 interface AuthContextData {
@@ -38,7 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (savedToken && savedUser) {
       setToken(savedToken);
       setUser(JSON.parse(savedUser));
-    } 
+    }
     // else {
     //   router.push("/login");
     // }
@@ -48,15 +51,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setError(null);
     try {
       const response = await postLogin(email, password);
-      console.log(response);
 
-      // Salvar token nos cookies
       Cookies.set("token", response.access_token, { expires: 1 }); // Expiração de 1 dia
-      Cookies.set("user", JSON.stringify({ email: email }), { expires: 1 });
-
-      setUser({ email: email });
       setToken(response.access_token);
-
+      if (response.userId) {
+        const user = await getUser(response.userId);
+        Cookies.set(
+          "user",
+          JSON.stringify({
+            id: user.id,
+            email: user.email,
+            role: user.role,
+            profilePicture: user.profilePicture || null,
+          }),
+          {
+            expires: 1,
+          }
+        );
+        setUser({
+          id: user.id,
+          email: user.email,
+          role: user.role,
+          profilePicture: user.profilePicture || null,
+        });
+      }
       router.push("/");
     } catch (error: any) {
       setError("Email e/ou senha incorretos");

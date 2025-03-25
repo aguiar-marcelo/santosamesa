@@ -16,7 +16,7 @@ const LocalPage = () => {
   const [searchTerm, setSearchTerm] = React.useState("");
   const [filteredRestaurants, setFilteredRestaurants] = React.useState<any[]>([]);
 
-  const FetchUsers = async () => {
+  const FetchRestaurants = async () => {
     try {
       const results = await getRestaurants();
       setRestaurants(results);
@@ -29,7 +29,7 @@ const LocalPage = () => {
   };
 
   React.useEffect(() => {
-    FetchUsers();
+    FetchRestaurants();
   }, []);
 
   React.useEffect(() => {

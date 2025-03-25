@@ -16,6 +16,7 @@ const Cadastro = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [profile, setProfile] = useState("");
   const router = useRouter();
 
   const register = async () => {
