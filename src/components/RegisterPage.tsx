@@ -43,17 +43,42 @@ const Cadastro = () => {
     }
   };
 
+  const barraDeProgresso = `
+  .progress-custom {
+    height: 10px;
+    border: none;
+    background-color: #B0B8BE;
+    border-radius: 5px;
+  }
+  .progress-custom::-webkit-progress-bar {
+    background-color: #B0B8BE;
+    border-radius: 5px;
+  }
+  .progress-custom::-webkit-progress-value {
+    background-color: #1D98EA;
+    border-radius: 5px;
+  }
+`;
+
   return (
     <div
       className="h-screen flex flex-col justify-center bg-cover bg-no-repeat bg-center"
       style={{ backgroundImage: "url(img/img-login.jpg)" }}
     >
+      <style jsx global>{`
+        ${barraDeProgresso}
+      `}</style>
+
       <form className="flex justify-center items-center h-full">
         <div className="w-full max-w-lg bg-white bg-opacity-80 p-8 rounded-lg shadow-lg">
           {etapa === 1 ? (
             <div className="flex flex-col items-center text-gray-500">
               <h2 className="text-2xl font-semibold mt-0 mb-4">Cadastro</h2>
-              <progress className="w-4/5 mb-4" max="100" />
+              <progress
+                className={`progress-custom w-4/5 mb-4`}
+                max="100"
+                value={etapa === 1 ? 50 : 100}
+              />
               {/* <p className="w-4/5 mb-2 text-left">Nome de usuário *</p>
                             <input type="text" placeholder="Digite seu nome de usuário" className="w-4/5 p-3 border-4 border-[#E5DCDC] rounded-lg mb-4" /> */}
               <p className="w-4/5 mb-2 text-left">Endereço de e-mail *</p>
@@ -109,7 +134,11 @@ const Cadastro = () => {
           ) : (
             <div className="flex flex-col items-center">
               <h2 className="text-2xl font-semibold mt-0 mb-4">Cadastro</h2>
-              <progress className="w-4/5 mb-4" max="100" />
+              <progress
+                className={`progress-custom w-4/5 mb-4`}
+                max="100"
+                value={100}
+              />
               <p className="w-4/5 mb-2 text-left">Nome de exibição *</p>
               <input
                 type="text"

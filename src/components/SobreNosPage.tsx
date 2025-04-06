@@ -24,19 +24,19 @@ const SobreNosPage = () => {
     `;
 
     return (
-        <div className="relative w-full min-h-screen flex flex-col overflow-x-hidden" style={{ backgroundImage: 'linear-gradient(to right, #E05F30, #7f3815)' }}>
+        <div className="relative w-full min-h-screen flex flex-col overflow-x-hidden" style={{ backgroundImage: 'linear-gradient(to right, #E05F30, #7A341A)' }}>
             <MenuSection />
-            <div className="flex flex-col items-center mx-8 flex-grow">
+            <div className="flex flex-col items-center mx-8 flex-grow my-9">
                 <div className="center-container main-content">
                     <div className="center-container" style={{ marginTop: '70px' }} >
-                        <h2 className='my-0 font-bold'>Sobre Nós</h2>
+                        <h2 className='my-0 font-bold text-black'>Sobre Nós</h2>
                         <h4 className='mt-2'>Conectando santistas e turistas para as melhores experiências gastronômicas desde 2025</h4>
                     </div>
 
                     <div className="grid-container-1" style={{ ...styles.fadeIn }}>
                         <div className="center-container section">
                             <div>
-                                <h3 className='mt-0 mb-3 font-bold'>Nossa missão</h3>
+                                <h3 className='mt-0 mb-3 font-bold text-black'>Nossa missão</h3>
                                 <h4 style={{ marginTop: '0' }}>O que nos motiva</h4>
                                 <h5 style={{ marginBottom: '0' }}>
                                     Conectar pessoas e incentivar o descobrimento de novas experiências gastronômicas da cidade de Santos,
@@ -48,7 +48,7 @@ const SobreNosPage = () => {
 
                         <div className="center-container section">
                             <div>
-                                <h3 className='mt-0 mb-3 font-bold'>Nossa história</h3>
+                                <h3 className='mt-0 mb-3 font-bold text-black'>Nossa história</h3>
                                 <h4 style={{ marginTop: '0' }}>Como começou</h4>
                                 <h5 style={{ marginBottom: '0' }}>
                                     O projeto Santos à Mesa surgiu como o trabalho de conclusão de curso de 7 estudantes da Universidade
@@ -60,14 +60,14 @@ const SobreNosPage = () => {
                     </div>
 
                     <div className="center-container">
-                        <h2 className='mt-10 mb-0 font-bold'>Nosso valores</h2>
+                        <h2 className='mt-10 mb-0 font-bold text-black'>Nosso valores</h2>
                         <h4 className='mt-2'>Princípios que guiam o nosso trabalho</h4>
                     </div>
 
                     <div className="grid-container-2" style={{ marginBottom: '60px', ...styles.fadeIn }}>
                         <div className="center-container section">
                             <div>
-                                <h3 className='mt-0 mb-3 font-bold'>Autenticidade</h3>
+                                <h3 className='mt-0 mb-3 font-bold text-black'>Autenticidade</h3>
                                 <h5 style={{ marginBottom: '0' }}>
                                     Valorizamos experiências genuínas e avaliações honestas. Nosso compromisso é com a verdade, mesmo
                                     quando ela não é perfeita.
@@ -77,7 +77,7 @@ const SobreNosPage = () => {
 
                         <div className="center-container section">
                             <div>
-                                <h3 className='mt-0 mb-3 font-bold'>Comunidade</h3>
+                                <h3 className='mt-0 mb-3 font-bold text-black'>Comunidade</h3>
                                 <h5 style={{ marginBottom: '0' }}>
                                     Acreditamos no poder da inteligência coletiva. Nossa plataforma é construída pela comunidade e para a
                                     comunidade.
@@ -87,7 +87,7 @@ const SobreNosPage = () => {
 
                         <div className="center-container section">
                             <div>
-                                <h3 className='mt-0 mb-3 font-bold'>Diversidade</h3>
+                                <h3 className='mt-0 mb-3 font-bold text-black'>Diversidade</h3>
                                 <h5 style={{ marginBottom: '0' }}>
                                     Celebramos a rica diversidade gastronômica de Santos, desde a tradicional comida caiçara até as mais
                                     recentes inovações culinárias.
@@ -97,7 +97,7 @@ const SobreNosPage = () => {
                     </div>
                 </div>
             </div>
-            <FooterSection/>
+            <FooterSection />
 
             <style>{fadeInUpKeyframes}</style>
 
@@ -126,7 +126,6 @@ const SobreNosPage = () => {
                     background-color: white;
                     margin-left: 20px;
                     margin-right: 20px;
-                    margin-bottom: 40px;
                     border-radius: 8px;
                 }
                 .section {
