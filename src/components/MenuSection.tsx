@@ -8,54 +8,47 @@ const MenuSection = () => {
     const { user, token, signOut } = useAuth();
     return (
         <>
-            <div className="flex flex-col items-center mx-8">
-                <div className="w-full flex justify-between gap-4 p-4 items-center">
+            <div style={{ background: 'linear-gradient(to right, #1F607E, #506F7D)' }}>
+                <div className="w-full flex justify-between gap-4 p-4 items-center ">
                     <div className="flex justify-center items-center gap-2">
                         <img src="img/img-logo.png" alt="Logo" width={45} height={40} />
                         <h1 className="text-white text-2xl font-bold">SANTOS À MESA</h1>
-                    </div>
-
-                    <div className="flex justify-center rounded-lg overflow-hidden">
+                        <div className="rounded-lg overflow-hidden space-x-8 pl-10">
                         <Link
                             href="/"
-                            className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300"
+                            className="text-white hover:underline"
                         >
                             Home
                         </Link>
                         <Link
                             href="/local"
-                            className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300"
+                            className="text-white hover:underline"
                         >
                             Ver Locais
                         </Link>
                         <Link
                             href="/"
-                            className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300"
+                            className="text-white hover:underline"
                         >
                             Destaques
                         </Link>
                         <Link
-                            href="/"
-                            className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300"
-                        >
-                            Perguntas Frequentes
-                        </Link>
-                        <Link
                             href="/sobreNos"
-                            className="bg-gray-200 border border-gray-400 text-black px-5 py-3 hover:bg-gray-300"
+                            className="text-white hover:underline"
                         >
                             Sobre Nós
                         </Link>
                     </div>
-
+                    </div>
+                    
                     <div className="flex justify-center gap-4 items-center">
                         {user && token ? (
                             <div className="flex gap-3">
-                                <Link href="/perfil" className="text-white hover:underline"> {/* Adicionado text-white aqui */}
+                                <Link href="/perfil" className="text-white hover:underline">
                                     <User />
                                 </Link>
                                 <span className="text-white">{user.email}</span>
-                                <button className="text-white hover:text-red-700" onClick={signOut}> {/* Adicionado text-white aqui */}
+                                <button className="text-white hover:text-red-700" onClick={signOut}>
                                     <LogOut />
                                 </button>
                             </div>
@@ -67,7 +60,7 @@ const MenuSection = () => {
                                 </Link>
                                 <Link
                                     href="/cadastro"
-                                    className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                                    className="bg-primary text-white px-4 py-2 rounded-md hover:bg-[#04344a]"
                                 >
                                     Cadastrar
                                 </Link>

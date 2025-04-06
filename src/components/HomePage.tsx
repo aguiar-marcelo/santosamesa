@@ -9,18 +9,19 @@ const HomePage = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <style>{fadeInUpKeyframes}</style>
-      <div className="relative w-full">
+      <div className="relative w-full bg-white">
+        <MenuSection />
         <div
           className="bg-cover bg-center h-[350px] w-full"
           style={{ backgroundImage: "url('img/img-homepage.jpg')" }}
         >
-          <MenuSection />
+
           <div className="flex flex-col items-center mx-8">
             <div
-              className="flex flex-col items-center mt-6 text-white"
+              className="flex flex-col items-center mt-20"
               style={{ ...styles.fadeIn }}
             >
-              <h2 className="text-xl">
+              <h2 className="text-xl text-white font-bold">
                 Descubra lugares incríveis para comer em Santos
               </h2>
               <div className="flex gap-4 mt-4 w-full ">
