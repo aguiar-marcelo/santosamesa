@@ -28,10 +28,17 @@ const Cadastro = () => {
       alert("Digite a senha");
       return;
     }
+
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("role", "user");
+    formData.append("userName", password);
+
     setLoading(true);
     setError(null);
     try {
-      const response = await postRegister(email, password, "user");
+      const response = await postRegister(formData);
       console.log(response);
 
       alert("Usuário cadastrado com sucesso!");
@@ -69,48 +76,85 @@ const Cadastro = () => {
         ${barraDeProgresso}
       `}</style>
 
-      <form className="flex justify-center items-center h-full">
-        <div className="w-full max-w-lg bg-white bg-opacity-80 p-8 rounded-lg shadow-lg">
+      <div className="w-[40rem] m-auto bg-white bg-opacity-80 p-5 rounded-lg shadow-lg text-gray-500">
+        <form>
           {etapa === 1 ? (
-            <div className="flex flex-col items-center text-gray-500">
+            <div className="flex flex-col items-center gap-y-3">
               <h2 className="text-2xl font-semibold mt-0 mb-4">Cadastro</h2>
               <progress
-                className={`progress-custom w-4/5 mb-4`}
+                className={`progress-custom w-full mb-4`}
                 max="100"
                 value={etapa === 1 ? 50 : 100}
               />
-              {/* <p className="w-4/5 mb-2 text-left">Nome de usuário *</p>
-                            <input type="text" placeholder="Digite seu nome de usuário" className="w-4/5 p-3 border-4 border-[#E5DCDC] rounded-lg mb-4" /> */}
-              <p className="w-4/5 mb-2 text-left">Endereço de e-mail *</p>
-              <input
-                type="email"
-                placeholder="Digite seu e-mail"
-                className="w-4/5 p-3 border-4 border-[#E5DCDC] rounded-lg mb-4"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <p className="w-4/5 mb-2 text-left">Crie sua senha *</p>
-              <input
-                type="password"
-                placeholder="Digite a senha que deseja criar"
-                className="w-4/5 p-3 border-4 border-[#E5DCDC] rounded-lg mb-4"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              {/* <p className="w-4/5 mb-2 text-left">Confirme sua senha *</p>
-                            <input type="password" placeholder="Digite sua senha novamente" className="w-4/5 p-3 border-4 border-gray-200 rounded-lg mb-6" /> */}
+              <div className="flex w-full gap-x-2 border">
+                <div className="w-full">
+                  <p className="mb-2 text-left">Nome completo *</p>
+                  <input
+                    type="text"
+                    placeholder=""
+                    className="w-full p-3 border-4 border-[#E5DCDC] rounded-lg"
+                  />
+                </div>
+                <div className="w-full">
+                  <p className="mb-2 text-left">Username *</p>
+                  <input
+                    type="text"
+                    placeholder=""
+                    className="w-full p-3 border-4 border-[#E5DCDC] rounded-lg"
+                  />
+                </div>
+              </div>
+              <div className="w-full">
+                <p className="mb-2 text-left">Endereço de e-mail *</p>
+                <input
+                  type="email"
+                  placeholder="Digite seu e-mail"
+                  className="w-full p-3 border-4 border-[#E5DCDC] rounded-lg"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div className="flex w-full gap-x-2">
+                <div className="w-full">
+                  <p className="mb-2 text-left">Crie sua senha *</p>
+                  <input
+                    type="password"
+                    placeholder=""
+                    className="w-full p-3 border-4 border-[#E5DCDC] rounded-lg"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <div className="w-full">
+                  <p className="mb-2 text-left">Confirme sua senha *</p>
+                  <input
+                    type="password"
+                    placeholder=""
+                    className="w-full p-3 border-4 border-gray-200 rounded-lg"
+                  />
+                </div>
+              </div>
+              <div className="w-full">
+                <p className="mb-2 text-left ">Selecione sua foto de perfil</p>
+                <input
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  className="w-full cursor-pointer rounded-lg border outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-gray-500 file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:text-gray-700  dark:focus:border-primary"
+                />
+              </div>
+
               {error && (
-                <div className="border-red-600 rounded text-red-600  px-2 border">
+                <div className="border-red-600 rounded text-red-600 my-2 px-2 border">
                   {error}
                 </div>
               )}
-              <div className="flex gap-5 w-4/5 justify-between items-center">
-                <Link href="/" className="text-gray-500">
+              <div className="w-full px-3 flex justify-between items-center">
+                <Link href="/" className="px-3 text-gray-500">
                   Voltar
                 </Link>
                 <button
                   type="button"
-                  className="bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600"
+                  className="bg-blue-500 text-white py-3 px-10 rounded-lg hover:bg-blue-600"
                   disabled={loading}
                   onClick={register}
                 >
@@ -133,7 +177,7 @@ const Cadastro = () => {
             </div>
           ) : (
             <div className="flex flex-col items-center">
-              <h2 className="text-2xl font-semibold mt-0 mb-4">Cadastro</h2>
+              {/* <h2 className="text-2xl font-semibold mt-0 mb-4">Cadastro</h2>
               <progress
                 className={`progress-custom w-4/5 mb-4`}
                 max="100"
@@ -143,7 +187,7 @@ const Cadastro = () => {
               <input
                 type="text"
                 placeholder="Digite o nome a ser apresentado"
-                className="w-4/5 p-3 border-4 border-[#E5DCDC] rounded-lg mb-4"
+                className="w-4/5 p-3 border-4 border-[#E5DCDC] rounded-lg"
               />
               <p className="w-4/5 mb-2 text-left">
                 Selecione sua foto de perfil
@@ -167,11 +211,11 @@ const Cadastro = () => {
                 >
                   Voltar
                 </a>
-              </div>
+              </div> */}
             </div>
           )}
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 };

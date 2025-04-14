@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import { getUser, postLogin } from "@/services/routes";
+import { postLogin } from "@/services/routes";
 
 interface User {
   id: number;
@@ -55,24 +55,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       Cookies.set("token", response.access_token, { expires: 1 }); // Expiração de 1 dia
       setToken(response.access_token);
       if (response.userId) {
-        const user = await getUser(response.userId);
         Cookies.set(
           "user",
           JSON.stringify({
-            id: user.id,
-            email: user.email,
-            role: user.role,
-            profilePicture: user.profilePicture || null,
+            id: response.userId,
+            email: response.email,
+            role: response.role,
+            profilePicture: response.profilePicture || null,
           }),
           {
             expires: 1,
           }
         );
         setUser({
-          id: user.id,
-          email: user.email,
-          role: user.role,
-          profilePicture: user.profilePicture || null,
+          id: response.id,
+          email: response.email,
+          role: response.role,
+          profilePicture: response.profilePicture || null,
         });
       }
       router.push("/");
