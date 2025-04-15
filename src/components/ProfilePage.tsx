@@ -6,7 +6,7 @@ import MenuSection from './MenuSection';
 import FooterSection from './FooterSection';
 
 const ProfilePage = () => {
-    const { user, token, signOut } = useAuth();
+    const { user, token } = useAuth();
     return (
         <div className="relative w-full h-full">
             <div className="bg-cover bg-center h-[350px] w-full">

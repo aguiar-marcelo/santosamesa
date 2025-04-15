@@ -41,6 +41,22 @@ export async function postRestaurant(resturant: FormData) {
   return data;
 }
 
+export async function postLocationRestaurant(
+  address: string,
+  city: string,
+  number: string,
+  state: string
+) {
+  const { data } = await api.post("/location", {
+    address,
+    city,
+    number,
+    state,
+  });
+
+  return data;
+}
+
 export async function postLocalReview(
   value: number,
   restaurantId: string,

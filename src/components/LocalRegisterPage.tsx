@@ -1,5 +1,5 @@
 "use client";
-import { postRestaurant } from "@/services/routes";
+import { postLocationRestaurant, postRestaurant } from "@/services/routes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -13,33 +13,38 @@ const LocalRegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
+  const [address, setaddress] = useState("");
+  const [city, setCity] = useState("");
+  const [number, setNumber] = useState("");
+  const [state, setState] = useState("");
+
   const router = useRouter();
 
   const localRegister = async () => {
-    if (!name) {
-      alert("Digite o nome");
-      return;
-    }
-    if (!aboutUs) {
-      alert("Digite algo sobre o local");
+    if (!name || !aboutUs || !file || !address || !city || !number || !state) {
+      alert("Preencha todos os campos obrigatórios.");
       return;
     }
 
-    if (!file) {
-      alert("Selecione uma imagem do local.");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("aboutUs", aboutUs);
-    formData.append("categoryId", categoria);
-    formData.append("locationId", "1");
-    formData.append("url_img", file);
     setLoading(true);
     setError(null);
+
     try {
-      const response = await postRestaurant(formData);
+      const locationResponse = await postLocationRestaurant(
+        address,
+        city,
+        number,
+        state
+      );
+
+      const formDataRestaurant = new FormData();
+      formDataRestaurant.append("name", name);
+      formDataRestaurant.append("aboutUs", aboutUs);
+      formDataRestaurant.append("categoryId", "1");
+      formDataRestaurant.append("locationId", locationResponse.id.toString());
+      formDataRestaurant.append("url_img", file);
+
+      const response = await postRestaurant(formDataRestaurant);
       console.log(response);
 
       alert("Restaurante cadastrado com sucesso!");
@@ -113,6 +118,51 @@ const LocalRegisterPage = () => {
                   if (selectedFile) setFile(selectedFile);
                 }}
               />
+            </div>
+
+            <div className="w-full gap-4 flex justify-between">
+              <div className="w-full">
+                <p className="w-full mb-2 text-left font-bold">Endereço</p>
+                <input
+                  type="text"
+                  placeholder="Rua Exemplo, Av. Brasil..."
+                  className="w-full p-3 mb-4 border-2 border-[#ADA9A9] rounded-lg"
+                  value={address}
+                  onChange={(e) => setaddress(e.target.value)}
+                />
+              </div>
+              <div className="w-full">
+                <p className="w-full mb-2 text-left font-bold">Número</p>
+                <input
+                  type="text"
+                  placeholder="Número"
+                  className="w-full p-3 mb-4 border-2 border-[#ADA9A9] rounded-lg"
+                  value={number}
+                  onChange={(e) => setNumber(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="w-full gap-4 flex justify-between">
+              <div className="w-full">
+                <p className="w-full mb-2 text-left font-bold">Cidade</p>
+                <input
+                  type="text"
+                  placeholder="Cidade"
+                  className="w-full p-3 mb-4 border-2 border-[#ADA9A9] rounded-lg"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                />
+              </div>
+              <div className="w-full">
+                <p className="w-full mb-2 text-left font-bold">Estado</p>
+                <input
+                  type="text"
+                  placeholder="Estado (SP, RJ...)"
+                  className="w-full p-3 mb-4 border-2 border-[#ADA9A9] rounded-lg"
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                />
+              </div>
             </div>
 
             <div className="flex gap-5 w-full justify-end items-center">
