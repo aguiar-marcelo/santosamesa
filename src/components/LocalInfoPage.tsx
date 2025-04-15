@@ -1,8 +1,8 @@
+// components/LocalInfoPage.tsx
 "use client";
 import React, { useState, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import { getRestaurantRating } from "@/services/routes";
 
 interface LocalData {
   id: string;
@@ -18,14 +18,26 @@ interface User {
   exibitionName?: string;
 }
 
+interface Comment {
+  message: string;
+}
+
 interface Avaliacao {
   id: string;
   value: number;
   restaurantId: string;
   userId: string;
-  comments?: { message: string }[];
+  comments?: Comment[];
   createdAt: string;
-  user?: { id: string; profilePicture?: string; exibitionName?: string };
+  user?: { id: string; profilePicture?: string; exibitionName?: string; userName?: string };
+}
+
+interface RestaurantAverageRating {
+  id: number;
+  name: string;
+  url_img: string;
+  aboutUs: string;
+  averageRating: number;
 }
 
 export const apiBaseUrl =
@@ -43,6 +55,7 @@ const LocalInfoPage = ({
   const [avaliacoes, setAvaliacoes] = useState<Avaliacao[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [averageRating, setAverageRating] = useState<number>(0);
 
   const { user, token } = useAuth() as { user: User; token: string };
 
@@ -50,13 +63,43 @@ const LocalInfoPage = ({
     if (!data?.id) return;
 
     try {
-      const results = await getRestaurantRating(data.id);
+      const response = await fetch(`${apiBaseUrl}/rating/restaurant/${data.id}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Falha ao buscar avaliações:", errorData);
+        setError("Falha ao carregar as avaliações.");
+        setAvaliacoes([]);
+        return;
+      }
+
+      const results: Avaliacao[] = await response.json();
       setAvaliacoes(results);
     } catch (err) {
       console.error("Falha ao pesquisar avaliações:", err);
       setAvaliacoes([]);
       setError("Falha ao carregar as avaliações.");
     } finally {
+      // setLoading(false);
+    }
+  };
+
+  const fetchAverageRating = async () => {
+    if (!data?.id) return;
+    try {
+      const response = await fetch(`${apiBaseUrl}/restaurant/average/${data.id}`);
+      if (!response.ok) {
+        console.error("Falha ao buscar a média de avaliações.");
+        return;
+      }
+      const result: RestaurantAverageRating = await response.json();
+      setAverageRating(result.averageRating);
+    } catch (error) {
+      console.error("Erro ao buscar a média de avaliações:", error);
     }
   };
 
@@ -92,7 +135,7 @@ const LocalInfoPage = ({
           value: estrelas,
           restaurantId: parseInt(data.id, 10),
           userId: user.id,
-          comments: comentario ? { text: comentario } : undefined,
+          comments: comentario ? [{ message: comentario }] : undefined,
         }),
       });
 
@@ -104,8 +147,10 @@ const LocalInfoPage = ({
       }
 
       FetchRatings();
+      fetchAverageRating(); // Re-fetch the average after submitting a review
       setEstrelas(0);
       setComentario("");
+      // Opcional: Exibir mensagem de sucesso
     } catch (error) {
       console.error("Erro ao enviar avaliação:", error);
       setError("Erro inesperado ao enviar a avaliação.");
@@ -116,6 +161,7 @@ const LocalInfoPage = ({
 
   useEffect(() => {
     FetchRatings();
+    fetchAverageRating();
   }, [data?.id]);
 
   return (
@@ -141,14 +187,24 @@ const LocalInfoPage = ({
                 <ArrowLeft />
               </button>
               <h1 className="my-[4px] mx-4 font-bold">{data?.name}</h1>
-              {Array(4)
+              {Array(Math.round(averageRating))
                 .fill(0)
                 .map((_, starIndex) => (
                   <img
-                    key={starIndex}
+                    key={`filled-${starIndex}`}
                     className="w-[35px] h-[35px]"
                     src="img/estrela-preenchida.png"
-                    alt="Estrela"
+                    alt="Estrela Preenchida"
+                  />
+                ))}
+              {Array(5 - Math.round(averageRating))
+                .fill(0)
+                .map((_, starIndex) => (
+                  <img
+                    key={`empty-${starIndex}`}
+                    className="w-[35px] h-[35px]"
+                    src="img/estrela.png"
+                    alt="Estrela Vazia"
                   />
                 ))}
             </div>
@@ -187,7 +243,7 @@ const LocalInfoPage = ({
                     <div className="flex items-center">
                       <div className="flex items-center">
                         <h3 className="font-semibold my-0 whitespace-nowrap mr-2">
-                          {avaliacao.user?.exibitionName || "Usuário Anônimo"}
+                          {avaliacao.user?.exibitionName || avaliacao.user?.userName || "Usuário Anônimo"}
                         </h3>
                         {Array(avaliacao.value)
                           .fill(0)
