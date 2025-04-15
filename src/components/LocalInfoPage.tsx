@@ -83,7 +83,6 @@ const LocalInfoPage = ({
       setAvaliacoes([]);
       setError("Falha ao carregar as avaliações.");
     } finally {
-      // setLoading(false);
     }
   };
 
@@ -224,8 +223,8 @@ const LocalInfoPage = ({
               <div
                 key={avaliacao.id}
                 className={`border-2 border-[#666565] rounded-lg p-4 mt-[15px] ${index === avaliacoes.length - 1 && !data?.id
-                    ? "mb-[1rem]"
-                    : "mb-[15px]"
+                  ? "mb-[1rem]"
+                  : "mb-[15px]"
                   }`}
               >
                 <div className="flex items-center">
@@ -310,7 +309,7 @@ const LocalInfoPage = ({
             >
               {isLoading ? "Enviando..." : "Enviar Avaliação"}
             </button>
-            {error && <p className="text-red-500 mt-2">{error}</p>}
+            {error && <p className="mt-2" style={{ color: "#72253d", fontWeight: "bold" }}>{error}</p>}
           </div>
         </div>
       </div>
