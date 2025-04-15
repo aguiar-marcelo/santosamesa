@@ -76,7 +76,7 @@ const Cadastro = () => {
     try {
       const response = await postRegister(formData);
       alert("Usuário cadastrado com sucesso!");
-      router.push("/");
+      router.push("/login");
     } catch (error: any) {
       if (error?.response?.status === 409) {
         setError("Usuário já cadastrado, verifique os dados e tente novamente.");
