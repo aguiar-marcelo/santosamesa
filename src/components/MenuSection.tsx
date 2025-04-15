@@ -38,6 +38,7 @@ const MenuSection = () => {
                 <Link href="/perfil" className="text-white hover:underline">
                   <Image
                     className="ml-3 h-12 w-12 rounded-full"
+                    style={{ border: '2px solid rgba(255, 255, 255, 0.5)' }}
                     src={user.profilePicture || "/img/user-null.png"}
                     alt=""
                     width="500"
