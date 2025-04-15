@@ -13,6 +13,9 @@ interface LocalData {
 
 interface User {
   email: string;
+  id?: number;
+  profilePicture?: string;
+  exibitionName?: string;
 }
 
 interface Avaliacao {
@@ -20,9 +23,9 @@ interface Avaliacao {
   value: number;
   restaurantId: string;
   userId: string;
-  comments: { message: string }[];
+  comments?: { message: string }[];
   createdAt: string;
-  user?: { id: string };
+  user?: { id: string; profilePicture?: string; exibitionName?: string };
 }
 
 export const apiBaseUrl =
@@ -35,27 +38,85 @@ const LocalInfoPage = ({
   data: LocalData | undefined;
   setData?: any;
 }) => {
-  const [comentario, setComentario] = useState<string>("");
   const [estrelas, setEstrelas] = useState<number>(0);
+  const [comentario, setComentario] = useState<string>("");
   const [avaliacoes, setAvaliacoes] = useState<Avaliacao[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const { user } = useAuth() as { user: User; token: string };
+  const { user, token } = useAuth() as { user: User; token: string };
 
   const FetchRatings = async () => {
+    if (!data?.id) return;
+
     try {
       const results = await getRestaurantRating(data.id);
       setAvaliacoes(results);
     } catch (err) {
-      console.error("Falha ao pesquisar", err);
+      console.error("Falha ao pesquisar avaliações:", err);
       setAvaliacoes([]);
+      setError("Falha ao carregar as avaliações.");
     } finally {
-      // setLoading(false);
+    }
+  };
+
+  const enviarAvaliacao = async () => {
+    if (!user?.id) {
+      console.error("ID do usuário não encontrado.");
+      setError("Usuário não autenticado.");
+      return;
+    }
+
+    if (!data?.id) {
+      console.error("ID do restaurante não encontrado.");
+      setError("ID do restaurante inválido.");
+      return;
+    }
+
+    if (estrelas === 0) {
+      setError("Por favor, selecione uma avaliação (estrelas).");
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`${apiBaseUrl}/rating`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          value: estrelas,
+          restaurantId: parseInt(data.id, 10),
+          userId: user.id,
+          comments: comentario ? { text: comentario } : undefined,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Erro ao enviar avaliação:", errorData);
+        setError("Falha ao enviar a avaliação.");
+        return;
+      }
+
+      FetchRatings();
+      setEstrelas(0);
+      setComentario("");
+    } catch (error) {
+      console.error("Erro ao enviar avaliação:", error);
+      setError("Erro inesperado ao enviar a avaliação.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     FetchRatings();
-  }, [data]);
+  }, [data?.id]);
 
   return (
     <div>
@@ -117,16 +178,16 @@ const LocalInfoPage = ({
                 <div className="flex items-center">
                   <img
                     className="rounded-full w-[50px] h-[50px] object-cover"
-                    src="img/placeholder-perfil.png"
-                    alt="Foto de Perfil"
+                    src={avaliacao.user?.profilePicture || "/img/user-null.png"}
+                    alt={`Foto de Perfil de ${
+                      avaliacao.user?.exibitionName || "Usuário"
+                    }`}
                   />
                   <div className="flex-1 ml-[10px]">
                     <div className="flex items-center">
                       <div className="flex items-center">
                         <h3 className="font-semibold my-0 whitespace-nowrap mr-2">
-                          {avaliacao.user && avaliacao.user.id
-                            ? `Avaliado por ${avaliacao.user.id}`
-                            : "Usuário Anônimo"}
+                          {avaliacao.user?.exibitionName || "Usuário Anônimo"}
                         </h3>
                         {Array(avaliacao.value)
                           .fill(0)
@@ -145,7 +206,11 @@ const LocalInfoPage = ({
                     </h5>
                   </div>
                 </div>
-                <h4 className="my-0 mt-2">{avaliacao.comments[0]?.message}</h4>
+                <h4 className="my-0 mt-2">
+                  {avaliacao.comments && avaliacao.comments.length > 0
+                    ? avaliacao.comments[0]?.message
+                    : "Sem comentários"}
+                </h4>
               </div>
             ))}
           </div>
@@ -190,10 +255,12 @@ const LocalInfoPage = ({
             </div>
             <button
               className="bg-[#2ca1d4] text-white px-4 py-2 rounded-md hover:bg-blue-600 flex items-center gap-2 w-full justify-center mt-6"
-              // onClick={enviarAvaliacao}
+              onClick={enviarAvaliacao}
+              disabled={isLoading}
             >
-              Enviar Avaliação
+              {isLoading ? "Enviando..." : "Enviar Avaliação"}
             </button>
+            {error && <p className="text-red-500 mt-2">{error}</p>}
           </div>
         </div>
       </div>

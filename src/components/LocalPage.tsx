@@ -6,6 +6,7 @@ import LocalInfoPage from "./LocalInfoPage";
 import MenuSection from "./MenuSection";
 import FooterSection from "./FooterSection";
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
 
 const LocalPage = () => {
   const [restaurants, setRestaurants] = React.useState<any[]>([]);
@@ -15,6 +16,7 @@ const LocalPage = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [filteredRestaurants, setFilteredRestaurants] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(true);
 
   const FetchRestaurants = async () => {
     try {
@@ -24,7 +26,7 @@ const LocalPage = () => {
       console.error("Falha ao pesquisar", err);
       setRestaurants([]);
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -55,7 +57,7 @@ const LocalPage = () => {
     setCurrentPage(1);
   };
 
-  const handleKeyDown = (event: { key: string; }) => {
+  const handleKeyDown = (event: { key: string }) => {
     if (event.key === "Enter") {
       handleSearch();
     }
@@ -78,11 +80,11 @@ const LocalPage = () => {
           ></div>
           <div className="relative z-10 w-full flex-grow">
             <MenuSection />
-            <div className="flex flex-col items-center mx-8">
-              <div className="bg-white mx-10 mb-10 rounded-xl px-12 overflow-hidden">
+            <div className="flex flex-col items-center mx-8 mt-10">
+              <div className="bg-white mx-10 mb-8 rounded-xl px-12 overflow-hidden">
                 <div className="mt-10">
-                  <div className="flex flex-row justify-between">
-                    <h2 className="text-xl text-gray-800 font-bold m-0">
+                  <div className="flex flex-row justify-between items-center">
+                    <h2 className="text-xl text-gray-800 font-bold m-0 flex items-center gap-2">
                       Explorar Locais
                     </h2>
                     <Link
@@ -152,6 +154,10 @@ const LocalPage = () => {
                   </div>
                 </div>
 
+                <div className="flex justify-center">
+                  {loading && <Loader2 className="h-5 w-5 animate-spin text-black" />}
+                </div>
+
                 <div className="grid grid-cols-4 gap-6 justify-items-center mb-12">
                   {visibleRestaurants.map((place, index) => (
                     <div
@@ -194,15 +200,15 @@ const LocalPage = () => {
                   (filteredRestaurants.length > 0
                     ? filteredRestaurants.length
                     : restaurants.length) && (
-                    <div className="m-10 flex justify-center">
-                      <button
-                        className="px-4 py-1 rounded-md flex items-center gap-2 border-2 border-black font-bold"
-                        onClick={handleLoadMore}
-                      >
-                        Carregar Mais
-                      </button>
-                    </div>
-                  )}
+                  <div className="m-10 flex justify-center">
+                    <button
+                      className="px-4 py-1 rounded-md flex items-center gap-2 border-2 border-black font-bold"
+                      onClick={handleLoadMore}
+                    >
+                      Carregar Mais
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
             <FooterSection />
