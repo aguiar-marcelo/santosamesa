@@ -14,6 +14,8 @@ interface User {
   id: number;
   email: string;
   role: string;
+  exibitionName: string;
+  userName: string;
   profilePicture?: string;
 }
 
@@ -60,6 +62,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           JSON.stringify({
             id: response.userId,
             email: response.email,
+            exibitionName: response.exibitionName,
+            userName: response.userName,
             role: response.role,
             profilePicture: response.profilePicture || null,
           }),
@@ -68,8 +72,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           }
         );
         setUser({
-          id: response.id,
+          id: response.userId,
           email: response.email,
+          exibitionName: response.exibitionName,
+          userName: response.userName,
           role: response.role,
           profilePicture: response.profilePicture || null,
         });

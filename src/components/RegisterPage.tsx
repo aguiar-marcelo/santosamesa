@@ -16,16 +16,49 @@ const Cadastro = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [profile, setProfile] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [userName, setUserName] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+
   const router = useRouter();
 
   const register = async () => {
+    if (!fullName.trim().includes(" ")) {
+      alert("Digite seu nome completo com sobrenome.");
+      return;
+    }
+
+    const userNameRegex = /^[a-z0-9_-]+$/;
+    if (!userNameRegex.test(userName)) {
+      alert(
+        "Username deve conter apenas letras minúsculas, números, hífen (-) e underline (_), sem espaços."
+      );
+      return;
+    }
+
     if (!email) {
       alert("Digite o email");
       return;
     }
-    if (!password) {
-      alert("Digite a senha");
+
+    if (!password || !confirmPassword) {
+      alert("Digite a senha e confirme.");
+      return;
+    }
+
+    if (password.length < 8) {
+      alert("A senha deve ter pelo menos 8 caracteres.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      alert("As senhas não coincidem.");
+      return;
+    }
+
+    if (!file) {
+      alert("Selecione uma imagem de perfil.");
       return;
     }
 
@@ -33,18 +66,23 @@ const Cadastro = () => {
     formData.append("email", email);
     formData.append("password", password);
     formData.append("role", "user");
-    formData.append("userName", password);
+    formData.append("userName", userName);
+    formData.append("exibitionName", fullName);
+    formData.append("profilePicture", file);
 
     setLoading(true);
     setError(null);
+  
     try {
       const response = await postRegister(formData);
-      console.log(response);
-
       alert("Usuário cadastrado com sucesso!");
       router.push("/");
     } catch (error: any) {
-      setError("Email e/ou senha incorretos");
+      if (error?.response?.status === 409) {
+        setError("Usuário já cadastrado, verifique os dados e tente novamente.");
+      } else {
+        setError("Erro ao cadastrar. Verifique os dados e tente novamente.");
+      }
     } finally {
       setLoading(false);
     }
@@ -93,6 +131,8 @@ const Cadastro = () => {
                     type="text"
                     placeholder=""
                     className="w-full p-3 border-4 border-[#E5DCDC] rounded-lg"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
                   />
                 </div>
                 <div className="w-full">
@@ -101,6 +141,8 @@ const Cadastro = () => {
                     type="text"
                     placeholder=""
                     className="w-full p-3 border-4 border-[#E5DCDC] rounded-lg"
+                    value={userName}
+                    onChange={(e) => setUserName(e.target.value)}
                   />
                 </div>
               </div>
@@ -130,7 +172,9 @@ const Cadastro = () => {
                   <input
                     type="password"
                     placeholder=""
-                    className="w-full p-3 border-4 border-gray-200 rounded-lg"
+                    className="w-full p-3 border-4 border-[#E5DCDC] rounded-lg"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                 </div>
               </div>
@@ -140,6 +184,10 @@ const Cadastro = () => {
                   type="file"
                   accept="image/png, image/jpeg"
                   className="w-full cursor-pointer rounded-lg border outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-gray-500 file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:text-gray-700  dark:focus:border-primary"
+                  onChange={(e) => {
+                    const selectedFile = e.target.files?.[0];
+                    if (selectedFile) setFile(selectedFile);
+                  }}
                 />
               </div>
 
