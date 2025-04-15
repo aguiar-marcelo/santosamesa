@@ -3,6 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 import MenuSection from './MenuSection';
+import FooterSection from './FooterSection';
 
 const ProfilePage = () => {
     const { user, token, signOut } = useAuth();
@@ -16,13 +17,11 @@ const ProfilePage = () => {
                 <div className="ml-[70px] mr-[70px]">
                     <div className="flex gap-[5%] items-center mt-[30px] mb-[30px]">
                         <img
-                            className="rounded-full w-[100px] h-[100px] object-cover"
-                            src="img/placeholder-perfil.png"
+                            className="rounded-full w-[130px] h-[130px] object-cover"
+                            src={user?.profilePicture ?? "/img/user-null.png"}
                             alt="Foto de Perfil"
                         />
                         <div className="flex flex-col">
-                            {/*                        <div className="flex gap-[5%] items-center mt-[30px] mb-[30px]"> */}
-
                             <div className="flex flex-col">
                                 {user && token ? (
                                     <h1 className="mb-[4px] mt-[4px]">{user.email}</h1>
@@ -40,7 +39,6 @@ const ProfilePage = () => {
                                     </>
                                 )}
                             </div>
-                            {/*                </div> */}
                             <div className="flex items-center">
                                 <img
                                     className="w-[25px] h-[25px] mr-[5px]"
@@ -134,13 +132,7 @@ const ProfilePage = () => {
                     </div>
                 </div>
 
-                <div className="bg-[#247895] mt-[30px] w-full">
-                    <div className="flex flex-col items-center text-[#e8e8ec] p-[15px]">
-                        <h3>SANTOS À MESA</h3>
-                        ©2025, Santos à Mesa. Todos os direitos reservados.
-                    </div>
-                    <Image src={"/img/img-mureta.png"} width="1000" height="1000" className="w-full" alt="muretas-santos" />
-                </div>
+                <FooterSection />
             </div>
         </div>
     );

@@ -37,7 +37,7 @@ const MenuSection = () => {
               <div className="flex gap-5">
                 <Link href="/perfil" className="text-white hover:underline">
                   <Image
-                    className="ml-3 h-12 w-11 rounded-xl"
+                    className="ml-3 h-12 w-12 rounded-full"
                     src={user.profilePicture || "/img/user-null.png"}
                     alt=""
                     width="500"
