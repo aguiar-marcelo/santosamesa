@@ -37,8 +37,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const savedToken = Cookies.get("token");
-    const savedUser = Cookies.get("user");
+    const savedToken = Cookies.get("santosamesaToken");
+    const savedUser = Cookies.get("santosamesaUser");
 
     if (savedToken && savedUser) {
       setToken(savedToken);
@@ -54,11 +54,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const response = await postLogin(email, password);
 
-      Cookies.set("token", response.access_token, { expires: 1 }); // Expiração de 1 dia
+      Cookies.set("santosamesaToken", response.access_token, { expires: 1 }); // Expiração de 1 dia
       setToken(response.access_token);
       if (response.userId) {
         Cookies.set(
-          "user",
+          "santosamesaUser",
           JSON.stringify({
             id: response.userId,
             email: response.email,
@@ -89,8 +89,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signOut = () => {
     setUser(null);
     setToken(null);
-    Cookies.remove("token");
-    Cookies.remove("user");
+    Cookies.remove("santosamesaToken");
+    Cookies.remove("santosamesaUser");
     router.push("/");
   };
 
