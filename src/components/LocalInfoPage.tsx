@@ -1,4 +1,3 @@
-// components/LocalInfoPage.tsx
 "use client";
 import React, { useState, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
@@ -27,7 +26,7 @@ interface Avaliacao {
   value: number;
   restaurantId: string;
   userId: string;
-  comments?: string | null; // Alterado para string ou null
+  comments?: string | null;
   createdAt: string;
   user?: { id: string; profilePicture?: string; exibitionName?: string; userName?: string };
 }
@@ -135,7 +134,7 @@ const LocalInfoPage = ({
           value: estrelas,
           restaurantId: parseInt(data.id, 10),
           userId: user.id,
-          comments: comentario || null, // Envia o comentário como string ou null
+          comments: comentario || null,
         }),
       });
 
@@ -147,10 +146,9 @@ const LocalInfoPage = ({
       }
 
       FetchRatings();
-      fetchAverageRating(); // Re-fetch the average after submitting a review
+      fetchAverageRating();
       setEstrelas(0);
       setComentario("");
-      // Opcional: Exibir mensagem de sucesso
     } catch (error) {
       console.error("Erro ao enviar avaliação:", error);
       setError("Erro inesperado ao enviar a avaliação.");
@@ -225,19 +223,17 @@ const LocalInfoPage = ({
             {avaliacoes.map((avaliacao, index) => (
               <div
                 key={avaliacao.id}
-                className={`border-2 border-[#666565] rounded-lg p-4 mt-[15px] ${
-                  index === avaliacoes.length - 1 && !data?.id
+                className={`border-2 border-[#666565] rounded-lg p-4 mt-[15px] ${index === avaliacoes.length - 1 && !data?.id
                     ? "mb-[1rem]"
                     : "mb-[15px]"
-                }`}
+                  }`}
               >
                 <div className="flex items-center">
                   <img
                     className="rounded-full w-[50px] h-[50px] object-cover"
                     src={avaliacao.user?.profilePicture || "/img/user-null.png"}
-                    alt={`Foto de Perfil de ${
-                      avaliacao.user?.exibitionName || "Usuário"
-                    }`}
+                    alt={`Foto de Perfil de ${avaliacao.user?.exibitionName || avaliacao.user?.userName || "Usuário"
+                      }`}
                   />
                   <div className="flex-1 ml-[10px]">
                     <div className="flex items-center">
@@ -263,7 +259,7 @@ const LocalInfoPage = ({
                   </div>
                 </div>
                 <h4 className="my-0 mt-2">
-                  {avaliacao.comments ? avaliacao.comments : "Sem comentários"}
+                  {avaliacao.comments ? avaliacao.comments : "(Sem comentários)"}
                 </h4>
               </div>
             ))}

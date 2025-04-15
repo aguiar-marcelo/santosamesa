@@ -24,7 +24,7 @@ const ProfilePage = () => {
                         <div className="flex flex-col">
                             <div className="flex flex-col">
                                 {user && token ? (
-                                    <h1 className="mb-[4px] mt-[4px]">{user.email}</h1>
+                                    <h1 className="mb-[4px] mt-[4px]">{user.exibitionName}</h1>
                                 ) : (
                                     <>
                                         {" "}
