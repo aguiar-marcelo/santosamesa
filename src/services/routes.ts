@@ -33,15 +33,9 @@ export async function getRestaurants(): Promise<any[]> {
   return data;
 }
 
-export async function postLocalregister(
-  name: string,
-  aboutUs: string,
-  url_img: string
-) {
-  const { data } = await api.post("/restaurant", {
-    name,
-    aboutUs,
-    url_img,
+export async function postRestaurant(resturant: FormData) {
+  const { data } = await api.post("/restaurant", resturant, {
+    headers: { "Content-Type": "multipart/form-data" },
   });
 
   return data;
