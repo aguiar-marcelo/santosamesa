@@ -27,7 +27,7 @@ interface Avaliacao {
   value: number;
   restaurantId: string;
   userId: string;
-  comments?: Comment[];
+  comments?: string | null; // Alterado para string ou null
   createdAt: string;
   user?: { id: string; profilePicture?: string; exibitionName?: string; userName?: string };
 }
@@ -135,7 +135,7 @@ const LocalInfoPage = ({
           value: estrelas,
           restaurantId: parseInt(data.id, 10),
           userId: user.id,
-          comments: comentario ? [{ message: comentario }] : undefined,
+          comments: comentario || null, // Envia o comentário como string ou null
         }),
       });
 
@@ -263,9 +263,7 @@ const LocalInfoPage = ({
                   </div>
                 </div>
                 <h4 className="my-0 mt-2">
-                  {avaliacao.comments && avaliacao.comments.length > 0
-                    ? avaliacao.comments[0]?.message
-                    : "Sem comentários"}
+                  {avaliacao.comments ? avaliacao.comments : "Sem comentários"}
                 </h4>
               </div>
             ))}
