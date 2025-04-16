@@ -6,6 +6,7 @@ import MenuSection from './MenuSection';
 import FooterSection from './FooterSection';
 import { apiBaseUrl } from './LocalInfoPage';
 import { Restaurant } from '../interfaces/restaurant';
+import { Loader2 } from 'lucide-react'; // Import the Loader component
 
 interface Rating {
   id: string;
@@ -69,13 +70,11 @@ const ProfilePage = () => {
     fetchUserRatings();
   }, [user?.id, token]);
 
-  //if (loadingRatings) {
-  //  return <div>Carregando suas avaliações...</div>;
-  //}
-
   if (errorRatings) {
     return <div>{errorRatings}</div>;
   }
+
+  const ratingsText = userRatings.length === 1 ? '1 avaliação' : `${userRatings.length} avaliações`;
 
   return (
     <div className="relative w-full h-full">
@@ -96,17 +95,7 @@ const ProfilePage = () => {
                 {user && token ? (
                   <h1 className="mb-[4px] mt-[4px]">{user.exibitionName}</h1>
                 ) : (
-                  <>
-                    {" "}
-                    <div className="flex items-center">
-                      <img
-                        className="w-[25px] h-[25px] mr-[5px]"
-                        src="img/estrela.png"
-                        alt="Estrela"
-                      />
-                      <h4 className="text-[#9D9393] my-0">{userRatings.length} avaliações</h4>
-                    </div>
-                  </>
+                  <></>
                 )}
               </div>
               <div className="flex items-center">
@@ -115,7 +104,7 @@ const ProfilePage = () => {
                   src="img/estrela.png"
                   alt="Estrela"
                 />
-                <h4 className="text-[#9D9393] my-0">{userRatings.length} avaliações</h4>
+                <h4 className="text-[#9D9393] my-0">{ratingsText}</h4>
               </div>
             </div>
           </div>
@@ -142,7 +131,12 @@ const ProfilePage = () => {
             <button className="bg-[#55798E] text-white rounded-md">Editar Perfil</button>
           </div>
 
-          {userRatings.length > 0 ? (
+          {loadingRatings ? (
+            <div className="p-20 text-center flex flex-col items-center justify-center">
+              <Loader2 className="h-5 w-5 animate-spin text-black" />
+              <p className="text-[#9D9393] mt-2">Carregando suas avaliações...</p>
+            </div>
+          ) : userRatings.length > 0 ? (
             userRatings.map((rating) => (
               <div key={rating.id} className="border-2 border-[#666565] rounded-lg p-[30px] mt-[15px]">
                 <div>
@@ -182,7 +176,7 @@ const ProfilePage = () => {
             </div>
           )}
         </div>
-
+        <div className='mt-[30px]'></div>
         <FooterSection />
       </div>
     </div>
