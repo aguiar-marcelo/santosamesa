@@ -8,14 +8,22 @@ import FooterSection from "./FooterSection";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
 
+interface Restaurant {
+  id: string;
+  name: string;
+  url_img: string;
+  aboutUs: string;
+  averageRating?: number;
+}
+
 const LocalPage = () => {
-  const [restaurants, setRestaurants] = React.useState<any[]>([]);
-  const [restaurantSelected, setRestaurantSelected] = React.useState();
-  const [visibleRestaurants, setVisibleRestaurants] = React.useState<any[]>([]);
+  const [restaurants, setRestaurants] = React.useState<Restaurant[]>([]);
+  const [restaurantSelected, setRestaurantSelected] = React.useState<Restaurant | undefined>(undefined);
+  const [visibleRestaurants, setVisibleRestaurants] = React.useState<Restaurant[]>([]);
   const [itemsPerPage, setItemsPerPage] = React.useState(8);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [searchTerm, setSearchTerm] = React.useState("");
-  const [filteredRestaurants, setFilteredRestaurants] = React.useState<any[]>([]);
+  const [filteredRestaurants, setFilteredRestaurants] = React.useState<Restaurant[]>([]);
   const [loading, setLoading] = React.useState(true);
 
   const FetchRestaurants = async () => {
@@ -152,9 +160,25 @@ const LocalPage = () => {
                       />
                       <div className="p-4 text-gray-800 flex-grow flex flex-col justify-between">
                         <div>
-                          <b className="text-lg ">{place.name}</b>
+                          <b className="text-lg">
+                            {place.name}
+                          </b>
+                          {place.averageRating !== undefined && (
+                            <div className="flex items-center mt-1">
+                              {Array(Math.round(place.averageRating))
+                                .fill(0)
+                                .map((_, starIndex) => (
+                                  <img
+                                    key={`filled-${place.id}-${starIndex}`}
+                                    className="w-[18px] h-[18px] mr-[2px]"
+                                    src="img/estrela-preenchida.png"
+                                    alt="Estrela"
+                                  />
+                                ))}
+                            </div>
+                          )}
                           <p
-                            className="text-gray-600 mb-2 overflow-hidden text-ellipsis"
+                            className="text-gray-600 mb-2 overflow-hidden text-ellipsis mt-1"
                             style={{
                               display: '-webkit-box',
                               WebkitLineClamp: 2,
