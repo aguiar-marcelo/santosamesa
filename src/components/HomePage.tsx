@@ -78,7 +78,7 @@ const HomePage = () => {
                 <b className="text-lg ">{place.name}</b>
                 <p className="text-gray-600 mb-2">{place.category}</p>
                 <Link
-                  href="/localInfo"
+                  href="/local-info"
                   className=" bg-primary text-white px-4 py-1 text-sm rounded-md hover:bg-blue-600"
                 >
                   Saiba mais
