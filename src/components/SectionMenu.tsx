@@ -26,7 +26,7 @@ const SectionMenu = () => {
               <Link href="/" className="text-white hover:underline">
                 Destaques
               </Link>
-              <Link href="/sobreNos" className="text-white hover:underline">
+              <Link href="/sobre-nos" className="text-white hover:underline">
                 Sobre Nós
               </Link>
             </div>
