@@ -83,31 +83,34 @@ const ProfilePage = () => {
           <SectionMenu />
         </div>
 
-        <div className="ml-[70px] mr-[70px]">
-          <div className="flex gap-[5%] items-center mt-[30px] mb-[30px]">
-            <img
-              className="rounded-full w-[130px] h-[130px] object-cover"
-              src={user?.profilePicture ?? "/img/user-null.png"}
-              alt="Foto de Perfil"
-            />
-            <div className="flex flex-col">
-              <div className="flex flex-col">
-                {user && token ? (
-                  <h1 className="mb-[4px] mt-[4px]">{user.exibitionName}</h1>
-                ) : (
-                  <></>
-                )}
-              </div>
-              <div className="flex items-center">
-                <img
-                  className="w-[25px] h-[25px] mr-[5px]"
-                  src="img/estrela.png"
-                  alt="Estrela"
-                />
-                <h4 className="text-[#9D9393] my-0">{ratingsText}</h4>
-              </div>
-            </div>
+       <div className="ml-[70px] mr-[70px]">
+  <div className="flex gap-[5%] items-center mt-[30px] mb-[30px]">
+    <img
+      className="rounded-full w-[130px] h-[130px] object-cover"
+      src={user?.profilePicture ?? "/img/user-null.png"}
+      alt="Foto de Perfil"
+    />
+    <div className="flex flex-col justify-between h-[130px]">
+      <div className="flex flex-col">
+        {user && token ? (
+          <div className="flex flex-col">
+            <h1 className="mb-[0px] mt-[0px] ">{user.exibitionName}</h1>
+            {user.userName && <h2 className="mb-[0px] mt-[5px] text-[#9D9393] text-xl">@{user.userName}</h2>}
           </div>
+        ) : (
+          <></>
+        )}
+      </div>
+      <div className="flex items-center">
+        <img
+          className="w-[25px] h-[25px] mr-[5px]"
+          src="img/estrela.png"
+          alt="Estrela"
+        />
+        <h4 className="text-[#9D9393] my-0">{ratingsText}</h4>
+      </div>
+    </div>
+  </div>
 
           <div className="grid grid-cols-[auto_1fr_auto] gap-[1%] items-center">
             <h2 className="font-bold">Minhas Avaliações</h2>
