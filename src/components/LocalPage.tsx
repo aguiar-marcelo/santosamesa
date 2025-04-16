@@ -3,8 +3,8 @@ import React from "react";
 import { Search } from "lucide-react";
 import { getRestaurants } from "@/services/routes";
 import LocalInfoPage from "./LocalInfoPage";
-import MenuSection from "./MenuSection";
-import FooterSection from "./FooterSection";
+import SectionMenu from "./SectionMenu";
+import SectionFooter from "./SectionFooter";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
 
@@ -87,7 +87,7 @@ const LocalPage = () => {
             }}
           ></div>
           <div className="relative z-10 w-full flex-grow">
-            <MenuSection />
+            <SectionMenu />
             <div className="flex flex-col items-center mx-8 mt-10">
               <div className="bg-white mx-10 mb-8 rounded-xl px-12 overflow-hidden">
                 <div className="mt-10">
@@ -216,7 +216,7 @@ const LocalPage = () => {
                   )}
               </div>
             </div>
-            <FooterSection />
+            <SectionFooter />
           </div>
         </div>
       )}

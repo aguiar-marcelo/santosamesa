@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 
-const MenuSection = () => {
+const SectionMenu = () => {
   const { user, token, signOut } = useAuth();
   return (
     <>
@@ -77,4 +77,4 @@ const MenuSection = () => {
   );
 };
 
-export default MenuSection;
+export default SectionMenu;

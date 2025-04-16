@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
-import MenuSection from './MenuSection';
-import FooterSection from './FooterSection';
+import SectionMenu from './SectionMenu';
+import SectionFooter from './SectionFooter';
 import { apiBaseUrl } from './LocalInfoPage';
 import { Restaurant } from '../interfaces/restaurant';
 import { Loader2 } from 'lucide-react';
@@ -80,7 +80,7 @@ const ProfilePage = () => {
     <div className="relative w-full h-full">
       <div className="bg-cover bg-center h-[350px] w-full">
         <div className="bg-gradient-to-r from-[#37ADE4] to-[#1F607E]">
-          <MenuSection />
+          <SectionMenu />
         </div>
 
         <div className="ml-[70px] mr-[70px]">
@@ -175,7 +175,7 @@ const ProfilePage = () => {
           )}
         </div>
         <div className='mt-[30px]'></div>
-        <FooterSection />
+        <SectionFooter />
       </div>
     </div>
   );

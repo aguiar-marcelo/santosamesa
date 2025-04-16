@@ -2,15 +2,15 @@
 import React from "react";
 import { Search } from "lucide-react";
 import Link from "next/link";
-import MenuSection from "./MenuSection";
-import FooterSection from "./FooterSection";
+import SectionMenu from "./SectionMenu";
+import SectionFooter from "./SectionFooter";
 
 const HomePage = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <style>{fadeInUpKeyframes}</style>
       <div className="relative w-full bg-white">
-        <MenuSection />
+        <SectionMenu />
         <div
           className="bg-cover bg-center h-[350px] w-full"
           style={{ backgroundImage: "url('img/img-homepage.jpg')" }}
@@ -88,7 +88,7 @@ const HomePage = () => {
           ))}
         </div>
       </div>
-      <FooterSection />
+      <SectionFooter />
     </div>
   );
 };

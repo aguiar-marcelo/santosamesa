@@ -2,7 +2,7 @@
 import React from "react";
 import Image from "next/image";
 
-const FooterSection = () => {
+const SectionFooter = () => {
     return (
 
         <div className="w-full mt-auto" style={{ background: 'linear-gradient(to right, #156F8D, #5C9CB2)' }}>
@@ -15,4 +15,4 @@ const FooterSection = () => {
     )
 }
 
-export default FooterSection;
+export default SectionFooter;

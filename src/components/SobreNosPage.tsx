@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
-import MenuSection from './MenuSection';
-import FooterSection from './FooterSection';
+import SectionMenu from './SectionMenu';
+import SectionFooter from './SectionFooter';
 
 const SobreNosPage = () => {
     const styles = {
@@ -25,7 +25,7 @@ const SobreNosPage = () => {
 
     return (
         <div className="relative w-full min-h-screen flex flex-col overflow-x-hidden" style={{ backgroundImage: 'linear-gradient(to right, #E05F30, #7A341A)' }}>
-            <MenuSection />
+            <SectionMenu />
             <div className="flex flex-col items-center mx-8 flex-grow my-9">
                 <div className="center-container main-content">
                     <div className="center-container" style={{ marginTop: '70px' }} >
@@ -97,7 +97,7 @@ const SobreNosPage = () => {
                     </div>
                 </div>
             </div>
-            <FooterSection />
+            <SectionFooter />
 
             <style>{fadeInUpKeyframes}</style>
 
