@@ -88,3 +88,8 @@ export async function postLocalReview(
 
 //   return data;
 // }
+
+export async function getCategories(): Promise<any[]> {
+  const { data } = await api.get("/category");
+  return data;
+}

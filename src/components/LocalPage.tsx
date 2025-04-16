@@ -1,12 +1,12 @@
 "use client";
 import React from "react";
 import { Search } from "lucide-react";
-import { getRestaurants } from "@/services/routes";
+import { getRestaurants, getCategories } from "@/services/routes";
 import LocalInfoPage from "./LocalInfoPage";
-import SectionMenu from "./SectionMenu";
-import SectionFooter from "./SectionFooter";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
+import SectionFooter from "./SectionFooter";
+import SectionMenu from "./SectionMenu";
 
 interface Restaurant {
   id: string;
@@ -14,6 +14,12 @@ interface Restaurant {
   url_img: string;
   aboutUs: string;
   averageRating?: number;
+  category?: string;
+}
+
+interface Category {
+  id: string;
+  name: string;
 }
 
 const LocalPage = () => {
@@ -25,22 +31,56 @@ const LocalPage = () => {
   const [searchTerm, setSearchTerm] = React.useState("");
   const [filteredRestaurants, setFilteredRestaurants] = React.useState<Restaurant[]>([]);
   const [loading, setLoading] = React.useState(true);
+  const [categories, setCategories] = React.useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = React.useState<string | null>("Todos");
 
   const FetchRestaurants = async () => {
     try {
       const results = await getRestaurants();
       setRestaurants(results);
     } catch (err) {
-      console.error("Falha ao pesquisar", err);
+      console.error("Falha ao pesquisar restaurantes", err);
       setRestaurants([]);
     } finally {
       setLoading(false);
     }
   };
 
+  const FetchCategories = async () => {
+    try {
+      const results = await getCategories();
+      setCategories(results);
+    } catch (err) {
+      console.error("Falha ao buscar categorias", err);
+      setCategories([]);
+    }
+  };
+
   React.useEffect(() => {
     FetchRestaurants();
+    FetchCategories();
   }, []);
+
+  React.useEffect(() => {
+    let filtered = restaurants;
+
+    if (selectedCategory && selectedCategory !== "Todos") {
+      filtered = restaurants.filter(
+        (restaurant) =>
+          restaurant.category &&
+          restaurant.category.toLowerCase() === selectedCategory.toLowerCase()
+      );
+    }
+
+    if (searchTerm) {
+      filtered = filtered.filter((restaurant) =>
+        restaurant.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    setFilteredRestaurants(filtered);
+    setCurrentPage(1);
+  }, [restaurants, searchTerm, selectedCategory]);
 
   React.useEffect(() => {
     const startIndex = 0;
@@ -71,6 +111,10 @@ const LocalPage = () => {
     }
   };
 
+  const handleCategoryClick = (categoryName: string | null) => {
+    setSelectedCategory(categoryName);
+  };
+
   return (
     <div className="flex flex-col min-h-screen overflow-x-hidden">
       {restaurantSelected ? (
@@ -96,7 +140,7 @@ const LocalPage = () => {
                       Explorar Locais
                     </h2>
                     <Link
-                      href="/local-cadastro"
+                      href="/localCadastro"
                       className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-600"
                     >
                       Cadastrar Local
@@ -119,18 +163,29 @@ const LocalPage = () => {
                     </button>
                   </div>
                 </div>
-
                 <div className="mt-[15px] mb-[45px] w-fit">
-                  <div className="border-2 border-[#c8c5c5] rounded-lg p-[10px] flex gap-[1%]">
-                    <button className="bg-[#86929A] text-white rounded-xl px-4">Todos</button>
-                    <button className="bg-[#86929A] text-white rounded-xl px-4">Cafés</button>
-                    <button className="bg-[#86929A] text-white rounded-xl px-4">Pizzarias</button>
-                    <button className="bg-[#86929A] text-white rounded-xl px-4">Churrascarias</button>
-                    <button className="bg-[#86929A] text-white rounded-xl px-4">Padarias</button>
+                  <div className="border-2 border-[#c8c5c5] rounded-lg p-[10px] flex gap-[1%] overflow-x-auto"> {/* Added overflow-x-auto */}
+                    <button
+                      className={`bg-[#86929A] text-white rounded-xl px-4 whitespace-nowrap ${selectedCategory === "Todos" ? "" : ""
+                        }`}
+                      onClick={() => handleCategoryClick("Todos")}
+                    >
+                      Todos
+                    </button>
+                    {categories.map((category) => (
+                      <button
+                        key={category.id}
+                        className={`bg-[#86929A] text-white rounded-xl px-4 whitespace-nowrap ${selectedCategory === category.name ? "" : ""
+                          }`}
+                        onClick={() => handleCategoryClick(category.name)}
+                      >
+                        {category.name}
+                      </button>
+                    ))}
                     {[5, 4, 3, 2, 1].map((rating) => (
                       <button
                         key={rating}
-                        className="bg-[#86929A] text-white rounded-xl px-4 flex items-center justify-center"
+                        className="bg-[#86929A] text-white rounded-xl px-4 flex items-center justify-center whitespace-nowrap"
                       >
                         {rating}
                         <img
