@@ -55,6 +55,7 @@ const LocalInfoPage = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [averageRating, setAverageRating] = useState<number>(0);
+  const [noRatingsMessage, setNoRatingsMessage] = useState<string | null>(null);
 
   const { user, token } = useAuth() as { user: User; token: string };
 
@@ -71,12 +72,19 @@ const LocalInfoPage = ({
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Falha ao buscar avaliações:", errorData);
-        setError("Falha ao carregar as avaliações.");
-        setAvaliacoes([]);
+        if (errorData?.message === `No ratings found for restaurant with id ${data.id}`) {
+          setAvaliacoes([]);
+          setNoRatingsMessage("Esse restaurante ainda não tem reviews. Seja o primeiro!");
+        } else {
+          setError("Falha ao carregar as avaliações.");
+          setNoRatingsMessage(null);
+          setAvaliacoes([]);
+        }
         return;
       }
 
       const results: Avaliacao[] = await response.json();
+      setNoRatingsMessage(null);
       setAvaliacoes(results);
     } catch (err) {
       console.error("Falha ao pesquisar avaliações:", err);
@@ -219,49 +227,59 @@ const LocalInfoPage = ({
           </div>
 
           <div>
-            {avaliacoes.map((avaliacao, index) => (
-              <div
-                key={avaliacao.id}
-                className={`border-2 border-[#666565] rounded-lg p-4 mt-[15px] ${index === avaliacoes.length - 1 && !data?.id
-                  ? "mb-[1rem]"
-                  : "mb-[15px]"
+            {noRatingsMessage ? (
+              <p className="text-black">{noRatingsMessage}</p>
+            ) : (
+              avaliacoes.map((avaliacao, index) => (
+                <div
+                  key={avaliacao.id}
+                  className={`border-2 border-[#666565] rounded-lg p-4 mt-[15px] ${
+                    index === avaliacoes.length - 1 && !data?.id
+                      ? "mb-[1rem]"
+                      : "mb-[15px]"
                   }`}
-              >
-                <div className="flex items-center">
-                  <img
-                    className="rounded-full w-[50px] h-[50px] object-cover"
-                    src={avaliacao.user?.profilePicture || "/img/user-null.png"}
-                    alt={`Foto de Perfil de ${avaliacao.user?.exibitionName || avaliacao.user?.userName || "Usuário"
+                >
+                  <div className="flex items-center">
+                    <img
+                      className="rounded-full w-[50px] h-[50px] object-cover"
+                      src={avaliacao.user?.profilePicture || "/img/user-null.png"}
+                      alt={`Foto de Perfil de ${
+                        avaliacao.user?.exibitionName ||
+                        avaliacao.user?.userName ||
+                        "Usuário"
                       }`}
-                  />
-                  <div className="flex-1 ml-[10px]">
-                    <div className="flex items-center">
+                    />
+                    <div className="flex-1 ml-[10px]">
                       <div className="flex items-center">
-                        <h3 className="font-semibold my-0 whitespace-nowrap mr-2">
-                          {avaliacao.user?.exibitionName || avaliacao.user?.userName || "Usuário Anônimo"}
-                        </h3>
-                        {Array(avaliacao.value)
-                          .fill(0)
-                          .map((_, starIndex) => (
-                            <img
-                              key={starIndex}
-                              className="w-[25px] h-[25px]"
-                              src="img/estrela-preenchida.png"
-                              alt="Estrela"
-                            />
-                          ))}
+                        <div className="flex items-center">
+                          <h3 className="font-semibold my-0 whitespace-nowrap mr-2">
+                            {avaliacao.user?.exibitionName ||
+                              avaliacao.user?.userName ||
+                              "Usuário Anônimo"}
+                          </h3>
+                          {Array(avaliacao.value)
+                            .fill(0)
+                            .map((_, starIndex) => (
+                              <img
+                                key={starIndex}
+                                className="w-[25px] h-[25px]"
+                                src="img/estrela-preenchida.png"
+                                alt="Estrela"
+                              />
+                            ))}
+                        </div>
                       </div>
+                      <h5 className="text-[#9D9393] mt-1 text-sm whitespace-nowrap">
+                        {new Date(avaliacao.createdAt).toLocaleDateString()}
+                      </h5>
                     </div>
-                    <h5 className="text-[#9D9393] mt-1 text-sm whitespace-nowrap">
-                      {new Date(avaliacao.createdAt).toLocaleDateString()}
-                    </h5>
                   </div>
+                  <h4 className="my-0 mt-2">
+                    {avaliacao.comments ? avaliacao.comments : "(Sem comentários)"}
+                  </h4>
                 </div>
-                <h4 className="my-0 mt-2">
-                  {avaliacao.comments ? avaliacao.comments : "(Sem comentários)"}
-                </h4>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
 
