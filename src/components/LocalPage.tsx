@@ -113,44 +113,25 @@ const LocalPage = () => {
                 </div>
 
                 <div className="mt-[15px] mb-[45px] w-fit">
-                  <div className="border-2 border-[#c8c5c5] rounded-lg p-[10px]">
-                    <div className="flex gap-[1%]">
-                      <button className="bg-[#86929A] text-white rounded-xl px-4">
-                        Todos
+                  <div className="border-2 border-[#c8c5c5] rounded-lg p-[10px] flex gap-[1%]">
+                    <button className="bg-[#86929A] text-white rounded-xl px-4">Todos</button>
+                    <button className="bg-[#86929A] text-white rounded-xl px-4">Cafés</button>
+                    <button className="bg-[#86929A] text-white rounded-xl px-4">Pizzarias</button>
+                    <button className="bg-[#86929A] text-white rounded-xl px-4">Churrascarias</button>
+                    <button className="bg-[#86929A] text-white rounded-xl px-4">Padarias</button>
+                    {[5, 4, 3, 2, 1].map((rating) => (
+                      <button
+                        key={rating}
+                        className="bg-[#86929A] text-white rounded-xl px-4 flex items-center justify-center"
+                      >
+                        {rating}
+                        <img
+                          className="w-[15px] h-[15px] ml-1"
+                          src="img/estrela-preenchida.png"
+                          alt="Estrela"
+                        />
                       </button>
-                      <button className="bg-[#86929A] text-white rounded-xl px-4">
-                        Cafés
-                      </button>
-                      <button className="bg-[#86929A] text-white rounded-xl px-4">
-                        Pizzarias
-                      </button>
-                      <button className="bg-[#86929A] text-white rounded-xl px-4">
-                        Churrascarias
-                      </button>
-                      <button className="bg-[#86929A] text-white rounded-xl px-4">
-                        Padarias
-                      </button>
-                      <button className="bg-[#86929A] text-white rounded-xl px-4 flex items-center justify-center">
-                        5
-                        <img className="w-[15px] h-[15px] ml-1" src="img/estrela-preenchida.png" alt="Estrela" />
-                      </button>
-                      <button className="bg-[#86929A] text-white rounded-xl px-4 flex items-center justify-center">
-                        4
-                        <img className="w-[15px] h-[15px] ml-1" src="img/estrela-preenchida.png" alt="Estrela" />
-                      </button>
-                      <button className="bg-[#86929A] text-white rounded-xl px-4 flex items-center justify-center">
-                        3
-                        <img className="w-[15px] h-[15px] ml-1" src="img/estrela-preenchida.png" alt="Estrela" />
-                      </button>
-                      <button className="bg-[#86929A] text-white rounded-xl px-4 flex items-center justify-center">
-                        2
-                        <img className="w-[15px] h-[15px] ml-1" src="img/estrela-preenchida.png" alt="Estrela" />
-                      </button>
-                      <button className="bg-[#86929A] text-white rounded-xl px-4 flex items-center justify-center">
-                        1
-                        <img className="w-[15px] h-[15px] ml-1" src="img/estrela-preenchida.png" alt="Estrela" />
-                      </button>
-                    </div>
+                    ))}
                   </div>
                 </div>
 
@@ -200,15 +181,15 @@ const LocalPage = () => {
                   (filteredRestaurants.length > 0
                     ? filteredRestaurants.length
                     : restaurants.length) && (
-                  <div className="m-10 flex justify-center">
-                    <button
-                      className="px-4 py-1 rounded-md flex items-center gap-2 border-2 border-black font-bold"
-                      onClick={handleLoadMore}
-                    >
-                      Carregar Mais
-                    </button>
-                  </div>
-                )}
+                    <div className="m-10 flex justify-center">
+                      <button
+                        className="px-4 py-1 rounded-md flex items-center gap-2 border-2 border-black font-bold"
+                        onClick={handleLoadMore}
+                      >
+                        Carregar Mais
+                      </button>
+                    </div>
+                  )}
               </div>
             </div>
             <FooterSection />

@@ -6,7 +6,7 @@ import MenuSection from './MenuSection';
 import FooterSection from './FooterSection';
 import { apiBaseUrl } from './LocalInfoPage';
 import { Restaurant } from '../interfaces/restaurant';
-import { Loader2 } from 'lucide-react'; // Import the Loader component
+import { Loader2 } from 'lucide-react';
 
 interface Rating {
   id: string;
@@ -45,13 +45,13 @@ const ProfilePage = () => {
         if (!response.ok) {
           if (response.status === 404) {
             setUserRatings([]);
-            setErrorRatings(null); // Clear any previous error message
+            setErrorRatings(null);
             setLoadingRatings(false);
             return;
           }
-          const errorText = await response.text(); // Get the error as text
+          const errorText = await response.text();
           console.error("Failed to fetch user ratings:", errorText);
-          setErrorRatings(`Failed to load your ratings: ${response.status} - ${errorText}`); // Include status and raw error
+          setErrorRatings(`Failed to load your ratings: ${response.status} - ${errorText}`);
           setUserRatings([]);
           return;
         }
@@ -109,24 +109,22 @@ const ProfilePage = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-[20%_68%_10%] gap-[1%] items-center">
+          <div className="grid grid-cols-[auto_1fr_auto] gap-[1%] items-center">
             <h2 className="font-bold">Minhas Avaliações</h2>
             <div className="flex items-center gap-2">
-              <button className="bg-[#31afe1] text-white rounded-lg flex items-center px-4">
-                5 <img className="w-[15px] h-[15px]" src="img/estrela-preenchida.png" alt="Estrela" />
-              </button>
-              <button className="bg-[#31afe1] text-white rounded-lg flex items-center px-4">
-                4 <img className="w-[15px] h-[15px]" src="img/estrela-preenchida.png" alt="Estrela" />
-              </button>
-              <button className="bg-[#31afe1] text-white rounded-lg flex items-center px-4">
-                3 <img className="w-[15px] h-[15px]" src="img/estrela-preenchida.png" alt="Estrela" />
-              </button>
-              <button className="bg-[#31afe1] text-white rounded-lg flex items-center px-4">
-                2 <img className="w-[15px] h-[15px]" src="img/estrela-preenchida.png" alt="Estrela" />
-              </button>
-              <button className="bg-[#31afe1] text-white rounded-lg flex items-center px-4">
-                1 <img className="w-[15px] h-[15px]" src="img/estrela-preenchida.png" alt="Estrela" />
-              </button>
+              {[5, 4, 3, 2, 1].map((rating) => (
+                <button
+                  key={rating}
+                  className="bg-[#31afe1] text-white rounded-[0.75rem] flex items-center px-4"
+                >
+                  {rating}
+                  <img
+                    className="w-[15px] h-[15px] ml-1"
+                    src="img/estrela-preenchida.png"
+                    alt="Estrela"
+                  />
+                </button>
+              ))}
             </div>
             <button className="bg-[#55798E] text-white rounded-md">Editar Perfil</button>
           </div>
@@ -138,7 +136,7 @@ const ProfilePage = () => {
             </div>
           ) : userRatings.length > 0 ? (
             userRatings.map((rating) => (
-              <div key={rating.id} className="border-2 border-[#666565] rounded-lg p-[30px] mt-[15px]">
+              <div key={rating.id} className="border-2 border-[#666565]  p-[30px] mt-[15px]">
                 <div>
                   <div className="flex">
                     <img
