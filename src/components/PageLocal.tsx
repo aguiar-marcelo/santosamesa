@@ -16,7 +16,7 @@ interface Restaurant {
   averageRating?: number;
 }
 
-const LocalPage = () => {
+const PageLocal = () => {
   const [restaurants, setRestaurants] = React.useState<Restaurant[]>([]);
   const [restaurantSelected, setRestaurantSelected] = React.useState<Restaurant | undefined>(undefined);
   const [visibleRestaurants, setVisibleRestaurants] = React.useState<Restaurant[]>([]);
@@ -224,4 +224,4 @@ const LocalPage = () => {
   );
 };
 
-export default LocalPage;
+export default PageLocal;
