@@ -9,7 +9,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-/*     --background: #0a0a0a; */
+    /*     --background: #0a0a0a; */
     --foreground: #ededed;
   }
 }
@@ -21,7 +21,7 @@ body {
 }
 
 h1 {
-  color:black;
+  color: black;
   display: block;
   font-size: 2em;
   margin-top: 0.67em;
@@ -31,7 +31,7 @@ h1 {
 }
 
 h2 {
-  color:black;
+  color: black;
   display: block;
   font-size: 1.5em;
   margin-top: 0.83em;
@@ -41,7 +41,7 @@ h2 {
 }
 
 h3 {
-  color:black;
+  color: black;
   display: block;
   font-size: 1.17em;
   margin-top: 1em;
@@ -51,7 +51,7 @@ h3 {
 }
 
 h4 {
-  color:black;
+  color: black;
   display: block;
   font-size: 1em;
   margin-top: 1.33em;
@@ -61,7 +61,7 @@ h4 {
 }
 
 h5 {
-  color:black;
+  color: black;
   display: block;
   font-size: .83em;
   margin-top: 1.67em;
