@@ -1,12 +1,13 @@
 "use client";
 import React from "react";
 import { Search } from "lucide-react";
-import { getRestaurants, getCategories } from "@/services/routes";
+import { getRestaurantsByCategory, getCategories } from "@/services/routes";
 import LocalInfoPage from "./LocalInfoPage";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import SectionFooter from "./SectionFooter";
 import SectionMenu from "./SectionMenu";
+import SectionFilterCategory from "@/components/SectionFilterCategory";
 
 interface Restaurant {
   id: string;
@@ -14,7 +15,8 @@ interface Restaurant {
   url_img: string;
   aboutUs: string;
   averageRating?: number;
-  category?: string;
+  category?: string | { id: string; name: string }; 
+  categoryName?: string; 
 }
 
 interface Category {
@@ -34,13 +36,17 @@ const LocalPage = () => {
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = React.useState<string | null>("Todos");
 
-  const FetchRestaurants = async () => {
+  const FetchRestaurants = async (query?: { categoryId?: string | null }) => {
+    setLoading(true);
     try {
-      const results = await getRestaurants();
+      const results = await getRestaurantsByCategory(query);
       setRestaurants(results);
+      setFilteredRestaurants(results);
+      setCurrentPage(1);
     } catch (err) {
       console.error("Falha ao pesquisar restaurantes", err);
       setRestaurants([]);
+      setFilteredRestaurants([]);
     } finally {
       setLoading(false);
     }
@@ -57,20 +63,12 @@ const LocalPage = () => {
   };
 
   React.useEffect(() => {
-    FetchRestaurants();
+    FetchRestaurants({});
     FetchCategories();
   }, []);
 
   React.useEffect(() => {
     let filtered = restaurants;
-
-    if (selectedCategory && selectedCategory !== "Todos") {
-      filtered = restaurants.filter(
-        (restaurant) =>
-          restaurant.category &&
-          restaurant.category.toLowerCase() === selectedCategory.toLowerCase()
-      );
-    }
 
     if (searchTerm) {
       filtered = filtered.filter((restaurant) =>
@@ -80,27 +78,30 @@ const LocalPage = () => {
 
     setFilteredRestaurants(filtered);
     setCurrentPage(1);
-  }, [restaurants, searchTerm, selectedCategory]);
+  }, [restaurants, searchTerm]);
 
   React.useEffect(() => {
     const startIndex = 0;
     const endIndex = currentPage * itemsPerPage;
     setVisibleRestaurants(
-      (filteredRestaurants.length > 0 ? filteredRestaurants : restaurants).slice(
+      filteredRestaurants.slice(
         startIndex,
         endIndex
       )
     );
-  }, [restaurants, currentPage, itemsPerPage, filteredRestaurants]);
+  }, [filteredRestaurants, currentPage, itemsPerPage]);
 
   const handleLoadMore = () => {
     setCurrentPage(currentPage + 1);
   };
 
   const handleSearch = () => {
-    const filteredResults = restaurants.filter((restaurant) =>
-      restaurant.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    let filteredResults = restaurants;
+    if (searchTerm) {
+      filteredResults = filteredResults.filter((restaurant) =>
+        restaurant.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
     setFilteredRestaurants(filteredResults);
     setCurrentPage(1);
   };
@@ -112,7 +113,26 @@ const LocalPage = () => {
   };
 
   const handleCategoryClick = (categoryName: string | null) => {
-    setSelectedCategory(categoryName);
+    if (selectedCategory === categoryName) {
+      setSelectedCategory("Todos");
+      FetchRestaurants({});
+    } else {
+      setSelectedCategory(categoryName);
+      if (categoryName === "Todos") {
+        FetchRestaurants({});
+      } else if (categoryName) {
+        const selectedCategoryObject = categories.find(
+          (cat) => cat.name?.toLowerCase() === categoryName?.toLowerCase()
+        );
+        if (selectedCategoryObject?.id) {
+          FetchRestaurants({ categoryId: selectedCategoryObject.id });
+        } else {
+          FetchRestaurants({});
+        }
+      } else {
+        FetchRestaurants({});
+      }
+    }
   };
 
   return (
@@ -140,7 +160,7 @@ const LocalPage = () => {
                       Explorar Locais
                     </h2>
                     <Link
-                      href="/localCadastro"
+                      href="/local-cadastro"
                       className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-600"
                     >
                       Cadastrar Local
@@ -163,40 +183,11 @@ const LocalPage = () => {
                     </button>
                   </div>
                 </div>
-                <div className="mt-[15px] mb-[45px] w-fit">
-                  <div className="border-2 border-[#c8c5c5] rounded-lg p-[10px] flex gap-[1%] overflow-x-auto"> {/* Added overflow-x-auto */}
-                    <button
-                      className={`bg-[#86929A] text-white rounded-xl px-4 whitespace-nowrap ${selectedCategory === "Todos" ? "" : ""
-                        }`}
-                      onClick={() => handleCategoryClick("Todos")}
-                    >
-                      Todos
-                    </button>
-                    {categories.map((category) => (
-                      <button
-                        key={category.id}
-                        className={`bg-[#86929A] text-white rounded-xl px-4 whitespace-nowrap ${selectedCategory === category.name ? "" : ""
-                          }`}
-                        onClick={() => handleCategoryClick(category.name)}
-                      >
-                        {category.name}
-                      </button>
-                    ))}
-                    {[5, 4, 3, 2, 1].map((rating) => (
-                      <button
-                        key={rating}
-                        className="bg-[#86929A] text-white rounded-xl px-4 flex items-center justify-center whitespace-nowrap"
-                      >
-                        {rating}
-                        <img
-                          className="w-[15px] h-[15px] ml-1"
-                          src="img/estrela-preenchida.png"
-                          alt="Estrela"
-                        />
-                      </button>
-                    ))}
-                  </div>
-                </div>
+                <SectionFilterCategory
+                  categories={categories}
+                  selectedCategory={selectedCategory}
+                  onCategoryClick={handleCategoryClick}
+                />
 
                 <div className="flex justify-center">
                   {loading && <Loader2 className="h-5 w-5 animate-spin text-black" />}
@@ -209,15 +200,23 @@ const LocalPage = () => {
                       className="shadow-lg border border-gray-400 rounded-lg bg-white w-full max-w-xs flex flex-col"
                     >
                       <img
-                        src={place.url_img || null}
+                        src={place.url_img ?? undefined}
                         alt={place.name}
                         className="w-full h-40 object-cover rounded-t-lg"
                       />
                       <div className="p-4 text-gray-800 flex-grow flex flex-col justify-between">
                         <div>
-                          <b className="text-lg">
-                            {place.name}
-                          </b>
+                          <b className="text-lg">{place.name}</b>
+                          {place.category && typeof place.category === 'string' && (
+                            <p className="text-sm text-gray-500 mt-1">
+                              Categoria: {place.category}
+                            </p>
+                          )}
+                          {place.category && typeof place.category === 'object' && place.category.name && (
+                            <p className="text-sm text-gray-500 mt-1">
+                              Categoria: {place.category.name}
+                            </p>
+                          )}
                           {place.averageRating !== undefined && (
                             <div className="flex items-center mt-1">
                               {Array(Math.round(place.averageRating))
@@ -256,19 +255,16 @@ const LocalPage = () => {
                   ))}
                 </div>
 
-                {visibleRestaurants.length <
-                  (filteredRestaurants.length > 0
-                    ? filteredRestaurants.length
-                    : restaurants.length) && (
-                    <div className="m-10 flex justify-center">
-                      <button
-                        className="px-4 py-1 rounded-md flex items-center gap-2 border-2 border-black font-bold"
-                        onClick={handleLoadMore}
-                      >
-                        Carregar Mais
-                      </button>
-                    </div>
-                  )}
+                {visibleRestaurants.length < filteredRestaurants.length && (
+                  <div className="m-10 flex justify-center">
+                    <button
+                      className="px-4 py-1 rounded-md flex items-center gap-2 border-2 border-black font-bold"
+                      onClick={handleLoadMore}
+                    >
+                      Carregar Mais
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
             <SectionFooter />

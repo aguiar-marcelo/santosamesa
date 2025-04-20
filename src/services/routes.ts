@@ -33,6 +33,13 @@ export async function getRestaurants(): Promise<any[]> {
   return data;
 }
 
+export async function getRestaurantsByCategory(query?: { categoryId?: string | string[] | null }): Promise<any[]> {
+  const { data } = await api.get("/restaurant", {
+    params: query,
+  });
+  return data;
+}
+
 export async function postRestaurant(resturant: FormData) {
   const { data } = await api.post("/restaurant", resturant, {
     headers: { "Content-Type": "multipart/form-data" },
