@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
+import './css/LocalInfoPage.css'
 
 interface LocalData {
   id: string;
@@ -170,34 +171,32 @@ const LocalInfoPage = ({
   }, [data?.id]);
 
   return (
-    <div>
-      <div className="relative w-full h-full">
-        <div className="relative bg-cover bg-center h-[350px] w-full overflow-hidden">
-          <img
-            src={data?.url_img}
-            alt="Local"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-b from-transparent to-white pointer-events-none"></div>
-        </div>
+    <div className="local-info-container">
+      <div className="local-image-container">
+        <img
+          src={data?.url_img}
+          alt="Local"
+          className="local-image"
+        />
+        <div className="local-image-gradient"></div>
       </div>
-      <div className="flex">
-        <div className="w-[60%] ml-[70px] mr-[70px] mt-5">
-          <div className="flex flex-col">
-            <div className="flex flex-row items-center">
+      <div className="local-content-wrapper">
+        <div className="local-info">
+          <div className="local-header">
+            <div className="local-header-top">
               <button
                 onClick={() => setData(undefined)}
-                className="text-gray-500"
+                className="local-back-button"
               >
                 <ArrowLeft />
               </button>
-              <h1 className="my-[4px] mx-4 font-bold">{data?.name}</h1>
+              <h1 className="local-title">{data?.name}</h1>
               {Array(Math.round(averageRating))
                 .fill(0)
                 .map((_, starIndex) => (
                   <img
                     key={`filled-${starIndex}`}
-                    className="w-[35px] h-[35px]"
+                    className="local-star-filled"
                     src="img/estrela-preenchida.png"
                     alt="Estrela Preenchida"
                   />
@@ -207,23 +206,23 @@ const LocalInfoPage = ({
                 .map((_, starIndex) => (
                   <img
                     key={`empty-${starIndex}`}
-                    className="w-[35px] h-[35px]"
+                    className="local-star-empty"
                     src="img/estrela.png"
                     alt="Estrela Vazia"
                   />
                 ))}
             </div>
-            <h4 className="text-[#9D9393] mt-0">
+            <h4 className="local-rating-count">
               {avaliacoes.length} avaliações
             </h4>
           </div>
 
           <div>
-            <h4>{data?.aboutUs}</h4>
+            <h4 className="local-about">{data?.aboutUs}</h4>
           </div>
 
           <div>
-            <h2 className="mb-5 mt-10 font-bold">Avaliações</h2>
+            <h2 className="local-reviews-title">Avaliações</h2>
           </div>
 
           <div>
@@ -233,15 +232,15 @@ const LocalInfoPage = ({
               avaliacoes.map((avaliacao, index) => (
                 <div
                   key={avaliacao.id}
-                  className={`border-2 border-[#666565] rounded-lg p-4 mt-[15px] ${
+                  className={`local-review-card ${
                     index === avaliacoes.length - 1 && !data?.id
-                      ? "mb-[1rem]"
-                      : "mb-[15px]"
+                      ? "local-review-card:last-child"
+                      : ""
                   }`}
                 >
-                  <div className="flex items-center">
+                  <div className="local-review-header">
                     <img
-                      className="rounded-full w-[50px] h-[50px] object-cover"
+                      className="local-review-profile-picture"
                       src={avaliacao.user?.profilePicture || "/img/user-null.png"}
                       alt={`Foto de Perfil de ${
                         avaliacao.user?.exibitionName ||
@@ -249,32 +248,30 @@ const LocalInfoPage = ({
                         "Usuário"
                       }`}
                     />
-                    <div className="flex-1 ml-[10px]">
-                      <div className="flex items-center">
-                        <div className="flex items-center">
-                          <h3 className="font-semibold my-0 whitespace-nowrap mr-2">
-                            {avaliacao.user?.exibitionName ||
-                              avaliacao.user?.userName ||
-                              "Usuário Anônimo"}
-                          </h3>
-                          {Array(avaliacao.value)
-                            .fill(0)
-                            .map((_, starIndex) => (
-                              <img
-                                key={starIndex}
-                                className="w-[25px] h-[25px]"
-                                src="img/estrela-preenchida.png"
-                                alt="Estrela"
-                              />
-                            ))}
-                        </div>
+                    <div className="local-review-user-info">
+                      <div className="local-review-user-name-rating">
+                        <h3 className="local-review-user-name">
+                          {avaliacao.user?.exibitionName ||
+                            avaliacao.user?.userName ||
+                            "Usuário Anônimo"}
+                        </h3>
+                        {Array(avaliacao.value)
+                          .fill(0)
+                          .map((_, starIndex) => (
+                            <img
+                              key={starIndex}
+                              className="local-review-star"
+                              src="img/estrela-preenchida.png"
+                              alt="Estrela"
+                            />
+                          ))}
                       </div>
-                      <h5 className="text-[#9D9393] mt-1 text-sm whitespace-nowrap">
+                      <h5 className="local-review-date">
                         {new Date(avaliacao.createdAt).toLocaleDateString()}
                       </h5>
                     </div>
                   </div>
-                  <h4 className="my-0 mt-2">
+                  <h4 className="local-review-comment">
                     {avaliacao.comments ? avaliacao.comments : "(Sem comentários)"}
                   </h4>
                 </div>
@@ -283,17 +280,14 @@ const LocalInfoPage = ({
           </div>
         </div>
 
-        <div className="w-[40%] ml-[70px] mr-[70px] mt-5">
+        <div className="local-rating-section">
           <div
-            className="rounded-lg p-8"
-            style={{
-              background: "linear-gradient(to bottom, #A0E4FF, #74a5ed)",
-            }}
+            className="local-rating-card"
           >
-            <h2 className="mb-6 mt-[4px] font-bold">Deixe sua avaliação!</h2>
+            <h2 className="local-rating-title">Deixe sua avaliação!</h2>
             <textarea
               placeholder="Digite sua avaliação aqui..."
-              className="w-full px-2 py-2 rounded-md border border-black text-black placeholder-black bg-transparent resize-none overflow-hidden"
+              className="local-rating-textarea"
               rows={6}
               onInput={(e) => {
                 const target = e.target as HTMLTextAreaElement;
@@ -303,13 +297,13 @@ const LocalInfoPage = ({
               }}
             ></textarea>
 
-            <div className="flex flex-row mt-3">
+            <div className="local-rating-stars">
               {Array(5)
                 .fill(0)
                 .map((_, starIndex) => (
                   <img
                     key={starIndex}
-                    className="w-[35px] h-[35px]"
+                    className="local-rating-star-button"
                     src={
                       starIndex < estrelas
                         ? "img/estrela-preenchida.png"
@@ -321,17 +315,16 @@ const LocalInfoPage = ({
                 ))}
             </div>
             <button
-              className="bg-[#2ca1d4] text-white px-4 py-2 rounded-md hover:bg-blue-600 flex items-center gap-2 w-full justify-center mt-6"
+              className="local-submit-button"
               onClick={enviarAvaliacao}
               disabled={isLoading}
             >
               {isLoading ? "Enviando..." : "Enviar Avaliação"}
             </button>
-            {error && <p className="mt-2" style={{ color: "#72253d", fontWeight: "bold" }}>{error}</p>}
+            {error && <p className="local-error-message">{error}</p>}
           </div>
         </div>
       </div>
-      <div style={{ marginTop: "3rem" }}></div>
     </div>
   );
 };

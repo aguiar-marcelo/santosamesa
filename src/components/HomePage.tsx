@@ -4,33 +4,27 @@ import { Search } from "lucide-react";
 import Link from "next/link";
 import SectionMenu from "./SectionMenu";
 import SectionFooter from "./SectionFooter";
+import './css/HomePage.css';
+
 
 const HomePage = () => {
   return (
-    <div className="flex flex-col min-h-screen">
-      <style>{fadeInUpKeyframes}</style>
-      <div className="relative w-full bg-white">
+    <div className="home-container">
+      <div className="home-header-bg">
         <SectionMenu />
-        <div
-          className="bg-cover bg-center h-[350px] w-full"
-          style={{ backgroundImage: "url('img/img-homepage.jpg')" }}
-        >
-
-          <div className="flex flex-col items-center mx-8">
-            <div
-              className="flex flex-col items-center mt-20"
-              style={{ ...styles.fadeIn }}
-            >
-              <h2 className="text-xl text-white font-bold">
+        <div className="home-hero">
+          <div className="home-hero-content">
+            <div className="home-hero-inner">
+              <h2 className="home-hero-title">
                 Descubra lugares incríveis para comer em Santos
               </h2>
-              <div className="flex gap-4 mt-4 w-full ">
+              <div className="home-search-container">
                 <input
                   type="text"
                   placeholder="Descubra restaurantes, cafés..."
-                  className="w-full px-4 py-2 rounded-md border border-gray-400 text-black"
+                  className="home-search-input"
                 />
-                <button className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-600 flex items-center gap-2">
+                <button className="home-search-button">
                   <Search /> Pesquisar
                 </button>
               </div>
@@ -38,16 +32,11 @@ const HomePage = () => {
           </div>
         </div>
 
-        <div className="flex flex-col items-center my-6">
-          <h2 className="text-2xl text-gray-800 font-bold">
-            Melhores avaliados
-          </h2>
+        <div className="home-rated-title-container">
+          <h2 className="home-rated-title">Melhores avaliados</h2>
         </div>
 
-        <div
-          className="grid grid-cols-3 gap-6 justify-items-center mb-10 px-8"
-          style={{ ...styles.fadeIn }}
-        >
+        <div className="home-places-grid">
           {[
             {
               name: "Burgman",
@@ -65,21 +54,18 @@ const HomePage = () => {
               img: "img/img-placeholder-3.jpg",
             },
           ].map((place, index) => (
-            <div
-              key={index}
-              className="shadow-lg border border-gray-400 rounded-lg bg-white w-full max-w-xs"
-            >
+            <div key={index} className="home-place-card">
               <img
                 src={place.img}
                 alt={place.name}
-                className="w-full h-40 object-cover rounded-t-lg"
+                className="home-place-image"
               />
-              <div className="p-4 text-gray-800">
-                <b className="text-lg ">{place.name}</b>
-                <p className="text-gray-600 mb-2">{place.category}</p>
+              <div className="home-place-info">
+                <b className="home-place-name">{place.name}</b>
+                <p className="home-place-category">{place.category}</p>
                 <Link
                   href="/local-info"
-                  className=" bg-primary text-white px-4 py-1 text-sm rounded-md hover:bg-blue-600"
+                  className="home-place-link"
                 >
                   Saiba mais
                 </Link>
@@ -94,22 +80,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-const styles = {
-  fadeIn: {
-    animation: "1.5s fadeInUp",
-  },
-};
-
-const fadeInUpKeyframes = `
-@keyframes fadeInUp {
-  0% {
-    transform: translateY(10%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0%);
-    opacity: 1;
-  }
-}
-`;

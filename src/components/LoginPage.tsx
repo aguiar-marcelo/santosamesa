@@ -1,11 +1,11 @@
 "use client";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
-import React, { FormEvent, useState } from "react";
+import React, { useState } from "react";
 import { OrbitProgress } from "react-loading-indicators";
+import './css/LoginPage.css';
 
 const LoginPage = () => {
-  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,60 +26,58 @@ const LoginPage = () => {
 
   return (
     <>
-      <style>{fadeInUpKeyframes}</style>
-      <form style={styles.form}>
-        <div style={styles.gridContainer}>
-          <div style={{ ...styles.imgBackground }}>
-            <div style={{ ...styles.column, ...styles.centerContainer }}>
+      <form className="login-page-form">
+        <div className="login-grid-container">
+          <div className="login-img-background">
+            <div className={`login-column login-center-container`}>
               <h1
-                style={{ ...styles.fadeIn, color: "white" }}
-                className="font-bold"
+                className={`font-bold login-fade-in`}
+                style={{ color: "white" }}
               >
                 SANTOS À MESA
               </h1>
               <h2
-                style={{ ...styles.fadeIn, color: "white" }}
-                className="font-bold mt-0"
+                className={`font-bold mt-0 login-fade-in`}
+                style={{ color: "white" }}
               >
                 Descubra lugares incríveis para comer em Santos
               </h2>
             </div>
           </div>
-          <div style={{ ...styles.column, ...styles.centerContainer }} className="text-gray-500">
+          <div className={`login-column login-center-container text-gray-500`}>
             <h1 className="font-bold">Login</h1>
-            <p style={styles.p}>E-mail</p>
+            <p className="login-p">E-mail</p>
             <input
               type="text"
               name="email"
               placeholder="Digite o seu e-mail"
-              style={styles.input}
-              className="mb-4"
+              className={`mb-4 login-input`}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <p style={styles.p}>Senha</p>
+            <p className="login-p">Senha</p>
             <input
               type="password"
               name="password"
               placeholder="Digite a sua senha"
-              style={styles.input}
+              className="login-input"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            {error && <div style={styles.errorMsg}>{error}</div>}
-            <div style={styles.column}>
+            {error && <div className="login-error-msg">{error}</div>}
+            <div className="login-column">
               <button
                 type="button"
                 onClick={login}
-                style={styles.btnStyle}
+                className="login-btn-style"
                 disabled={loading}
                 onMouseOver={(e) =>
                   (e.currentTarget.style.backgroundColor =
-                    styles.btnStyleHover.backgroundColor)
+                    getComputedStyle(e.currentTarget).getPropertyValue('--login-btn-style-hover-bg') || '#2681d6')
                 }
                 onMouseOut={(e) =>
                   (e.currentTarget.style.backgroundColor =
-                    styles.btnStyle.backgroundColor)
+                    getComputedStyle(e.currentTarget).getPropertyValue('--login-btn-style-bg') || '#31afe1')
                 }
               >
                 {loading ? (
@@ -97,7 +95,7 @@ const LoginPage = () => {
                   "LOGIN"
                 )}
               </button>
-              <Link href="/" style={styles.a}>
+              <Link href="/" className="login-a">
                 CANCELAR
               </Link>
             </div>
@@ -109,94 +107,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-
-const styles = {
-  form: {
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column" as "column",
-    justifyContent: "center",
-    backgroundColor: "#f2f0f0",
-  },
-  gridContainer: {
-    display: "grid",
-    gridTemplateColumns: "60% 40%",
-    height: "100vh",
-  },
-  centerContainer: {
-    display: "flex",
-    alignItems: "center" as "center",
-    justifyContent: "center" as "center",
-    height: "100%",
-  },
-  errorMsg: {
-    color: "red",
-    fontSize: "12px",
-    backgroundColor: "#f8d7da",
-    padding: "1px",
-    borderRadius: "5px",
-    text: "center",
-  },
-  column: {
-    display: "flex",
-    flexDirection: "column" as "column",
-    alignItems: "center" as "center",
-    width: "100%",
-  },
-  imgBackground: {
-    backgroundImage: `url('/img/img-login.jpg')`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    display: "flex",
-    alignItems: "center" as "center",
-    justifyContent: "center" as "center",
-  },
-  fadeIn: {
-    animation: "1.5s fadeInUp",
-  },
-  btnStyle: {
-    backgroundColor: "#31afe1",
-    color: "white",
-    borderRadius: "12px",
-    padding: "10px",
-    fontSize: "medium",
-    transition: "0.4s",
-    border: "0",
-    marginTop: "1em",
-    width: "80%",
-    display: "flex",
-    alignItems: "center" as "center",
-    justifyContent: "center" as "center",
-  },
-  btnStyleHover: {
-    backgroundColor: "#2681d6",
-  },
-  input: {
-    width: "80%",
-    padding: "12px 20px",
-    borderRadius: "3px",
-    border: "4px solid #e5dcdc",
-    boxSizing: "border-box" as "border-box",
-  },
-  p: {
-    width: "80%",
-    justifyContent: "flex-start" as "flex-start",
-  },
-  a: {
-    marginTop: "1em",
-    color: "#A09898",
-  },
-};
-
-const fadeInUpKeyframes = `
-@keyframes fadeInUp {
-  0% {
-    transform: translateY(60%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0%);
-    opacity: 1;
-  }
-}
-`;
