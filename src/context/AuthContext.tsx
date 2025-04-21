@@ -25,6 +25,7 @@ interface AuthContextData {
   error: string | null;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => void;
+  updateUser: (updatedUser: Partial<User>) => void;
 }
 
 const AuthContext = createContext<AuthContextData | undefined>(undefined);
@@ -54,28 +55,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       Cookies.set("santosamesaToken", response.access_token, { expires: 1 });
       setToken(response.access_token);
       if (response.userId) {
-        Cookies.set(
-          "santosamesaUser",
-          JSON.stringify({
-            id: response.userId,
-            email: response.email,
-            exibitionName: response.exibitionName,
-            userName: response.userName,
-            role: response.role,
-            profilePicture: response.profilePicture || null,
-          }),
-          {
-            expires: 1,
-          }
-        );
-        setUser({
+        const loggedInUser: User = {
           id: response.userId,
           email: response.email,
           exibitionName: response.exibitionName,
           userName: response.userName,
           role: response.role,
-          profilePicture: response.profilePicture || null,
+          profilePicture: response.profilePicture || undefined,
+        };
+        Cookies.set("santosamesaUser", JSON.stringify(loggedInUser), {
+          expires: 1,
         });
+        setUser(loggedInUser);
       }
       router.push("/");
     } catch (error: any) {
@@ -91,8 +82,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     router.push("/");
   };
 
+  const updateUser = (updatedUser: Partial<User>) => {
+    setUser((prevUser) => {
+      if (prevUser) {
+        const newUser = { ...prevUser, ...updatedUser };
+        Cookies.set("santosamesaUser", JSON.stringify(newUser), { expires: 1 });
+        return newUser;
+      }
+      return prevUser;
+    });
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, error, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, token, error, signIn, signOut, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

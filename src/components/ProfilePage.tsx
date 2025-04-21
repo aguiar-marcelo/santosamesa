@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import SectionMenu from '@/components/SectionMenu';
 import SectionFooter from '@/components/SectionFooter';
@@ -10,9 +10,8 @@ import ModalDeleteProfile from '@/components/ModalDeleteProfile';
 import '@/components/css/ProfilePage.css';
 import SectionFilterRatingUser from '@/components/SectionFilterRatingUser';
 
-
 const ProfilePage = () => {
-  const { user, token, signOut } = useAuth();
+  const { user, token, signOut, updateUser } = useAuth();
   const [userRatings, setUserRatings] = useState<Rating[]>([]);
   const [loadingRatings, setLoadingRatings] = useState<boolean>(true);
   const [errorRatings, setErrorRatings] = useState<string | null>(null);
@@ -39,16 +38,7 @@ const ProfilePage = () => {
     setIsEditModalOpen(true);
   };
 
-  const handleProfileUpdateSuccess = () => {
-    handleCloseEditModal();
-  };
-
-  const handleDeleteAccountSuccess = () => {
-    setIsDeleteModalOpen(false);
-    signOut();
-  };
-
-  const fetchUserRatings = async (ratingsToFilter?: number[]) => {
+  const fetchUserRatings = useCallback(async (ratingsToFilter?: number[]) => {
     if (!user?.id || !token) {
       setLoadingRatings(false);
       return;
@@ -102,24 +92,33 @@ const ProfilePage = () => {
     } finally {
       setLoadingRatings(false);
     }
-  };
+  }, [user?.id, token]);
+
+  const handleProfileUpdateSuccess = useCallback((updatedUserData: any) => {
+    handleCloseEditModal();
+    updateUser(updatedUserData);
+    fetchUserRatings(selectedRatings);
+  }, [fetchUserRatings, selectedRatings, handleCloseEditModal, updateUser]);
+
+  const handleDeleteAccountSuccess = useCallback(() => {
+    setIsDeleteModalOpen(false);
+    signOut();
+  }, [signOut]);
 
   useEffect(() => {
     fetchUserRatings(selectedRatings);
-  }, [selectedRatings]);
+  }, [fetchUserRatings, selectedRatings]);
 
   const handleFilterByRating = (rating: number) => {
-    const alreadySelected = selectedRatings.includes(rating);
-    if (alreadySelected) {
-      setSelectedRatings(selectedRatings.filter(r => r !== rating));
-    } else {
-      setSelectedRatings([...selectedRatings, rating]);
-    }
+    setSelectedRatings((prevRatings) => {
+      const alreadySelected = prevRatings.includes(rating);
+      if (alreadySelected) {
+        return prevRatings.filter(r => r !== rating);
+      } else {
+        return [...prevRatings, rating];
+      }
+    });
   };
-
-  useEffect(() => {
-    fetchUserRatings(selectedRatings);
-  }, [selectedRatings]);
 
   const handleRatingClick = (ratingId: string) => {
     setSelectedRatingId(ratingId === selectedRatingId ? null : ratingId);
@@ -140,6 +139,9 @@ const ProfilePage = () => {
               className="profile-picture"
               src={user?.profilePicture ?? "/img/user-null.png"}
               alt="Foto de Perfil"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = "/img/user-null.png";
+              }}
             />
             <div className="profile-details">
               <div className="profile-name-container">

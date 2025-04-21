@@ -81,7 +81,7 @@ interface EditProfileModalProps {
       id?: number;
       email?: string | null;
     } | null;
-    onSaveSuccess: () => void;
+    onSaveSuccess: (updatedUser: any) => void;
     onOpenDeleteModal: () => void;
   }
 

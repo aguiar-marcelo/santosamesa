@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { updateUser } from "@/services/routes";
+import { updateUser as updateUserAPI } from "@/services/routes"; 
 import './css/ModalEditProfile.css';
 
 const ModalEditProfile: React.FC<EditProfileModalProps> = ({
@@ -75,11 +75,11 @@ const ModalEditProfile: React.FC<EditProfileModalProps> = ({
     }
 
     try {
-      const responseData = await updateUser(user.id, formData);
+      const responseData = await updateUserAPI(user.id, formData);
 
       setSuccessMessage("Perfil atualizado com sucesso!");
       setIsSaving(false);
-      onSaveSuccess();
+      onSaveSuccess(responseData);
       onClose();
     } catch (error: any) {
       console.error("Erro ao enviar dados de perfil:", error);
@@ -158,7 +158,7 @@ const ModalEditProfile: React.FC<EditProfileModalProps> = ({
               />
               <div className="profile-picture-upload">
                 <label htmlFor="profilePictureInput" className="form-label">
-                Selecione sua nova foto de perfil
+                  Selecione sua nova foto de perfil
                 </label>
                 <div className="upload-info">Extensões suportadas: PNG, JPEG</div>
                 <div className="upload-info">Tamanho máximo: 5MB</div>
