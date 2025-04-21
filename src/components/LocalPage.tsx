@@ -207,14 +207,9 @@ const LocalPage = () => {
                       <div className="p-4 text-gray-800 flex-grow flex flex-col justify-between">
                         <div>
                           <b className="text-lg">{place.name}</b>
-                          {place.category && typeof place.category === 'string' && (
-                            <p className="text-sm text-gray-500 mt-1">
-                              Categoria: {place.category}
-                            </p>
-                          )}
                           {place.category && typeof place.category === 'object' && place.category.name && (
                             <p className="text-sm text-gray-500 mt-1">
-                              Categoria: {place.category.name}
+                              {place.category.name}
                             </p>
                           )}
                           {place.averageRating !== undefined && (

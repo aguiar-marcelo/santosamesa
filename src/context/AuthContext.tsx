@@ -44,9 +44,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setToken(savedToken);
       setUser(JSON.parse(savedUser));
     }
-    // else {
-    //   router.push("/login");
-    // }
   }, [router]);
 
   const signIn = async (email: string, password: string) => {
@@ -54,7 +51,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const response = await postLogin(email, password);
 
-      Cookies.set("santosamesaToken", response.access_token, { expires: 1 }); // Expiração de 1 dia
+      Cookies.set("santosamesaToken", response.access_token, { expires: 1 });
       setToken(response.access_token);
       if (response.userId) {
         Cookies.set(
@@ -93,23 +90,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     Cookies.remove("santosamesaUser");
     router.push("/");
   };
-
-  // const FetchGrupos = async () => {
-  //   try {
-  //     const results = await getGrupos();
-  //     setGrupos(results);
-  //   } catch (err) {
-  //     showAlert("Falha buscar os grupos", "error");
-  //     setGrupos([]);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (token) {
-  //     FetchCargos();
-  //     FetchGrupos();
-  //   }
-  // }, [token]);
 
   return (
     <AuthContext.Provider value={{ user, token, error, signIn, signOut }}>

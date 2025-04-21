@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import './css/LocalInfoPage.css'
+import { apiBaseUrl } from "@/services/api";
 
 interface LocalData {
   id: string;
@@ -40,9 +41,6 @@ interface RestaurantAverageRating {
   averageRating: number;
 }
 
-export const apiBaseUrl =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
-
 const LocalInfoPage = ({
   data,
   setData,
@@ -76,10 +74,6 @@ const LocalInfoPage = ({
         if (errorData?.message === `No ratings found for restaurant with id ${data.id}`) {
           setAvaliacoes([]);
           setNoRatingsMessage("Esse restaurante ainda não tem reviews. Seja o primeiro!");
-        } else {
-          setError("Falha ao carregar as avaliações.");
-          setNoRatingsMessage(null);
-          setAvaliacoes([]);
         }
         return;
       }
