@@ -164,10 +164,8 @@
 .cadastro-profile-picture-input {
     width: 80%;
     margin-bottom: 16px;
-    cursor: pointer;
     border-radius: 8px;
     border-width: 1px;
-    outline: none;
     transition-property: border-color, background-color, color, fill, stroke;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;

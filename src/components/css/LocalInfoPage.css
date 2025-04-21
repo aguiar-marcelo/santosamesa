@@ -1,3 +1,4 @@
+
 .local-info-container {
     width: 100%;
     height: 100%;
@@ -48,7 +49,6 @@
 
 .local-back-button {
     color: #6b7280;
-    cursor: pointer;
 }
 
 .local-title {
@@ -70,8 +70,6 @@
 .local-rating-count {
     color: #9D9393;
     margin-top: 0;
-    font-size: 14px;
-    line-height: 20px;
 }
 
 .local-about {

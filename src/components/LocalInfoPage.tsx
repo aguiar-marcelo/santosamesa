@@ -5,41 +5,6 @@ import { useAuth } from "@/context/AuthContext";
 import './css/LocalInfoPage.css'
 import { apiBaseUrl } from "@/services/api";
 
-interface LocalData {
-  id: string;
-  name: string;
-  url_img: string;
-  aboutUs: string;
-}
-
-interface User {
-  email: string;
-  id?: number;
-  profilePicture?: string;
-  exibitionName?: string;
-}
-
-interface Comment {
-  message: string;
-}
-
-interface Avaliacao {
-  id: string;
-  value: number;
-  restaurantId: string;
-  userId: string;
-  comments?: string | null;
-  createdAt: string;
-  user?: { id: string; profilePicture?: string; exibitionName?: string; userName?: string };
-}
-
-interface RestaurantAverageRating {
-  id: number;
-  name: string;
-  url_img: string;
-  aboutUs: string;
-  averageRating: number;
-}
 
 const LocalInfoPage = ({
   data,
@@ -56,10 +21,13 @@ const LocalInfoPage = ({
   const [averageRating, setAverageRating] = useState<number>(0);
   const [noRatingsMessage, setNoRatingsMessage] = useState<string | null>(null);
 
+
   const { user, token } = useAuth() as { user: User; token: string };
+
 
   const FetchRatings = async () => {
     if (!data?.id) return;
+
 
     try {
       const response = await fetch(`${apiBaseUrl}/rating/restaurant/${data.id}`, {
@@ -68,15 +36,21 @@ const LocalInfoPage = ({
         },
       });
 
+
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Falha ao buscar avaliações:", errorData);
         if (errorData?.message === `No ratings found for restaurant with id ${data.id}`) {
           setAvaliacoes([]);
           setNoRatingsMessage("Esse restaurante ainda não tem reviews. Seja o primeiro!");
+        } else {
+          setError("Falha ao carregar as avaliações.");
+          setNoRatingsMessage(null);
+          setAvaliacoes([]);
         }
         return;
       }
+
 
       const results: Avaliacao[] = await response.json();
       setNoRatingsMessage(null);
@@ -88,6 +62,7 @@ const LocalInfoPage = ({
     } finally {
     }
   };
+
 
   const fetchAverageRating = async () => {
     if (!data?.id) return;
@@ -104,6 +79,7 @@ const LocalInfoPage = ({
     }
   };
 
+
   const enviarAvaliacao = async () => {
     if (!user?.id) {
       console.error("ID do usuário não encontrado.");
@@ -111,19 +87,23 @@ const LocalInfoPage = ({
       return;
     }
 
+
     if (!data?.id) {
       console.error("ID do restaurante não encontrado.");
       setError("ID do restaurante inválido.");
       return;
     }
 
+
     if (estrelas === 0) {
       setError("Por favor, selecione uma avaliação (estrelas).");
       return;
     }
 
+
     setIsLoading(true);
     setError(null);
+
 
     try {
       const response = await fetch(`${apiBaseUrl}/rating`, {
@@ -140,12 +120,14 @@ const LocalInfoPage = ({
         }),
       });
 
+
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Erro ao enviar avaliação:", errorData);
         setError("Falha ao enviar a avaliação.");
         return;
       }
+
 
       FetchRatings();
       fetchAverageRating();
@@ -159,10 +141,12 @@ const LocalInfoPage = ({
     }
   };
 
+
   useEffect(() => {
     FetchRatings();
     fetchAverageRating();
   }, [data?.id]);
+
 
   return (
     <div className="local-info-container">
@@ -211,17 +195,20 @@ const LocalInfoPage = ({
             </h4>
           </div>
 
+
           <div>
             <h4 className="local-about">{data?.aboutUs}</h4>
           </div>
+
 
           <div>
             <h2 className="local-reviews-title">Avaliações</h2>
           </div>
 
+
           <div>
             {noRatingsMessage ? (
-              <p className="text-black">{noRatingsMessage}</p>
+              <div className="local-about text-black ">{noRatingsMessage}</div>
             ) : (
               avaliacoes.map((avaliacao, index) => (
                 <div
@@ -274,6 +261,7 @@ const LocalInfoPage = ({
           </div>
         </div>
 
+
         <div className="local-rating-section">
           <div
             className="local-rating-card"
@@ -290,6 +278,7 @@ const LocalInfoPage = ({
                 setComentario(target.value);
               }}
             ></textarea>
+
 
             <div className="local-rating-stars">
               {Array(5)
@@ -322,5 +311,6 @@ const LocalInfoPage = ({
     </div>
   );
 };
+
 
 export default LocalInfoPage;

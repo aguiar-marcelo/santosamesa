@@ -57,7 +57,7 @@
 }
 
 .home-search-button {
-    background-color: #3b82f6;
+    background-color: #31afe1;
     color: white;
     padding: 0.5rem 1rem;
     border-radius: 0.375rem;
@@ -68,7 +68,7 @@
 }
 
 .home-search-button:hover {
-    background-color: #2563eb;
+    background-color: #1F607E;
 }
 
 .home-rated-title-container {
@@ -130,7 +130,7 @@
 }
 
 .home-place-link {
-    background-color: #3b82f6;
+    background-color: #31afe1;
     color: white;
     padding: 0.25rem 1rem;
     font-size: 0.875rem;
@@ -139,7 +139,7 @@
 }
 
 .home-place-link:hover {
-    background-color: #2563eb;
+    background-color: #1F607E;
 }
 
 @keyframes fadeInUp {

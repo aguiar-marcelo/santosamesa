@@ -1,28 +1,24 @@
 import React from "react";
 
-interface Category {
-  id: string;
-  name: string;
-}
-
-interface FilterCategoryProps {
-  categories: Category[];
-  selectedCategory: string | null;
-  onCategoryClick: (categoryName: string | null) => void;
-}
-
 const SectionFilterCategory: React.FC<FilterCategoryProps> = ({
   categories,
   selectedCategory,
   onCategoryClick,
 }) => {
+  console.log("SectionFilterCategory rendered. selectedCategory prop:", selectedCategory);
+
+  const selectedButtonStyle = {
+    backgroundColor: 'rgb(99 113 122)',
+  };
+
   return (
     <div className="mt-[15px] mb-[45px] w-fit">
       <div className="border-2 border-[#c8c5c5] rounded-lg p-[10px] flex gap-[1%] overflow-x-auto">
         <button
           className={`bg-[#86929A] text-white rounded-xl px-4 whitespace-nowrap ${
-            selectedCategory === "Todos" ? "bg-[#556B74]" : ""
+            selectedCategory === "Todos" ? "" : ""
           }`}
+          style={selectedCategory === "Todos" ? selectedButtonStyle : {}}
           onClick={() => onCategoryClick("Todos")}
         >
           Todos
@@ -31,8 +27,9 @@ const SectionFilterCategory: React.FC<FilterCategoryProps> = ({
           <button
             key={category.id}
             className={`bg-[#86929A] text-white rounded-xl px-4 whitespace-nowrap ${
-              selectedCategory === category.name ? "bg-[#556B74]" : ""
+              selectedCategory?.toLowerCase() === category.name?.toLowerCase() ? "" : ""
             }`}
+            style={selectedCategory?.toLowerCase() === category.name?.toLowerCase() ? selectedButtonStyle : {}}
             onClick={() => onCategoryClick(category.name)}
           >
             {category.name}

@@ -1,25 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './css/ModalDeleteProfile.css';
 import { deleteUser } from "@/services/routes";
 import { useAuth } from '@/context/AuthContext';
-import { useRouter } from 'next/navigation';
 
-interface ModalDeleteProfileProps {
-  isOpen: boolean;
-  onClose: () => void;
-  userId?: number;
-  onDeleteSuccess: () => void;
-}
-
-const ModalDeleteProfile: React.FC<ModalDeleteProfileProps> = ({ isOpen, onClose, userId, onDeleteSuccess }) => {
-  const [isDeleting, setIsDeleting] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const { signOut } = useAuth();
-  const router = useRouter();
+const ModalDeleteProfile: React.FC<ModalDeleteProfileProps> = ({
+  isOpen,
+  onClose,
+  userId,
+  onDeleteSuccess,
+}) => {
+  const { token } = useAuth();
+  const [isDeleting, setIsDeleting] = React.useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
   const handleDelete = async () => {
-    if (!userId) {
-      setErrorMessage("ID do usuário não encontrado.");
+    if (!userId || !token) {
+      setErrorMessage("Não autenticado.");
       return;
     }
 
@@ -27,17 +23,12 @@ const ModalDeleteProfile: React.FC<ModalDeleteProfileProps> = ({ isOpen, onClose
     setErrorMessage(null);
 
     try {
-      const response = await deleteUser(userId);
-      console.log("Resposta da exclusão do usuário:", response);
-
+      await deleteUser(userId);
       setIsDeleting(false);
-      signOut();
-      router.push('/login');
-
       onDeleteSuccess();
       onClose();
     } catch (error: any) {
-      console.error("Erro ao excluir a conta:", error);
+      console.error("Erro ao excluir conta:", error);
       setErrorMessage(error?.response?.data?.message || "Ocorreu um erro ao tentar excluir sua conta.");
       setIsDeleting(false);
     }
@@ -49,29 +40,35 @@ const ModalDeleteProfile: React.FC<ModalDeleteProfileProps> = ({ isOpen, onClose
 
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50 text-black">
-      <div className="modal-excluir-content rounded-md p-8 w-[950px]">
-        <div className="title-container-delete">
-          <div className="title">Excluir Conta</div>
-        </div>
-        <div className="text-container">
-          <div className="text-paragraph">
-            Ao excluir sua conta, você perderá todas as suas avaliações registradas, assim como os seus dados cadastrados,
-            permitindo com que um novo usuário possa se cadastrar com suas informações.
+      <div className="modal-content-excluir">
+        <div className="modal-header">
+          <div className="title-container w-full">
+            <div className="title">Excluir conta</div>
           </div>
-          <div className="font-bold text-paragraph"> Pense bem antes de prosseguir</div>
+          <button onClick={onClose} className="close-button">
+            &#10006;
+          </button>
         </div>
+
+        <div className="modal-body-excluir">
+          <div className="text-container">
+            <div className="text-base">
+              Ao excluir sua conta, você perderá todas as suas avaliações registradas, assim como os seus dados cadastrados,
+              permitindo com que um novo usuário possa se cadastrar com suas informações.
+            </div>
+            <div className="font-bold"> Pense bem antes de prosseguir</div>
+          </div>
+        </div>
+
         <div className="btn-container-excluir">
           <button
-            className="btn-excluir-conta"
+            className={`btn-excluir-conta ${isDeleting ? 'opacity-50 cursor-not-allowed' : ''}`}
             onClick={handleDelete}
             disabled={isDeleting}
           >
             {isDeleting ? 'Excluindo...' : 'Excluir Conta'}
           </button>
-          <button className="btn-cancelar"
-            onClick={onClose}
-            disabled={isDeleting}
-          >
+          <button className="btn-cancelar text-black" onClick={onClose} disabled={isDeleting}>
             Cancelar
           </button>
         </div>

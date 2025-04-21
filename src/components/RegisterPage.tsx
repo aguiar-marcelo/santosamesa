@@ -107,7 +107,7 @@
 
       let isValid = true;
 
-      if (!fullName.trim().includes(" ")) {
+      if (!fullName) {
         setFullNameError("Nome de exibição não pode ser vazio.");
         isValid = false;
       }

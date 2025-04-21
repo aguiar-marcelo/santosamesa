@@ -1,33 +1,25 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import SectionMenu from './SectionMenu';
-import SectionFooter from './SectionFooter';
-import { apiBaseUrl } from './LocalInfoPage';
-import { Restaurant } from '../interfaces/restaurant';
+import SectionMenu from '@/components/SectionMenu';
+import SectionFooter from '@/components/SectionFooter';
+import { apiBaseUrl } from "@/services/api";
 import { Loader2 } from 'lucide-react';
-import ModalEditProfile from './ModalEditProfile';
-import ModalDeleteProfile from './ModalDeleteProfile';
-import './css/ProfilePage.css';
+import ModalEditProfile from '@/components/ModalEditProfile';
+import ModalDeleteProfile from '@/components/ModalDeleteProfile';
+import '@/components/css/ProfilePage.css';
+import SectionFilterRatingUser from '@/components/SectionFilterRatingUser';
 
-interface Rating {
-  id: string;
-  value: number;
-  restaurantId: string;
-  userId: string;
-  comments: string | null;
-  createdAt: string;
-  restaurant: Restaurant;
-  user: { userName: string };
-}
 
 const ProfilePage = () => {
-  const { user, token } = useAuth();
+  const { user, token, signOut } = useAuth();
   const [userRatings, setUserRatings] = useState<Rating[]>([]);
   const [loadingRatings, setLoadingRatings] = useState<boolean>(true);
   const [errorRatings, setErrorRatings] = useState<string | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
+  const [selectedRatingId, setSelectedRatingId] = useState<string | null>(null);
 
   const handleOpenEditModal = () => {
     setIsEditModalOpen(true);
@@ -48,63 +40,90 @@ const ProfilePage = () => {
   };
 
   const handleProfileUpdateSuccess = () => {
-    console.log("Perfil atualizado com sucesso na ProfilePage!");
     handleCloseEditModal();
   };
 
   const handleDeleteAccountSuccess = () => {
-    console.log("Conta excluída com sucesso na ProfilePage!");
     setIsDeleteModalOpen(false);
+    signOut();
   };
 
-  useEffect(() => {
-    const fetchUserRatings = async () => {
-      if (!user?.id || !token) {
-        setLoadingRatings(false);
-        return;
-      }
+  const fetchUserRatings = async (ratingsToFilter?: number[]) => {
+    if (!user?.id || !token) {
+      setLoadingRatings(false);
+      return;
+    }
 
-      setLoadingRatings(true);
-      setErrorRatings(null);
+    setLoadingRatings(true);
+    setErrorRatings(null);
 
-      try {
-        const response = await fetch(`${apiBaseUrl}/rating/user/${user.id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+    let url = `${apiBaseUrl}/rating/user/${user.id}`;
+    if (ratingsToFilter && ratingsToFilter.length > 0) {
+      ratingsToFilter.forEach((rating) => {
+        url += `&ratings=${rating}`;
+      });
+      url = url.replace('&', '?');
+    }
 
-        if (!response.ok) {
-          if (response.status === 404) {
-            setUserRatings([]);
-            setErrorRatings(null);
-            setLoadingRatings(false);
-            return;
-          }
+    try {
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          setUserRatings([]);
+          setErrorRatings(null);
+          setLoadingRatings(false);
+          return;
+        }
+        if (response.status === 500) {
+          setErrorRatings("Ocorreu um erro interno no servidor ao carregar suas avaliações. Por favor, tente novamente mais tarde.");
+          setUserRatings([]);
+          setLoadingRatings(false);
+        } else {
           const errorText = await response.text();
           console.error("Failed to fetch user ratings:", errorText);
           setErrorRatings(`Failed to load your ratings: ${response.status} - ${errorText}`);
           setUserRatings([]);
-          return;
+          setLoadingRatings(false);
         }
-
-        const data: Rating[] = await response.json();
-        setUserRatings(data);
-      } catch (error) {
-        console.error("Error fetching user ratings:", error);
-        setErrorRatings("An unexpected error occurred while loading your ratings.");
-        setUserRatings([]);
-      } finally {
-        setLoadingRatings(false);
+        return;
       }
-    };
 
-    fetchUserRatings();
-  }, [user?.id, token]);
+      const data: Rating[] = await response.json();
+      setUserRatings(data);
+    } catch (error) {
+      console.error("Error fetching user ratings:", error);
+      setErrorRatings("Um erro inesperado ocorreu ao carregar suas avaliações.");
+      setUserRatings([]);
+    } finally {
+      setLoadingRatings(false);
+    }
+  };
 
-  if (errorRatings) {
-    return <div>{errorRatings}</div>;
-  }
+  useEffect(() => {
+    fetchUserRatings(selectedRatings);
+  }, [selectedRatings]);
+
+  const handleFilterByRating = (rating: number) => {
+    const alreadySelected = selectedRatings.includes(rating);
+    if (alreadySelected) {
+      setSelectedRatings(selectedRatings.filter(r => r !== rating));
+    } else {
+      setSelectedRatings([...selectedRatings, rating]);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserRatings(selectedRatings);
+  }, [selectedRatings]);
+
+  const handleRatingClick = (ratingId: string) => {
+    setSelectedRatingId(ratingId === selectedRatingId ? null : ratingId);
+  };
 
   const ratingsText = userRatings.length === 1 ? '1 avaliação' : `${userRatings.length} avaliações`;
 
@@ -146,25 +165,11 @@ const ProfilePage = () => {
 
           <div className="grid grid-cols-[auto_1fr_auto] gap-[1%] items-center">
             <h2 className="my-ratings-header">Minhas Avaliações</h2>
-            <div className="rating-filter-buttons">
-              {[5, 4, 3, 2, 1].map((rating) => (
-                <button
-                  key={rating}
-                  className="rating-filter-button"
-                >
-                  {rating}
-                  <img
-                    className="filled-star-icon"
-                    src="img/estrela-preenchida.png"
-                    alt="Estrela"
-                  />
-                </button>
-              ))}
-            </div>
-            <button
-              className="edit-profile-button"
-              onClick={handleOpenEditModal}
-            >
+            <SectionFilterRatingUser
+              selectedRatings={selectedRatings}
+              onRatingClick={handleFilterByRating}
+            />
+            <button className="edit-profile-button" onClick={handleOpenEditModal}>
               Editar Perfil
             </button>
           </div>
@@ -176,7 +181,11 @@ const ProfilePage = () => {
             </div>
           ) : userRatings.length > 0 ? (
             userRatings.map((rating) => (
-              <div key={rating.id} className="rating-card">
+              <div
+                key={rating.id}
+                className={`rating-card ${selectedRatingId === rating.id ? 'selected-rating' : ''}`}
+                onClick={() => handleRatingClick(rating.id)}
+              >
                 <div>
                   <div className="rating-header">
                     <img
@@ -189,7 +198,7 @@ const ProfilePage = () => {
                     />
                     <div className="restaurant-info">
                       <h3 className="restaurant-name">{rating.restaurant.name}</h3>
-                      <div className="rating-stars">
+                      <div className="ratings-info">
                         {Array(rating.value)
                           .fill(0)
                           .map((_, index) => (
@@ -208,9 +217,17 @@ const ProfilePage = () => {
                 </div>
               </div>
             ))
+          ) : errorRatings ? (
+            <div className="no-ratings-message">
+              {errorRatings}
+            </div>
           ) : (
             <div className="no-ratings-message">
-              Nenhuma avaliação feita ainda.
+              {selectedRatings.length > 0
+                ? selectedRatings.length === 1
+                  ? `Sem avaliações de ${selectedRatings[0]} estrela${selectedRatings[0] === 1 ? '' : 's'}`
+                  : `Sem avaliações de ${selectedRatings.join(', ')} estrelas`
+                : 'Nenhuma avaliação feita ainda.'}
             </div>
           )}
         </div>

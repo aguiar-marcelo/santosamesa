@@ -1,21 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './css/ModalEditProfile.css';
 import { useAuth } from '@/context/AuthContext';
 import { updateUser } from "@/services/routes";
-
-interface EditProfileModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  user: {
-    exibitionName?: string | null;
-    userName?: string | null;
-    profilePicture?: string | null;
-    id?: number;
-    email?: string | null;
-  } | null;
-  onSaveSuccess: () => void;
-  onOpenDeleteModal: () => void;
-}
+import './css/ModalEditProfile.css';
 
 const ModalEditProfile: React.FC<EditProfileModalProps> = ({
   isOpen,
@@ -84,7 +70,7 @@ const ModalEditProfile: React.FC<EditProfileModalProps> = ({
     if (profilePictureFile) {
       formData.append('profilePicture', profilePictureFile);
     }
-    if (email !== user.email) {
+    if (email !== user?.email) {
       formData.append('email', email);
     }
 
@@ -112,10 +98,12 @@ const ModalEditProfile: React.FC<EditProfileModalProps> = ({
   }
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50 text-black">
-      <div className="modal-content bg-white rounded-md w-[1017px] h-[732px] flex flex-col justify-between">
+    <div className="modal-overlay">
+      <div className="modal-content">
         <div className="modal-header">
-          <div className="title text-black">Editar Seu Perfil</div>
+          <div className="title-container">
+            <div className="title">Editar Seu Perfil</div>
+          </div>
           <button onClick={onClose} className="close-button">
             &#10006;
           </button>
@@ -125,62 +113,59 @@ const ModalEditProfile: React.FC<EditProfileModalProps> = ({
           {errorMessage && <div className="error-message">{errorMessage}</div>}
           {successMessage && <div className="success-message">{successMessage}</div>}
 
-          <div className="mb-6">
-            <label htmlFor="exibitionName" className="block text-black text-base font-bold">
+          <div className="form-group">
+            <label htmlFor="exibitionName" className="form-label">
               Nome de exibição *
             </label>
             <input
               type="text"
-              className="w-full p-4 border-4 border-[#E5DCDC] rounded-md text-black"
+              className="form-input"
               value={exibitionName}
               onChange={(e) => setExibitionName(e.target.value)}
             />
           </div>
 
-          <div className="mb-6">
-            <label htmlFor="userName" className="block text-black text-base font-bold">
+          <div className="form-group">
+            <label htmlFor="userName" className="form-label">
               Nome de usuário *
             </label>
             <input
               type="text"
-              className="w-full p-4 border-4 border-[#E5DCDC] rounded-md text-black"
+              className="form-input"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
             />
           </div>
 
-          <div className="mb-6">
-            <label htmlFor="email" className="block text-black text-base font-bold">
+          <div className="form-group">
+            <label htmlFor="email" className="form-label">
               Endereço de e-mail *
             </label>
             <input
               type="email"
-              className="w-full p-4 border-4 border-[#E5DCDC] rounded-md text-black"
+              className="form-input"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
-          <div className="mb-6">
-            <label htmlFor="profilePictureInput" className="block text-black text-base font-bold">
-              Foto de Perfil
-            </label>
-            <div className="flex items-center gap-4">
+          <div className="form-group">
+            <div className="profile-picture-container">
               <img
-                className="profile-picture w-24 h-24 object-cover rounded-full"
+                className="profile-picture-preview"
                 src={profilePicturePreview}
                 alt="Foto de Perfil"
               />
-              <div>
-                <label htmlFor="profilePictureInput" className="block text-black text-sm font-semibold mb-1">
-                  Selecionar nova foto
+              <div className="profile-picture-upload">
+                <label htmlFor="profilePictureInput" className="form-label">
+                Selecione sua nova foto de perfil
                 </label>
-                <div className="text-sm text-gray-600">Extensões suportadas: PNG, JPEG</div>
-                <div className="text-sm text-gray-600">Tamanho máximo: 5MB</div>
+                <div className="upload-info">Extensões suportadas: PNG, JPEG</div>
+                <div className="upload-info">Tamanho máximo: 5MB</div>
                 <input
                   type="file"
                   id="profilePictureInput"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
+                  className="upload-input"
                   onChange={handleFileChange}
                 />
               </div>
@@ -189,11 +174,11 @@ const ModalEditProfile: React.FC<EditProfileModalProps> = ({
         </div>
 
         <div className="btn-container">
-          <button className="btn-excluir text-black" onClick={handleOpenDeleteModalClick}>
+          <button className="btn-excluir" onClick={handleOpenDeleteModalClick}>
             Excluir Conta
           </button>
           <button
-            className={`btn-salvar text-black ${isSaving ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`btn-salvar ${isSaving ? 'btn-disabled' : ''}`}
             onClick={handleSave}
             disabled={isSaving}
           >

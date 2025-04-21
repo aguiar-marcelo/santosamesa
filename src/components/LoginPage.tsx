@@ -5,15 +5,17 @@ import React, { useState } from "react";
 import { OrbitProgress } from "react-loading-indicators";
 import './css/LoginPage.css';
 
+
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { signIn, error } = useAuth();
 
+
   const login = async () => {
     if (!email) {
-      alert("Digite o email");
+      alert("Digite o e-mmail");
       return;
     }
     if (!password) {
@@ -23,6 +25,7 @@ const LoginPage = () => {
     setLoading(true);
     await signIn(email, password).then(() => setLoading(false));
   };
+
 
   return (
     <>
@@ -51,7 +54,7 @@ const LoginPage = () => {
               type="text"
               name="email"
               placeholder="Digite o seu e-mail"
-              className={`mb-4 login-input`}
+              className={`mb-4 login-input text-black`}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -60,7 +63,7 @@ const LoginPage = () => {
               type="password"
               name="password"
               placeholder="Digite a sua senha"
-              className="login-input"
+              className="login-input text-black"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -105,5 +108,6 @@ const LoginPage = () => {
     </>
   );
 };
+
 
 export default LoginPage;

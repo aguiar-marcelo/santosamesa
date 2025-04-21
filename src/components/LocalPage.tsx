@@ -9,21 +9,6 @@ import SectionFooter from "./SectionFooter";
 import SectionMenu from "./SectionMenu";
 import SectionFilterCategory from "@/components/SectionFilterCategory";
 
-interface Restaurant {
-  id: string;
-  name: string;
-  url_img: string;
-  aboutUs: string;
-  averageRating?: number;
-  category?: string | { id: string; name: string }; 
-  categoryName?: string; 
-}
-
-interface Category {
-  id: string;
-  name: string;
-}
-
 const LocalPage = () => {
   const [restaurants, setRestaurants] = React.useState<Restaurant[]>([]);
   const [restaurantSelected, setRestaurantSelected] = React.useState<Restaurant | undefined>(undefined);
@@ -36,7 +21,9 @@ const LocalPage = () => {
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = React.useState<string | null>("Todos");
 
-  const FetchRestaurants = async (query?: { categoryId?: string | null }) => {
+  console.log("LocalPage rendered. selectedCategory:", selectedCategory); // LOG ADICIONADO
+
+  const FetchRestaurants = async (query?: { categoryId?: number | null }) => {
     setLoading(true);
     try {
       const results = await getRestaurantsByCategory(query);
@@ -113,6 +100,7 @@ const LocalPage = () => {
   };
 
   const handleCategoryClick = (categoryName: string | null) => {
+    console.log("handleCategoryClick called with:", categoryName); // LOG ADICIONADO
     if (selectedCategory === categoryName) {
       setSelectedCategory("Todos");
       FetchRestaurants({});
@@ -125,7 +113,13 @@ const LocalPage = () => {
           (cat) => cat.name?.toLowerCase() === categoryName?.toLowerCase()
         );
         if (selectedCategoryObject?.id) {
-          FetchRestaurants({ categoryId: selectedCategoryObject.id });
+          const categoryIdNumber = parseInt(selectedCategoryObject.id, 10);
+          if (!isNaN(categoryIdNumber)) {
+            FetchRestaurants({ categoryId: categoryIdNumber });
+          } else {
+            console.error(`Category ID "${selectedCategoryObject.id}" is not a valid number.`);
+            FetchRestaurants({});
+          }
         } else {
           FetchRestaurants({});
         }
