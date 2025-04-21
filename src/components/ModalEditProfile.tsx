@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { updateUser as updateUserAPI } from "@/services/routes"; 
+import { updateUser as updateUserAPI } from "@/services/routes";
 import './css/ModalEditProfile.css';
 
 const ModalEditProfile: React.FC<EditProfileModalProps> = ({
@@ -20,6 +20,11 @@ const ModalEditProfile: React.FC<EditProfileModalProps> = ({
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
+  const [exibitionNameError, setExibitionNameError] = useState<string | null>(null);
+  const [userNameError, setUserNameError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
+
   useEffect(() => {
     if (user) {
       setExibitionName(user.exibitionName || "");
@@ -28,6 +33,10 @@ const ModalEditProfile: React.FC<EditProfileModalProps> = ({
       setProfilePicturePreview(user.profilePicture || "/img/user-null.png");
       setErrorMessage(null);
       setSuccessMessage(null);
+      setExibitionNameError(null);
+      setUserNameError(null);
+      setEmailError(null);
+      setFileError(null);
     } else {
       setExibitionName("");
       setUserName("");
@@ -36,12 +45,17 @@ const ModalEditProfile: React.FC<EditProfileModalProps> = ({
       setProfilePicturePreview("/img/user-null.png");
       setErrorMessage(null);
       setSuccessMessage(null);
+      setExibitionNameError(null);
+      setUserNameError(null);
+      setEmailError(null);
+      setFileError(null);
     }
   }, [user, isOpen]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     setProfilePictureFile(file || null);
+    setFileError(null);
 
     if (file) {
       const reader = new FileReader();
@@ -54,9 +68,47 @@ const ModalEditProfile: React.FC<EditProfileModalProps> = ({
     }
   };
 
+  const validateFields = () => {
+    let isValid = true;
+    setExibitionNameError(null);
+    setUserNameError(null);
+    setEmailError(null);
+
+    if (!exibitionName.trim()) {
+      setExibitionNameError("Nome de exibição não pode ser vazio.");
+      isValid = false;
+    }
+
+    const userNameRegex = /^[a-z0-9_-]+$/;
+    if (!userName.trim()) {
+      setUserNameError("Nome de usuário não pode ser vazio.");
+      isValid = false;
+    } else if (!userNameRegex.test(userName)) {
+      setUserNameError("Nome de usuário deve conter apenas letras minúsculas, números, hífen (-) e underline (_), sem espaços.");
+      isValid = false;
+    }
+
+    if (!email.trim()) {
+      setEmailError("Endereço de e-mail não pode ser vazio.");
+      isValid = false;
+    } else {
+      const emailRegex = /.+@/;
+      if (!emailRegex.test(email)) {
+        setEmailError("Por favor, insira um endereço de e-mail válido.");
+        isValid = false;
+      }
+    }
+
+    return isValid;
+  };
+
   const handleSave = async () => {
     if (!user?.id || !token) {
       setErrorMessage("Não autenticado.");
+      return;
+    }
+
+    if (!validateFields()) {
       return;
     }
 
@@ -118,10 +170,11 @@ const ModalEditProfile: React.FC<EditProfileModalProps> = ({
             </label>
             <input
               type="text"
-              className="form-input"
+              className={`form-input ${exibitionNameError ? 'form-input-error' : ''}`}
               value={exibitionName}
               onChange={(e) => setExibitionName(e.target.value)}
             />
+            {exibitionNameError && <p className="error-message">{exibitionNameError}</p>}
           </div>
 
           <div className="form-group">
@@ -130,10 +183,11 @@ const ModalEditProfile: React.FC<EditProfileModalProps> = ({
             </label>
             <input
               type="text"
-              className="form-input"
+              className={`form-input ${userNameError ? 'form-input-error' : ''}`}
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
             />
+            {userNameError && <p className="error-message">{userNameError}</p>}
           </div>
 
           <div className="form-group">
@@ -142,10 +196,11 @@ const ModalEditProfile: React.FC<EditProfileModalProps> = ({
             </label>
             <input
               type="email"
-              className="form-input"
+              className={`form-input ${emailError ? 'form-input-error' : ''}`}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
+            {emailError && <p className="error-message">{emailError}</p>}
           </div>
 
           <div className="form-group">
@@ -159,14 +214,15 @@ const ModalEditProfile: React.FC<EditProfileModalProps> = ({
                 <label htmlFor="profilePictureInput" className="form-label">
                   Selecione sua nova foto de perfil
                 </label>
-                <div className="upload-info">Extensões suportadas: PNG, JPEG</div>
-                <div className="upload-info">Tamanho máximo: 5MB</div>
+                <div className="img-text">Extensões suportadas: PNG, JPEG</div>
+                <div className="img-text">Tamanho máximo: 5MB</div>
                 <input
                   type="file"
                   id="profilePictureInput"
-                  className="upload-input"
+                  className={`form-input ${fileError ? 'form-input-error' : ''}`}
                   onChange={handleFileChange}
                 />
+                {fileError && <p className="error-message">{fileError}</p>}
               </div>
             </div>
           </div>
