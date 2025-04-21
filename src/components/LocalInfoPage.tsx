@@ -39,7 +39,6 @@ const LocalInfoPage = ({
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error("Falha ao buscar avaliações:", errorData);
         if (errorData?.message === `No ratings found for restaurant with id ${data.id}`) {
           setAvaliacoes([]);
           setNoRatingsMessage("Esse restaurante ainda não tem reviews. Seja o primeiro!");
@@ -56,7 +55,6 @@ const LocalInfoPage = ({
       setNoRatingsMessage(null);
       setAvaliacoes(results);
     } catch (err) {
-      console.error("Falha ao pesquisar avaliações:", err);
       setAvaliacoes([]);
       setError("Falha ao carregar as avaliações.");
     } finally {
@@ -69,7 +67,6 @@ const LocalInfoPage = ({
     try {
       const response = await fetch(`${apiBaseUrl}/restaurant/average/${data.id}`);
       if (!response.ok) {
-        console.error("Falha ao buscar a média de avaliações.");
         return;
       }
       const result: RestaurantAverageRating = await response.json();
@@ -82,14 +79,12 @@ const LocalInfoPage = ({
 
   const enviarAvaliacao = async () => {
     if (!user?.id) {
-      console.error("ID do usuário não encontrado.");
       setError("Usuário não autenticado.");
       return;
     }
 
 
     if (!data?.id) {
-      console.error("ID do restaurante não encontrado.");
       setError("ID do restaurante inválido.");
       return;
     }
@@ -123,7 +118,6 @@ const LocalInfoPage = ({
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error("Erro ao enviar avaliação:", errorData);
         setError("Falha ao enviar a avaliação.");
         return;
       }
@@ -134,7 +128,6 @@ const LocalInfoPage = ({
       setEstrelas(0);
       setComentario("");
     } catch (error) {
-      console.error("Erro ao enviar avaliação:", error);
       setError("Erro inesperado ao enviar a avaliação.");
     } finally {
       setIsLoading(false);

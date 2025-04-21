@@ -82,7 +82,6 @@ const ModalEditProfile: React.FC<EditProfileModalProps> = ({
       onSaveSuccess(responseData);
       onClose();
     } catch (error: any) {
-      console.error("Erro ao enviar dados de perfil:", error);
       setErrorMessage(error?.response?.data?.message || "Ocorreu um erro ao tentar salvar suas alterações.");
       setIsSaving(false);
     }

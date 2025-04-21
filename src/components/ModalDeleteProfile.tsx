@@ -28,7 +28,6 @@ const ModalDeleteProfile: React.FC<ModalDeleteProfileProps> = ({
       onDeleteSuccess();
       onClose();
     } catch (error: any) {
-      console.error("Erro ao excluir conta:", error);
       setErrorMessage(error?.response?.data?.message || "Ocorreu um erro ao tentar excluir sua conta.");
       setIsDeleting(false);
     }

@@ -45,7 +45,6 @@ const LocalRegisterPage = () => {
       formDataRestaurant.append("url_img", file);
 
       const response = await postRestaurant(formDataRestaurant);
-      console.log(response);
 
       alert("Restaurante cadastrado com sucesso!");
       router.push("/local");

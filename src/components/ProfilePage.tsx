@@ -75,7 +75,6 @@ const ProfilePage = () => {
           setLoadingRatings(false);
         } else {
           const errorText = await response.text();
-          console.error("Failed to fetch user ratings:", errorText);
           setErrorRatings(`Failed to load your ratings: ${response.status} - ${errorText}`);
           setUserRatings([]);
           setLoadingRatings(false);
@@ -86,7 +85,6 @@ const ProfilePage = () => {
       const data: Rating[] = await response.json();
       setUserRatings(data);
     } catch (error) {
-      console.error("Error fetching user ratings:", error);
       setErrorRatings("Um erro inesperado ocorreu ao carregar suas avaliações.");
       setUserRatings([]);
     } finally {
