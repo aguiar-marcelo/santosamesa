@@ -1,7 +1,16 @@
-.title-container {
-    flex-grow: 1;
+.modal-excluir-content {
+    background-color: white;
+    padding: 35px 70px;
+    height: 430px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.title-container-delete {
     display: flex;
     justify-content: center;
+    margin-top: 15px;
 }
 
 .title {
@@ -14,22 +23,43 @@
 .btn-container-excluir {
     display: flex;
     flex-direction: column;
-}
-
-.btn-excluir-conta {
-    background-color: #B11414;
-    color: white;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+  }
+  
+  .btn-excluir-conta,
+  .btn-cancelar {
+    width: 50%;
     border-radius: 8px;
     padding: 8px;
-}
-
-.btn-cancelar {
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+  
+  .btn-excluir-conta {
+    background-color: #B11414;
+    color: white;
+  }
+  
+  .btn-cancelar {
     color: #524F4F;
-    padding: 8px;
-}
+    background-color: #f0f0f0;
+  }
 
-.text-container{
+.text-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
-}
+    gap: 10px;
+  }
+  
+  .text-paragraph {
+    text-align: center;
+  }
+  
+  .font-bold {
+    font-weight: bold;
+  }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './css/ModalDeleteProfile.css';
 import { deleteUser } from "@/services/routes";
-import { useAuth } from '@/context/AuthContext'; 
+import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 
 interface ModalDeleteProfileProps {
@@ -14,7 +14,7 @@ interface ModalDeleteProfileProps {
 const ModalDeleteProfile: React.FC<ModalDeleteProfileProps> = ({ isOpen, onClose, userId, onDeleteSuccess }) => {
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const { signOut } = useAuth(); 
+  const { signOut } = useAuth();
   const router = useRouter();
 
   const handleDelete = async () => {
@@ -49,17 +49,16 @@ const ModalDeleteProfile: React.FC<ModalDeleteProfileProps> = ({ isOpen, onClose
 
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50 text-black">
-      <div className="modal-content bg-white rounded-md p-8 w-[500px]">
-        <div className="modal-header mb-4">
-          <h2 className="title">Excluir Conta</h2>
+      <div className="modal-excluir-content rounded-md p-8 w-[950px]">
+        <div className="title-container-delete">
+          <div className="title">Excluir Conta</div>
         </div>
         <div className="text-container">
-          <p>
+          <div className="text-paragraph">
             Ao excluir sua conta, você perderá todas as suas avaliações registradas, assim como os seus dados cadastrados,
             permitindo com que um novo usuário possa se cadastrar com suas informações.
-          </p>
-          <p className="font-bold"> Pense bem antes de prosseguir</p>
-          {errorMessage && <div className="error-message mt-2 text-red-500">{errorMessage}</div>}
+          </div>
+          <div className="font-bold text-paragraph"> Pense bem antes de prosseguir</div>
         </div>
         <div className="btn-container-excluir">
           <button
@@ -69,7 +68,7 @@ const ModalDeleteProfile: React.FC<ModalDeleteProfileProps> = ({ isOpen, onClose
           >
             {isDeleting ? 'Excluindo...' : 'Excluir Conta'}
           </button>
-          <button
+          <button className="btn-cancelar"
             onClick={onClose}
             disabled={isDeleting}
           >
