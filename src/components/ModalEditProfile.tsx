@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './css/ModalEditProfile.css';
-import { apiBaseUrl } from './LocalInfoPage';
 import { useAuth } from '@/context/AuthContext';
+import { updateUser } from "@/services/routes";
 
 interface EditProfileModalProps {
   isOpen: boolean;
@@ -14,9 +14,16 @@ interface EditProfileModalProps {
     email?: string | null;
   } | null;
   onSaveSuccess: () => void;
+  onOpenDeleteModal: () => void;
 }
 
-const ModalEditProfile: React.FC<EditProfileModalProps> = ({ isOpen, onClose, user, onSaveSuccess }) => {
+const ModalEditProfile: React.FC<EditProfileModalProps> = ({
+  isOpen,
+  onClose,
+  user,
+  onSaveSuccess,
+  onOpenDeleteModal,
+}) => {
   const { token } = useAuth();
   const [exibitionName, setExibitionName] = useState(user?.exibitionName || "");
   const [userName, setUserName] = useState(user?.userName || "");
@@ -82,29 +89,22 @@ const ModalEditProfile: React.FC<EditProfileModalProps> = ({ isOpen, onClose, us
     }
 
     try {
-      const response = await fetch(`${apiBaseUrl}/user`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
+      const responseData = await updateUser(user.id, formData);
 
-      if (response.ok) {
-        setSuccessMessage("Perfil atualizado com sucesso!");
-        setIsSaving(false);
-        onSaveSuccess();
-        onClose();
-      } else {
-        const errorData = await response.json();
-        setErrorMessage(errorData?.message || `Erro ao atualizar o perfil: ${response.status}`);
-        setIsSaving(false);
-      }
+      setSuccessMessage("Perfil atualizado com sucesso!");
+      setIsSaving(false);
+      onSaveSuccess();
+      onClose();
     } catch (error: any) {
       console.error("Erro ao enviar dados de perfil:", error);
-      setErrorMessage("Ocorreu um erro ao tentar salvar suas alterações.");
+      setErrorMessage(error?.response?.data?.message || "Ocorreu um erro ao tentar salvar suas alterações.");
       setIsSaving(false);
     }
+  };
+
+  const handleOpenDeleteModalClick = () => {
+    onClose();
+    onOpenDeleteModal();
   };
 
   if (!isOpen) {
@@ -189,7 +189,7 @@ const ModalEditProfile: React.FC<EditProfileModalProps> = ({ isOpen, onClose, us
         </div>
 
         <div className="btn-container">
-          <button className="btn-excluir text-black">
+          <button className="btn-excluir text-black" onClick={handleOpenDeleteModalClick}>
             Excluir Conta
           </button>
           <button

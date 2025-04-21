@@ -1,0 +1,35 @@
+.title-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.title {
+    color: black;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 100%;
+}
+
+.btn-container-excluir {
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-excluir-conta {
+    background-color: #B11414;
+    color: white;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.btn-cancelar {
+    color: #524F4F;
+    padding: 8px;
+}
+
+.text-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

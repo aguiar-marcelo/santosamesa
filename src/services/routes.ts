@@ -23,6 +23,18 @@ export async function postLogin(email: string, password: string) {
   return data;
 }
 
+export async function updateUser(id: number, userData: FormData) {
+  const { data } = await api.put("/auth/update/" + id, userData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return data;
+}
+
+export async function deleteUser(id: number): Promise<any> {
+  const response = await api.delete("/auth/delete/" + id);
+  return response.data;
+}
+
 export async function getRestaurantRating(restauratId: number): Promise<any[]> {
   const { data } = await api.get("/rating");
   return data;
@@ -77,24 +89,6 @@ export async function postLocalReview(
 
   return data;
 }
-
-// export async function putEditDriver(
-//   id: number,
-//   nome: string,
-//   cpf: string,
-//   cel: string,
-//   cel_reserva: string | null
-// ) {
-//   const { data } = await api.put("/scheduling/driver", {
-//     id,
-//     nome,
-//     cpf,
-//     cel,
-//     cel_reserva,
-//   });
-
-//   return data;
-// }
 
 export async function getCategories(): Promise<any[]> {
   const { data } = await api.get("/category");

@@ -7,6 +7,7 @@ import { apiBaseUrl } from './LocalInfoPage';
 import { Restaurant } from '../interfaces/restaurant';
 import { Loader2 } from 'lucide-react';
 import ModalEditProfile from './ModalEditProfile';
+import ModalDeleteProfile from './ModalDeleteProfile';
 import './css/ProfilePage.css';
 
 interface Rating {
@@ -26,6 +27,7 @@ const ProfilePage = () => {
   const [loadingRatings, setLoadingRatings] = useState<boolean>(true);
   const [errorRatings, setErrorRatings] = useState<string | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
   const handleOpenEditModal = () => {
     setIsEditModalOpen(true);
@@ -35,41 +37,24 @@ const ProfilePage = () => {
     setIsEditModalOpen(false);
   };
 
-  const handleSaveProfile = async (data: {
-    exibitionName: string;
-    userName: string;
-    profilePictureFile: File | null;
-  }) => {
-    console.log("Dados a serem salvos no ProfilePage:", data);
-    try {
-      const formData = new FormData();
-      formData.append('exibitionName', data.exibitionName);
-      formData.append('userName', data.userName);
-      if (data.profilePictureFile) {
-        formData.append('profilePicture', data.profilePictureFile);
-      }
+  const handleOpenDeleteModalFromEdit = () => {
+    setIsEditModalOpen(false);
+    setIsDeleteModalOpen(true);
+  };
 
-      const response = await fetch(`${apiBaseUrl}/user/profile`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setIsEditModalOpen(true);
+  };
 
-      if (response.ok) {
-        console.log("Perfil atualizado com sucesso!");
-      } else {
-        const errorText = await response.text();
-        console.error("Erro ao atualizar o perfil:", errorText);
-        alert(`Erro ao atualizar o perfil: ${response.status} - ${errorText}`);
-      }
-    } catch (error) {
-      console.error("Erro ao enviar dados de perfil:", error);
-      alert("Ocorreu um erro ao tentar salvar suas alterações.");
-    } finally {
-      handleCloseEditModal();
-    }
+  const handleProfileUpdateSuccess = () => {
+    console.log("Perfil atualizado com sucesso na ProfilePage!");
+    handleCloseEditModal();
+  };
+
+  const handleDeleteAccountSuccess = () => {
+    console.log("Conta excluída com sucesso na ProfilePage!");
+    setIsDeleteModalOpen(false);
   };
 
   useEffect(() => {
@@ -237,8 +222,18 @@ const ProfilePage = () => {
         isOpen={isEditModalOpen}
         onClose={handleCloseEditModal}
         user={user}
-        onSave={handleSaveProfile}
+        onSaveSuccess={handleProfileUpdateSuccess}
+        onOpenDeleteModal={handleOpenDeleteModalFromEdit}
       />
+
+      {isDeleteModalOpen && user?.id !== undefined && (
+        <ModalDeleteProfile
+          isOpen={isDeleteModalOpen}
+          onClose={handleCloseDeleteModal}
+          userId={user.id}
+          onDeleteSuccess={handleDeleteAccountSuccess}
+        />
+      )}
     </div>
   );
 };
