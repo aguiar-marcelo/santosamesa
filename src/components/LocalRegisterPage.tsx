@@ -1,12 +1,12 @@
 "use client";
-import { postLocationRestaurant, postRestaurant } from "@/services/routes";
+import { getCategories, postLocationRestaurant, postRestaurant } from "@/services/routes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { OrbitProgress } from "react-loading-indicators";
 
 const LocalRegisterPage = () => {
-  const categorias = ["Bar", "Pizzaria", "Padaria"];
+  const [categories, setCategories] = useState<Category[]>([]);
   const [name, setName] = useState("");
   const [aboutUs, setAboutUs] = useState("");
   const [categoria, setCategoria] = useState("");
@@ -40,7 +40,7 @@ const LocalRegisterPage = () => {
       const formDataRestaurant = new FormData();
       formDataRestaurant.append("name", name);
       formDataRestaurant.append("aboutUs", aboutUs);
-      formDataRestaurant.append("categoryId", "1");
+      formDataRestaurant.append("categoryId", categoria);
       formDataRestaurant.append("locationId", locationResponse.id.toString());
       formDataRestaurant.append("url_img", file);
 
@@ -54,6 +54,21 @@ const LocalRegisterPage = () => {
       setLoading(false);
     }
   };
+
+  const FetchCategories = async () => {
+    try {
+      const results = await getCategories();
+      setCategories(results);
+    } catch (err) {
+      console.error("Falha ao buscar categorias", err);
+      setCategories([]);
+    }
+  };
+
+  useEffect(() => {
+    FetchCategories();
+  }, []);
+
 
   return (
     <div
@@ -88,9 +103,9 @@ const LocalRegisterPage = () => {
                   className="w-full p-3 border-2 border-[#ADA9A9] rounded-lg mb-4"
                 >
                   <option value="">Selecione uma categoria</option>
-                  {categorias.map((categoria, index) => (
-                    <option key={index} value={categoria.replace(" ", "-")}>
-                      {categoria}
+                  {categories.map((c, index) => (
+                    <option key={index} value={c.id}>
+                      {c.name}
                     </option>
                   ))}
                 </select>

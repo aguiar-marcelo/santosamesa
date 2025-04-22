@@ -21,7 +21,7 @@ const LocalPage = () => {
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = React.useState<string | null>("Todos");
 
-  console.log("LocalPage rendered. selectedCategory:", selectedCategory); // LOG ADICIONADO
+  console.log("LocalPage rendered. selectedCategory:", selectedCategory);
 
   const FetchRestaurants = async (query?: { categoryId?: number | null }) => {
     setLoading(true);

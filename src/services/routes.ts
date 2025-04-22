@@ -42,6 +42,7 @@ export async function getRestaurants(): Promise<any[]> {
   return data;
 }
 
+
 export async function getCategories(): Promise<any[]> {
   const { data } = await api.get("/category");
   return data;
