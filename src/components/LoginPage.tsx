@@ -47,7 +47,7 @@ const LoginPage = () => {
               </h2>
             </div>
           </div>
-          <div className={`login-column login-center-container text-gray-500`}>
+          <div className={`background login-column login-center-container`}>
             <h1 className="font-bold">Login</h1>
             <p className="login-p">E-mail</p>
             <input
@@ -72,7 +72,7 @@ const LoginPage = () => {
               <button
                 type="button"
                 onClick={login}
-                className="login-btn-style"
+                className="login-btn-style bg-primary"
                 disabled={loading}
                 onMouseOver={(e) =>
                   (e.currentTarget.style.backgroundColor =

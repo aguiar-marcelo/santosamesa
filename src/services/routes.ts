@@ -1,19 +1,19 @@
 import { axiosClient as api } from "./api";
 
 export async function getUser(id: number): Promise<any> {
-  const { data } = await api.get("/user/" + id);
+  const { data } = await api.get(`/user/${id}`);
   return data;
 }
 
 export async function updateUser(id: number, userData: FormData) {
-  const { data } = await api.put("/auth/update/" + id, userData, {
+  const { data } = await api.put(`/auth/update/${id}`, userData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return data;
 }
 
 export async function deleteUser(id: number): Promise<any> {
-  const response = await api.delete("/auth/delete/" + id);
+  const response = await api.delete(`/auth/delete/${id}`);
   return response.data;
 }
 
@@ -32,7 +32,7 @@ export async function postLogin(email: string, password: string) {
   return data;
 }
 
-export async function getRestaurantRating(restauratId: number): Promise<any[]> {
+export async function getRestaurantRating(restaurantId: number): Promise<any[]> {
   const { data } = await api.get("/rating");
   return data;
 }
@@ -42,7 +42,6 @@ export async function getRestaurants(): Promise<any[]> {
   return data;
 }
 
-
 export async function getCategories(): Promise<any[]> {
   const { data } = await api.get("/category");
   return data;
@@ -50,8 +49,10 @@ export async function getCategories(): Promise<any[]> {
 
 export async function getRestaurantsByCategory(query?: {
   categoryId?: number | number[] | null;
+  minRating?: number | null;
+  maxRating?: number | null;
 }): Promise<any[]> {
-  const { data } = await api.get("/restaurant/", {
+  const { data } = await api.get("/restaurant", { 
     params: query,
   });
   return data;
@@ -67,8 +68,8 @@ export async function getRatingsByUser(
   return data;
 }
 
-export async function postRestaurant(resturant: FormData) {
-  const { data } = await api.post("/restaurant", resturant, {
+export async function postRestaurant(restaurant: FormData) {
+  const { data } = await api.post("/restaurant", restaurant, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return data;
@@ -94,11 +95,10 @@ export async function postLocalReview(
   restaurantId: string,
   userId: string
 ) {
-  const { data } = await api.post("/restaurant", {
+  const { data } = await api.post("/rating", { 
     value,
     restaurantId,
     userId,
   });
-
   return data;
 }

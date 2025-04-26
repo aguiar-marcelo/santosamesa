@@ -21,7 +21,6 @@ body {
 }
 
 h1 {
-  color: black;
   display: block;
   font-size: 2em;
   margin-top: 0.67em;
@@ -31,7 +30,6 @@ h1 {
 }
 
 h2 {
-  color: black;
   display: block;
   font-size: 1.5em;
   margin-top: 0.83em;
@@ -41,7 +39,6 @@ h2 {
 }
 
 h3 {
-  color: black;
   display: block;
   font-size: 1.17em;
   margin-top: 1em;
@@ -51,7 +48,6 @@ h3 {
 }
 
 h4 {
-  color: black;
   display: block;
   font-size: 1em;
   margin-top: 1.33em;
@@ -61,11 +57,39 @@ h4 {
 }
 
 h5 {
-  color: black;
   display: block;
   font-size: .83em;
   margin-top: 1.67em;
   margin-bottom: 1.67em;
   margin-left: 0;
   margin-right: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+b,
+p,
+a,
+input {
+  color: #393535
+}
+
+button {
+  cursor: pointer;
+}
+
+.background {
+  background-color: #F0F6FC !important
+}
+
+.no-ratings-message {
+  padding-top: 80px;
+  padding-bottom: 80px;
+  text-align: center;
+  font-weight: bold;
+  color: #878785;
 }

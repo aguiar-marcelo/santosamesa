@@ -62,8 +62,10 @@ interface Category {
 
 interface FilterCategoryProps {
     categories: Category[];
-    selectedCategory: string | null;
-    onCategoryClick: (categoryName: string | null) => void;
+    selectedCategories: string[];
+    onCategoryChange: (categoryName: string) => void;
+    selectedRatingRanges: { min: number; max: number }[];
+    onRatingChange: (rating: number) => void;
 }
 
 interface RatingFilterProps {
@@ -75,15 +77,15 @@ interface EditProfileModalProps {
     isOpen: boolean;
     onClose: () => void;
     user: {
-      exibitionName?: string | null;
-      userName?: string | null;
-      profilePicture?: string | null;
-      id?: number;
-      email?: string | null;
+        exibitionName?: string | null;
+        userName?: string | null;
+        profilePicture?: string | null;
+        id?: number;
+        email?: string | null;
     } | null;
     onSaveSuccess: (updatedUser: any) => void;
     onOpenDeleteModal: () => void;
-  }
+}
 
 interface ModalDeleteProfileProps {
     isOpen: boolean;

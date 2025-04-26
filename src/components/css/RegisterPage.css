@@ -11,7 +11,6 @@
 .cadastro-form-wrapper {
     width: 640px;
     margin: auto;
-    background-color: white;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -48,7 +47,7 @@
 }
 
 .cadastro-progress::-webkit-progress-value {
-    background-color: #1D98EA;
+    background-color: #31afe1;
     border-radius: 5px;
 }
 
@@ -116,7 +115,6 @@
 }
 
 .cadastro-next-button {
-    background-color: #3b82f6;
     color: #fff;
     padding-top: 12px;
     padding-bottom: 12px;
@@ -126,10 +124,6 @@
     transition-property: background-color;
     transition-duration: 150ms;
     transition-timing-function: ease-in-out;
-}
-
-.cadastro-next-button:hover {
-    background-color: #2563eb;
 }
 
 .cadastro-form-stage-2 {
@@ -180,7 +174,6 @@
 }
 
 .cadastro-submit-button {
-    background-color: #3b82f6;
     color: #fff;
     padding-top: 12px;
     padding-bottom: 12px;
@@ -191,10 +184,6 @@
     transition-duration: 150ms;
     transition-timing-function: ease-in-out;
     width: 100%;
-}
-
-.cadastro-submit-button:hover {
-    background-color: #2563eb;
 }
 
 .cadastro-back-button-stage-2 {

@@ -27,14 +27,14 @@ const SobreNosPage = () => {
   return (
     <div className="sobre-nos-container">
       <SectionMenu />
-      <div className="sobre-nos-content">
+      <div className="sobre-nos-content background">
         <div className="sobre-nos-inner-container" style={{ marginTop: '70px' }} >
           <h2 className='sobre-nos-title'>Sobre Nós</h2>
           <h4 className='sobre-nos-subtitle'>Conectando santistas e turistas para as melhores experiências gastronômicas desde 2025</h4>
         </div>
 
-        <div className="sobre-nos-grid-container-1" style={{ ...styles.fadeIn }}>
-          <div className="sobre-nos-inner-container sobre-nos-section">
+        <div className="sobre-nos-grid-container-1 " style={{ ...styles.fadeIn }}>
+          <div className="sobre-nos-inner-container sobre-nos-section" style={{ backgroundColor: "white" }}>
             <div>
               <h3 className='sobre-nos-section-title'>Nossa missão</h3>
               <h4 className='sobre-nos-section-subtitle'>O que nos motiva</h4>
@@ -46,7 +46,7 @@ const SobreNosPage = () => {
             </div>
           </div>
 
-          <div className="sobre-nos-inner-container sobre-nos-section">
+          <div className="sobre-nos-inner-container sobre-nos-section" style={{ backgroundColor: "white" }}>
             <div>
               <h3 className='sobre-nos-section-title'>Nossa história</h3>
               <h4 className='sobre-nos-section-subtitle'>Como começou</h4>
@@ -65,7 +65,7 @@ const SobreNosPage = () => {
         </div>
 
         <div className="sobre-nos-grid-container-2 sobre-nos-values-grid" style={{ marginBottom: '60px', ...styles.fadeIn }}>
-          <div className="sobre-nos-inner-container sobre-nos-section">
+          <div className="sobre-nos-inner-container sobre-nos-section" style={{ backgroundColor: "white" }}>
             <div>
               <h3 className='sobre-nos-section-title'>Autenticidade</h3>
               <h5 className='sobre-nos-section-text'>
@@ -75,7 +75,7 @@ const SobreNosPage = () => {
             </div>
           </div>
 
-          <div className="sobre-nos-inner-container sobre-nos-section">
+          <div className="sobre-nos-inner-container sobre-nos-section" style={{ backgroundColor: "white" }}>
             <div>
               <h3 className='sobre-nos-section-title'>Comunidade</h3>
               <h5 className='sobre-nos-section-text'>
@@ -85,7 +85,7 @@ const SobreNosPage = () => {
             </div>
           </div>
 
-          <div className="sobre-nos-inner-container sobre-nos-section">
+          <div className="sobre-nos-inner-container sobre-nos-section" style={{ backgroundColor: "white" }}>
             <div>
               <h3 className='sobre-nos-section-title'>Diversidade</h3>
               <h5 className='sobre-nos-section-text'>

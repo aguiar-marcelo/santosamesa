@@ -25,7 +25,6 @@
     color: black;
     background: none;
     border: none;
-    cursor: pointer;
 }
 
 .modal-overlay {
@@ -75,12 +74,7 @@
     justify-content: center;
     font-weight: 500;
     border: none;
-    cursor: pointer;
     transition: background-color 0.2s ease;
-}
-
-.btn-salvar:hover {
-    background-color: #1c8ab3;
 }
 
 .btn-excluir {
@@ -93,12 +87,7 @@
     justify-content: center;
     font-weight: 500;
     background: none;
-    cursor: pointer;
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-}
-
-.btn-excluir:hover {
-    background-color: #ffe6e6;
 }
 
 .img-text {

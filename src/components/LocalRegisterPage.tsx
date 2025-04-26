@@ -76,7 +76,7 @@ const LocalRegisterPage = () => {
       style={{ backgroundImage: "url(img/img-cadastro-local.jpg)" }}
     >
       <form className="flex justify-center items-center h-full">
-        <div className="w-full max-w-4xl bg-white bg-opacity-80 p-8 rounded-lg shadow-lg text-gray-500">
+        <div className="w-full max-w-4xl background p-8 rounded-lg shadow-lg ">
           <div className="flex flex-col items-center w-full">
             <h2 className="text-2xl font-semibold mt-0 mb-12">
               Cadastrar Novo Local
@@ -126,7 +126,7 @@ const LocalRegisterPage = () => {
               <input
                 type="file"
                 accept="image/png, image/jpeg"
-                className="w-full cursor-pointer rounded-lg border outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-gray-500 file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:text-gray-700  dark:focus:border-primary"
+                className="bg-white w-full cursor-pointer rounded-lg border outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-gray-500 file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:text-gray-700  dark:focus:border-primary"
                 onChange={(e) => {
                   const selectedFile = e.target.files?.[0];
                   if (selectedFile) setFile(selectedFile);
@@ -180,7 +180,7 @@ const LocalRegisterPage = () => {
             </div>
 
             <div className="flex gap-5 w-full justify-end items-center">
-              <Link href="/local" className="text-gray-500">
+              <Link href="/local">
                 Cancelar
               </Link>
               <button
