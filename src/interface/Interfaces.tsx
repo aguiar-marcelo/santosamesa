@@ -3,6 +3,18 @@ interface User {
     id?: number;
     profilePicture?: string;
     exibitionName?: string;
+    userName?: string;
+}
+
+interface UserData {
+    id: number;
+    exibitionName: string | null;
+    userName: string | null;
+    profilePicture: string | null;
+}
+
+interface ProfilePageProps {
+    userId: string;
 }
 
 interface LocalData {
@@ -64,7 +76,7 @@ interface FilterCategoryProps {
     categories: Category[];
     selectedCategories: string[];
     onCategoryChange: (categoryName: string) => void;
-    selectedRatingRanges: { min: number; max: number }[];
+    selectedRatings: number[];
     onRatingChange: (rating: number) => void;
 }
 

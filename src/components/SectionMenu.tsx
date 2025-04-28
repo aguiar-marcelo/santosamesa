@@ -4,6 +4,7 @@ import { User, LogOut } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
+import logo from '../../public/img/img-logo.png';
 
 const SectionMenu = () => {
   const { user, token, signOut } = useAuth();
@@ -14,7 +15,7 @@ const SectionMenu = () => {
       >
         <div className="w-full flex justify-between gap-4 p-4 items-center ">
           <div className="flex justify-center items-center gap-2">
-            <img src="img/img-logo.png" alt="Logo" width={45} height={40} />
+          <img src={logo.src} alt="Logo" width={45} height={40} />
             <h1 className="text-white text-2xl font-bold">SANTOS À MESA</h1>
             <div className="rounded-lg overflow-hidden space-x-8 pl-10">
               <Link href="/" className="text-white hover:underline">
@@ -35,7 +36,7 @@ const SectionMenu = () => {
           <div className="flex justify-center gap-4 items-center">
             {user && token ? (
               <div className="flex gap-5">
-                <Link href="/perfil" className="text-white hover:underline">
+                <Link href={`/perfil/${user.id}`} className="text-white hover:underline">
                   <Image
                     className="ml-3 h-12 w-12 rounded-full"
                     style={{ border: '2px solid rgba(255, 255, 255, 0.5)' }}
@@ -55,8 +56,7 @@ const SectionMenu = () => {
                 >
                   <LogOut />
                 </button>
-              </div>
-            ) : (
+              </div>) : (
               <>
                 {" "}
                 <Link href="/login" className="text-white underline">

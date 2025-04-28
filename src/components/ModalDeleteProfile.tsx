@@ -39,7 +39,7 @@ const ModalDeleteProfile: React.FC<ModalDeleteProfileProps> = ({
 
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50 text-black">
-      <div className="modal-content-excluir">
+      <div className="modal-content-excluir background">
         <div className="modal-header">
           <div className="title-container w-full">
             <div className="title">Excluir conta</div>

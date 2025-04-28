@@ -21,18 +21,9 @@ const LocalPage = () => {
   const [loading, setLoading] = React.useState(true);
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [selectedCategories, setSelectedCategories] = React.useState<string[]>(["Todos"]);
-  const [selectedRatingRanges, setSelectedRatingRanges] = React.useState<{ min: number; max: number }[]>([]);
+  const [selectedRatings, setSelectedRatings] = React.useState<number[]>([]);
 
-  console.log("LocalPage rendered. selectedCategories:", selectedCategories, "selectedRatingRanges:", selectedRatingRanges);
-
-  const getRatingRange = (rating: number) => {
-    if (rating === 1) return { minRating: 0.1, maxRating: 1.4 };
-    if (rating === 2) return { minRating: 1.5, maxRating: 2.4 };
-    if (rating === 3) return { minRating: 2.5, maxRating: 3.4 };
-    if (rating === 4) return { minRating: 3.5, maxRating: 4.4 };
-    if (rating === 5) return { minRating: 4.5, maxRating: 5 };
-    return { minRating: undefined, maxRating: undefined };
-  };
+  console.log("LocalPage rendered. selectedCategories:", selectedCategories, "selectedRatings:", selectedRatings);
 
   const FetchRestaurants = async (url: string) => {
     setLoading(true);
@@ -56,7 +47,7 @@ const LocalPage = () => {
 
   const FetchCategories = async () => {
     try {
-      const results = await getCategories();
+      const results: Category[] = await getCategories();
       setCategories(results);
     } catch (err) {
       console.error("Falha ao buscar categorias", err);
@@ -72,7 +63,6 @@ const LocalPage = () => {
     let url = `${process.env.NEXT_PUBLIC_API_URL}/restaurant?`;
     const params: string[] = [];
 
-    const categoryIdsToFilter: number[] = [];
     if (!selectedCategories.includes("Todos")) {
       selectedCategories.forEach(selectedCategoryName => {
         const category = categories.find(cat => cat.name?.toLowerCase() === selectedCategoryName.toLowerCase());
@@ -82,13 +72,11 @@ const LocalPage = () => {
       });
     }
 
-    if (selectedRatingRanges.length > 0) {
-      selectedRatingRanges.forEach(range => {
-        if (range.min !== undefined && range.max !== undefined) {
-          params.push(`minRating=${range.min}`);
-          params.push(`maxRating=${range.max}`);
-        }
-      });
+    if (selectedRatings.length > 0) {
+      const ratingsParam = selectedRatings.map(rating => `ratings=${rating}`).join('&');
+      if (ratingsParam) {
+        params.push(ratingsParam);
+      }
     }
 
     const finalUrl = url + params.join('&');
@@ -102,13 +90,12 @@ const LocalPage = () => {
     }
     setFilteredRestaurants(filtered);
     setCurrentPage(1);
-
-    if (selectedCategories.includes("Todos") && (selectedCategories.length > 1 || selectedRatingRanges.length > 0)) {
+    if (selectedCategories.includes("Todos") && selectedCategories.length > 1) {
       setSelectedCategories(prev => prev.filter(cat => cat !== "Todos"));
-    } else if (selectedCategories.length === 0 && selectedRatingRanges.length === 0) {
+    } else if (selectedCategories.length === 0 && selectedRatings.length === 0) {
       setSelectedCategories(["Todos"]);
     }
-  }, [searchTerm, selectedCategories, selectedRatingRanges, categories]);
+  }, [searchTerm, selectedCategories, selectedRatings, categories]);
 
   React.useEffect(() => {
     const startIndex = 0;
@@ -143,48 +130,33 @@ const LocalPage = () => {
         }
       }
     });
-    setSelectedRatingRanges([]);
   };
 
   const handleRatingChange = (rating: number) => {
-    const { minRating, maxRating } = getRatingRange(rating);
-    if (minRating === undefined || maxRating === undefined) return;
-
-    const newRange = { min: minRating, max: maxRating };
-
-    setSelectedRatingRanges((prevRanges) => {
-      const isAlreadySelected = prevRanges.some(
-        (range) => range.min === newRange.min && range.max === newRange.max
-      );
-
+    setSelectedRatings((prevRatings) => {
+      const isAlreadySelected = prevRatings.includes(rating);
       if (isAlreadySelected) {
-        return prevRanges.filter(
-          (range) => !(range.min === newRange.min && range.max === newRange.max)
-        );
+        return prevRatings.filter((r) => r !== rating);
       } else {
-        return [...prevRanges, newRange];
+        return [...prevRatings, rating];
       }
     });
-    setSelectedCategories([]);
   };
 
   const getNoRestaurantsMessage = () => {
-    if (selectedRatingRanges.length > 0 && filteredRestaurants.length === 0) {
-      const selectedRatings = selectedRatingRanges.map(range => {
-        if (range.min === 0.1 && range.max === 1.4) return 1;
-        if (range.min === 1.5 && range.max === 2.4) return 2;
-        if (range.min === 2.5 && range.max === 3.4) return 3;
-        if (range.min === 3.5 && range.max === 4.4) return 4;
-        if (range.min === 4.5 && range.max === 5) return 5;
-        return null;
-      }).filter(rating => rating !== null);
-
-      if (selectedRatings.length === 1) {
-        return `Nenhum restaurante com o rating ${selectedRatings[0]}.`;
-      } else if (selectedRatings.length > 1) {
-        const ratingsString = selectedRatings.join(', ');
-        return `Nenhum restaurante com os ratings ${ratingsString}.`;
+    const filtersApplied = selectedCategories.length > 1 || (selectedCategories.length === 1 && selectedCategories[0] !== "Todos") || selectedRatings.length > 0;
+    if (filtersApplied && filteredRestaurants.length === 0) {
+      let message = "Nenhum restaurante encontrado";
+      if (selectedCategories.length > 1 || (selectedCategories.length === 1 && selectedCategories[0] !== "Todos")) {
+        const selectedCategoriesString = selectedCategories.filter(cat => cat !== "Todos").join(', ');
+        message += ` na(s) categoria(s) ${selectedCategoriesString}`;
       }
+      if (selectedRatings.length > 0) {
+        const selectedRatingsString = selectedRatings.join(', ');
+        message += `${selectedCategories.length > 1 || (selectedCategories.length === 1 && selectedCategories[0] !== "Todos") ? ' e com' : ' com'} média${selectedRatings.length > 1 ? 's' : ''} de ${selectedRatingsString} estrel${selectedRatings.length > 1 ? 'as' : 'a'}`;
+      }
+      message += ".";
+      return <div className="no-ratings-message">{message}</div>;
     }
     return null;
   };
@@ -196,10 +168,9 @@ const LocalPage = () => {
       {restaurantSelected ? (
         <LocalInfoPage data={restaurantSelected} setData={setRestaurantSelected} />
       ) : (
-
         <div className="local-page-content-wrapper">
           <SectionMenu />
-          <div className="local-page-background" style={{ backgroundImage: "url('img/localidade.jpg')" }}></div>
+          <div className="local-page-background" style={{ backgroundImage: "url('/img/localidade.jpg')" }}></div>
           <div className="local-page-main-container">
             <div className="local-page-content-card background">
               <div className="local-explore-header">
@@ -216,43 +187,39 @@ const LocalPage = () => {
                 categories={categories}
                 selectedCategories={selectedCategories}
                 onCategoryChange={handleCategoryChange}
-                selectedRatingRanges={selectedRatingRanges}
+                selectedRatings={selectedRatings}
                 onRatingChange={handleRatingChange}
               />
 
               <div className="local-loading-container">
-                {loading && <Loader2 className="local-loading-spinner" />}
+                {loading && <Loader2 className="loading-spinner" />}
               </div>
 
-              {noRestaurantsMessage && (
-                <div className="local-no-restaurants-message">
-                  {noRestaurantsMessage}
-                </div>
-              )}
+              {noRestaurantsMessage}
 
               {!noRestaurantsMessage && (
                 <div className="local-restaurants-grid">
                   {visibleRestaurants.map((place, index) => (
-                      <div key={index} className="local-restaurant-card">
-                        <img src={place.url_img ?? undefined} alt={place.name} className="local-restaurant-image" />
-                        <div className="local-restaurant-details">
-                          <div>
-                            <b className="local-restaurant-name">{place.name}</b>
-                            {place.category && typeof place.category === 'object' && place.category.name && (
-                              <p className="local-restaurant-category">{place.category.name}</p>
-                            )}
-                            {place.averageRating !== undefined && (
-                              <div className="local-restaurant-rating">
-                                {Array(Math.round(place.averageRating)).fill(0).map((_, starIndex) => (
-                                  <img key={`filled-${place.id}-${starIndex}`} className="local-restaurant-star" src="img/estrela-preenchida.png" alt="Estrela" />
-                                ))}
-                              </div>
-                            )}
-                            <p className="local-restaurant-description">{place.aboutUs}</p>
-                          </div>
-                          <button type="button" onClick={() => setRestaurantSelected(place)} className="local-restaurant-button bg-primary">Saiba mais</button>
+                    <div key={index} className="local-restaurant-card">
+                      <img src={place.url_img ?? undefined} alt={place.name} className="local-restaurant-image" />
+                      <div className="local-restaurant-details">
+                        <div>
+                          <b className="local-restaurant-name">{place.name}</b>
+                          {place.category && typeof place.category === 'object' && place.category.name && (
+                            <p className="local-restaurant-category">{place.category.name}</p>
+                          )}
+                          {place.averageRating !== undefined && (
+                            <div className="local-restaurant-rating">
+                              {Array(Math.round(place.averageRating)).fill(0).map((_, starIndex) => (
+                                <img key={`filled-${place.id}-${starIndex}`} className="local-restaurant-star" src="img/estrela-preenchida.png" alt="Estrela" />
+                              ))}
+                            </div>
+                          )}
+                          <p className="local-restaurant-description">{place.aboutUs}</p>
                         </div>
+                        <button type="button" onClick={() => setRestaurantSelected(place)} className="local-restaurant-button bg-primary">Saiba mais</button>
                       </div>
+                    </div>
                   ))}
                 </div>
               )}

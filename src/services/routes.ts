@@ -47,17 +47,6 @@ export async function getCategories(): Promise<any[]> {
   return data;
 }
 
-export async function getRestaurantsByCategory(query?: {
-  categoryId?: number | number[] | null;
-  minRating?: number | null;
-  maxRating?: number | null;
-}): Promise<any[]> {
-  const { data } = await api.get("/restaurant", { 
-    params: query,
-  });
-  return data;
-}
-
 export async function getRatingsByUser(
   id: string,
   query?: { ratings?: number | number[] | null }

@@ -1,22 +1,8 @@
-.title-container {
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-}
-
-.title {
-  color: black;
-  font-weight: 700;
-  font-size: 36px;
-  line-height: 100%;
-}
-
 .modal-content-excluir {
   padding: 35px 30px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: white;
   border-radius: 8px;
   width: 800px;
   height: 450px;
@@ -45,12 +31,20 @@
   font-weight: bold;
 }
 
+.btn-excluir-conta:hover {
+  background-color: #990808;
+}
+
 .btn-cancelar {
   color: #524F4F;
   padding: 8px;
   border-radius: 8px;
   width: 100%;
   font-weight: bold;
+}
+
+.btn-cancelar:hover {
+  background-color: #b1141400;
 }
 
 .text-container {

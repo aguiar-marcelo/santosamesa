@@ -150,7 +150,7 @@ const ModalEditProfile: React.FC<EditProfileModalProps> = ({
 
   return (
     <div className="modal-overlay">
-      <div className="modal-content">
+      <div className="modal-content background">
         <div className="modal-header">
           <div className="title-container">
             <div className="title">Editar Seu Perfil</div>
@@ -229,7 +229,7 @@ const ModalEditProfile: React.FC<EditProfileModalProps> = ({
         </div>
 
         <div className="btn-container">
-          <button className="btn-excluir" onClick={handleOpenDeleteModalClick}>
+          <button className="btn-excluir bg-white" onClick={handleOpenDeleteModalClick}>
             Excluir Conta
           </button>
           <button

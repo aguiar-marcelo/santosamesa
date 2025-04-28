@@ -2,9 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import './css/LocalInfoPage.css'
+import './css/LocalInfoPage.css';
 import { apiBaseUrl } from "@/services/api";
-
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const LocalInfoPage = ({
   data,
@@ -21,13 +22,11 @@ const LocalInfoPage = ({
   const [averageRating, setAverageRating] = useState<number>(0);
   const [noRatingsMessage, setNoRatingsMessage] = useState<string | null>(null);
 
-
   const { user, token } = useAuth() as { user: User; token: string };
-
+  const router = useRouter();
 
   const FetchRatings = async () => {
     if (!data?.id) return;
-
 
     try {
       const response = await fetch(`${apiBaseUrl}/rating/restaurant/${data.id}`, {
@@ -35,7 +34,6 @@ const LocalInfoPage = ({
           "Content-Type": "application/json",
         },
       });
-
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -50,7 +48,6 @@ const LocalInfoPage = ({
         return;
       }
 
-
       const results: Avaliacao[] = await response.json();
       setNoRatingsMessage(null);
       setAvaliacoes(results);
@@ -60,7 +57,6 @@ const LocalInfoPage = ({
     } finally {
     }
   };
-
 
   const fetchAverageRating = async () => {
     if (!data?.id) return;
@@ -76,29 +72,24 @@ const LocalInfoPage = ({
     }
   };
 
-
   const enviarAvaliacao = async () => {
     if (!user?.id) {
       setError("Usuário não autenticado.");
       return;
     }
 
-
     if (!data?.id) {
       setError("ID do restaurante inválido.");
       return;
     }
-
 
     if (estrelas === 0) {
       setError("Por favor, selecione uma avaliação (estrelas).");
       return;
     }
 
-
     setIsLoading(true);
     setError(null);
-
 
     try {
       const response = await fetch(`${apiBaseUrl}/rating`, {
@@ -115,13 +106,11 @@ const LocalInfoPage = ({
         }),
       });
 
-
       if (!response.ok) {
         const errorData = await response.json();
         setError("Falha ao enviar a avaliação.");
         return;
       }
-
 
       FetchRatings();
       fetchAverageRating();
@@ -134,15 +123,13 @@ const LocalInfoPage = ({
     }
   };
 
-
   useEffect(() => {
     FetchRatings();
     fetchAverageRating();
   }, [data?.id]);
 
-
   return (
-    <div className="local-info-container">
+    <div className="local-info-container background">
       <div className="local-image-container">
         <img
           src={data?.url_img}
@@ -188,46 +175,50 @@ const LocalInfoPage = ({
             </h4>
           </div>
 
-
           <div>
             <h4 className="local-about">{data?.aboutUs}</h4>
           </div>
-
 
           <div>
             <h2 className="local-reviews-title">Avaliações</h2>
           </div>
 
-
           <div>
             {noRatingsMessage ? (
-              <div className="local-about text-black ">{noRatingsMessage}</div>
+              <div className="local-about">{noRatingsMessage}</div>
             ) : (
               avaliacoes.map((avaliacao, index) => (
                 <div
                   key={avaliacao.id}
-                  className={`local-review-card ${
-                    index === avaliacoes.length - 1 && !data?.id
+                  style={{ backgroundColor: "white" }}
+                  className={`local-review-card ${index === avaliacoes.length - 1 && !data?.id
                       ? "local-review-card:last-child"
                       : ""
-                  }`}
+                    }`}
                 >
                   <div className="local-review-header">
                     <img
                       className="local-review-profile-picture"
                       src={avaliacao.user?.profilePicture || "/img/user-null.png"}
-                      alt={`Foto de Perfil de ${
-                        avaliacao.user?.exibitionName ||
+                      alt={`Foto de Perfil de ${avaliacao.user?.exibitionName ||
                         avaliacao.user?.userName ||
                         "Usuário"
-                      }`}
+                        }`}
                     />
                     <div className="local-review-user-info">
                       <div className="local-review-user-name-rating">
                         <h3 className="local-review-user-name">
                           {avaliacao.user?.exibitionName ||
-                            avaliacao.user?.userName ||
-                            "Usuário Anônimo"}
+                            avaliacao.user?.userName ? (
+                            <Link
+                              href={`/perfil/${avaliacao.userId}`}
+                              className="link-username"
+                            >
+                              {avaliacao.user.exibitionName || avaliacao.user.userName}
+                            </Link>
+                          ) : (
+                            "Usuário Anônimo"
+                          )}
                         </h3>
                         {Array(avaliacao.value)
                           .fill(0)
@@ -254,7 +245,6 @@ const LocalInfoPage = ({
           </div>
         </div>
 
-
         <div className="local-rating-section">
           <div
             className="local-rating-card"
@@ -271,7 +261,6 @@ const LocalInfoPage = ({
                 setComentario(target.value);
               }}
             ></textarea>
-
 
             <div className="local-rating-stars">
               {Array(5)
@@ -304,6 +293,5 @@ const LocalInfoPage = ({
     </div>
   );
 };
-
 
 export default LocalInfoPage;
