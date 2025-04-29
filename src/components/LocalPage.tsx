@@ -9,6 +9,7 @@ import SectionFooter from "./SectionFooter";
 import SectionMenu from "./SectionMenu";
 import SectionFilterCategory from "@/components/SectionFilterCategory";
 import './css/LocalPage.css'
+import { OrbitProgress } from "react-loading-indicators";
 
 const LocalPage = () => {
   const [restaurants, setRestaurants] = React.useState<Restaurant[]>([]);
@@ -192,7 +193,16 @@ const LocalPage = () => {
               />
 
               <div className="local-loading-container">
-                {loading && <Loader2 className="loading-spinner" />}
+                {loading &&  <OrbitProgress
+                    style={{
+                      fontSize: 5,
+                      display: "flex",
+                      justifyItems: "center",
+                    }}
+                    color="#000000"
+                    dense
+                    speedPlus={2}
+                  />}
               </div>
 
               {noRestaurantsMessage}

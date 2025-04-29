@@ -1,93 +1,93 @@
 /* Estilo para cada slide do Slider (que será um item do grid) */
 .home-carousel-slide {
-    width: 100%;
-    /* Ocupa 100% da largura da célula do grid */
-    padding: 0 12px;
-    /* Adiciona um pouco de espaçamento lateral dentro de cada slide */
-    box-sizing: border-box;
-    /* Garante que o padding não aumente a largura total */
+  width: 100%;
+  /* Ocupa 100% da largura da célula do grid */
+  padding: 0 12px;
+  /* Adiciona um pouco de espaçamento lateral dentro de cada slide */
+  box-sizing: border-box;border: 1px solid red;
+  /* Garante que o padding não aumente a largura total */
 }
 
 /* Estilos para o container do carrossel (Slider) */
 
-
 .slick-track {
-    display: flex !important;
-    margin-left: 30px;
-    gap: 80px;
-    /* Espaçamento entre os slides (cards) */
+  display: flex !important;
+  margin-left: 30px;
+  gap: 80px;
+  /* Espaçamento entre os slides (cards) */
 }
 
 /* Estilos para cada card */
 .home-carousel-card {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    border-width: 1px;
-    border-color: #9ca3af;
-    border-radius: 8px;
-    background-color: #fff;
-    max-width: 300px;
-    display: flex;
-    flex-direction: column;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border-width: 1px;
+  border-color: #9ca3af;
+  border-radius: 8px;
+  background-color: #fff;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Estilos para a imagem */
 .home-carousel-image {
-    height: 200px;
-    object-fit: cover;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+  height: 200px;
+  object-fit: cover;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
 /* Estilos para as informações */
 .home-carousel-info {
-    display: flex;
-    flex-direction: column;
-    padding: 16px;
-    gap: 8px;
-    flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 8px;
+  flex-grow: 1;
 }
 
 /* Título */
 .home-carousel-title {
-    font-weight: bold;
-    font-size: 1.1rem;
-    margin-top: 0;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: 0;
 }
 
 /* Categoria */
 .home-carousel-category {
-    color: #6b7280;
-    font-size: 0.9rem;
-    margin-bottom: 8px;
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
 }
 
 /* Avaliação */
 .home-carousel-rating {
-    display: flex;
-    margin-bottom: 8px;
+  display: flex;
+  margin-bottom: 8px;
 }
 
 .home-carousel-star {
-    width: 16px;
-    height: 16px;
-    margin-right: 2px;
+  width: 16px;
+  height: 16px;
+  margin-right: 2px;
 }
 
 /* Descrição */
 .home-carousel-description {
-    color: #4b5563;
-    font-size: 0.9rem;
-    margin-bottom: 12px;
-    flex-grow: 1;
+  color: #4b5563;
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+  flex-grow: 1;
 }
 
 /* Link */
 .home-carousel-link {
-    display: inline-block;
-    padding: 8px 16px;
-    text-decoration: none;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    color: white;
-    text-align: center;
+  display: inline-block;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: white;
+  text-align: center;
 }

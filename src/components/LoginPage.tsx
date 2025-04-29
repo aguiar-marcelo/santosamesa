@@ -15,7 +15,7 @@ const LoginPage = () => {
 
   const login = async () => {
     if (!email) {
-      alert("Digite o e-mmail");
+      alert("Digite o e-mail");
       return;
     }
     if (!password) {

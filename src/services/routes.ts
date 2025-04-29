@@ -32,7 +32,9 @@ export async function postLogin(email: string, password: string) {
   return data;
 }
 
-export async function getRestaurantRating(restaurantId: number): Promise<any[]> {
+export async function getRestaurantRating(
+  restaurantId: number
+): Promise<any[]> {
   const { data } = await api.get("/rating");
   return data;
 }
@@ -84,10 +86,23 @@ export async function postLocalReview(
   restaurantId: string,
   userId: string
 ) {
-  const { data } = await api.post("/rating", { 
+  const { data } = await api.post("/rating", {
     value,
     restaurantId,
     userId,
   });
+  return data;
+}
+
+export async function getRestaurantsTopRated(): Promise<any[]> {
+  const { data } = await api.get("/restaurant/highlights/system");
+  return data;
+}
+export async function getRestaurantsHighlightsWeek(userId:number): Promise<any[]> {
+  const { data } = await api.get(`/restaurant/highlights/weekly/${userId}`);
+  return data;
+}
+export async function getRestaurantsRecommendations(userId:number): Promise<any[]> {
+  const { data } = await api.get(`/restaurant/recommendations/${userId}`);
   return data;
 }

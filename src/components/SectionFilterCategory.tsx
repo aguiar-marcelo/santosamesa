@@ -41,7 +41,7 @@ const SectionFilterCategory: React.FC<FilterCategoryProps> = ({
     };
 
     return (
-        <div className="mt-[15px] mb-[45px] w-fit">
+        <div className="mt-[15px] mb-[45px] w-full">
             <div className="border-2 border-[#c8c5c5] rounded-lg p-[10px] flex gap-[1%] overflow-x-auto">
                 <button
                     className={`bg-[#86929A] text-white rounded-xl px-4 whitespace-nowrap hover:bg-[rgb(99_113_122)] ${
