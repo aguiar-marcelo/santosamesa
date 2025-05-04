@@ -104,3 +104,8 @@ button:hover {
   height: 20px;
   animation: spin 2s linear infinite;
 }
+
+.space-between {
+  display: flex;
+  justify-content: space-between;
+}

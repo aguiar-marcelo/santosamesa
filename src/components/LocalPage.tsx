@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Search } from "lucide-react";
+import { Bookmark, Search } from "lucide-react";
 import { getCategories } from "@/services/routes";
 import LocalInfoPage from "./LocalInfoPage";
 import Link from "next/link";
@@ -193,16 +193,16 @@ const LocalPage = () => {
               />
 
               <div className="local-loading-container">
-                {loading &&  <OrbitProgress
-                    style={{
-                      fontSize: 5,
-                      display: "flex",
-                      justifyItems: "center",
-                    }}
-                    color="#000000"
-                    dense
-                    speedPlus={2}
-                  />}
+                {loading && <OrbitProgress
+                  style={{
+                    fontSize: 5,
+                    display: "flex",
+                    justifyItems: "center",
+                  }}
+                  color="#000000"
+                  dense
+                  speedPlus={2}
+                />}
               </div>
 
               {noRestaurantsMessage}
@@ -214,7 +214,10 @@ const LocalPage = () => {
                       <img src={place.url_img ?? undefined} alt={place.name} className="local-restaurant-image" />
                       <div className="local-restaurant-details">
                         <div>
-                          <b className="local-restaurant-name">{place.name}</b>
+                          <div className="space-between">
+                            <b className="local-restaurant-name">{place.name}</b>
+                            <Bookmark />
+                          </div>
                           {place.category && typeof place.category === 'object' && place.category.name && (
                             <p className="local-restaurant-category">{place.category.name}</p>
                           )}
