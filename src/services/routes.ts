@@ -94,15 +94,36 @@ export async function postLocalReview(
   return data;
 }
 
+export async function postLocalFavorite(restaurantId: number, userId: number) {
+  const { data } = await api.post(`/favorites/${userId}`, {
+    restaurantId,
+  });
+  return data;
+}
+
+export async function deleteLocalFavorite(restaurantId: number, userId: number) {
+  const { data } = await api.delete(`/favorites/${userId}/${restaurantId}`);
+  return data;
+}
+
+export async function getLocalsFavorites(userId: number): Promise<any[]> {
+  const { data } = await api.get(`/favorites/user/${userId}`);
+  return data;
+}
+
 export async function getRestaurantsTopRated(): Promise<any[]> {
   const { data } = await api.get("/restaurant/highlights/system");
   return data;
 }
-export async function getRestaurantsHighlightsWeek(userId:number): Promise<any[]> {
+export async function getRestaurantsHighlightsWeek(
+  userId: number
+): Promise<any[]> {
   const { data } = await api.get(`/restaurant/highlights/weekly/${userId}`);
   return data;
 }
-export async function getRestaurantsRecommendations(userId:number): Promise<any[]> {
+export async function getRestaurantsRecommendations(
+  userId: number
+): Promise<any[]> {
   const { data } = await api.get(`/restaurant/recommendations/${userId}`);
   return data;
 }

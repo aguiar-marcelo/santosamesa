@@ -1,30 +1,53 @@
 "use client";
 import React from "react";
-import { Bookmark, Search } from "lucide-react";
-import { getCategories } from "@/services/routes";
+import { Heart, Search } from "lucide-react";
+import {
+  deleteLocalFavorite,
+  getCategories,
+  getLocalsFavorites,
+  postLocalFavorite,
+} from "@/services/routes";
 import LocalInfoPage from "./LocalInfoPage";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import SectionFooter from "./SectionFooter";
 import SectionMenu from "./SectionMenu";
 import SectionFilterCategory from "@/components/SectionFilterCategory";
-import './css/LocalPage.css'
+import "./css/LocalPage.css";
 import { OrbitProgress } from "react-loading-indicators";
+import { useAuth } from "@/context/AuthContext";
 
 const LocalPage = () => {
+  const { user } = useAuth();
   const [restaurants, setRestaurants] = React.useState<Restaurant[]>([]);
-  const [restaurantSelected, setRestaurantSelected] = React.useState<Restaurant | undefined>(undefined);
-  const [visibleRestaurants, setVisibleRestaurants] = React.useState<Restaurant[]>([]);
+  const [restaurantsFavorites, setRestaurantsFavorites] = React.useState<any[]>(
+    []
+  );
+  const [restaurantSelected, setRestaurantSelected] = React.useState<
+    Restaurant | undefined
+  >(undefined);
+  const [visibleRestaurants, setVisibleRestaurants] = React.useState<
+    Restaurant[]
+  >([]);
   const [itemsPerPage, setItemsPerPage] = React.useState(8);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [searchTerm, setSearchTerm] = React.useState("");
-  const [filteredRestaurants, setFilteredRestaurants] = React.useState<Restaurant[]>([]);
+  const [filteredRestaurants, setFilteredRestaurants] = React.useState<
+    Restaurant[]
+  >([]);
   const [loading, setLoading] = React.useState(true);
   const [categories, setCategories] = React.useState<Category[]>([]);
-  const [selectedCategories, setSelectedCategories] = React.useState<string[]>(["Todos"]);
+  const [selectedCategories, setSelectedCategories] = React.useState<string[]>([
+    "Todos",
+  ]);
   const [selectedRatings, setSelectedRatings] = React.useState<number[]>([]);
 
-  console.log("LocalPage rendered. selectedCategories:", selectedCategories, "selectedRatings:", selectedRatings);
+  console.log(
+    "LocalPage rendered. selectedCategories:",
+    selectedCategories,
+    "selectedRatings:",
+    selectedRatings
+  );
 
   const FetchRestaurants = async (url: string) => {
     setLoading(true);
@@ -37,6 +60,8 @@ const LocalPage = () => {
       setRestaurants(data);
       setFilteredRestaurants(data);
       setCurrentPage(1);
+
+      FetchFavorites();
     } catch (err) {
       console.error("Falha ao pesquisar restaurantes", err);
       setRestaurants([]);
@@ -56,6 +81,39 @@ const LocalPage = () => {
     }
   };
 
+  const AddFavorite = async (restaurantId: number) => {
+    if (!user?.id || !restaurantId) return;
+    try {
+      await postLocalFavorite(restaurantId, user.id);
+      FetchFavorites();
+    } catch (err) {
+      console.error("Falha ao buscar categorias", err);
+      setCategories([]);
+    }
+  };
+
+  const RemoveFavorite = async (restaurantId: number) => {
+    if (!user?.id || !restaurantId) return;
+    try {
+      await deleteLocalFavorite(restaurantId, user.id);
+      FetchFavorites();
+    } catch (err) {
+      console.error("Falha ao buscar categorias", err);
+      setCategories([]);
+    }
+  };
+
+  const FetchFavorites = async () => {
+    if (!user?.id) return;
+    try {
+      const results: any[] = await getLocalsFavorites(user.id);
+      setRestaurantsFavorites(results);
+    } catch (err) {
+      console.error("Falha ao buscar categorias", err);
+      setRestaurantsFavorites([]);
+    }
+  };
+
   React.useEffect(() => {
     FetchCategories();
   }, []);
@@ -65,8 +123,11 @@ const LocalPage = () => {
     const params: string[] = [];
 
     if (!selectedCategories.includes("Todos")) {
-      selectedCategories.forEach(selectedCategoryName => {
-        const category = categories.find(cat => cat.name?.toLowerCase() === selectedCategoryName.toLowerCase());
+      selectedCategories.forEach((selectedCategoryName) => {
+        const category = categories.find(
+          (cat) =>
+            cat.name?.toLowerCase() === selectedCategoryName.toLowerCase()
+        );
         if (category?.id) {
           params.push(`categoryId=${category.id}`);
         }
@@ -74,13 +135,15 @@ const LocalPage = () => {
     }
 
     if (selectedRatings.length > 0) {
-      const ratingsParam = selectedRatings.map(rating => `ratings=${rating}`).join('&');
+      const ratingsParam = selectedRatings
+        .map((rating) => `ratings=${rating}`)
+        .join("&");
       if (ratingsParam) {
         params.push(ratingsParam);
       }
     }
 
-    const finalUrl = url + params.join('&');
+    const finalUrl = url + params.join("&");
     FetchRestaurants(finalUrl);
 
     let filtered = restaurants;
@@ -92,8 +155,11 @@ const LocalPage = () => {
     setFilteredRestaurants(filtered);
     setCurrentPage(1);
     if (selectedCategories.includes("Todos") && selectedCategories.length > 1) {
-      setSelectedCategories(prev => prev.filter(cat => cat !== "Todos"));
-    } else if (selectedCategories.length === 0 && selectedRatings.length === 0) {
+      setSelectedCategories((prev) => prev.filter((cat) => cat !== "Todos"));
+    } else if (
+      selectedCategories.length === 0 &&
+      selectedRatings.length === 0
+    ) {
       setSelectedCategories(["Todos"]);
     }
   }, [searchTerm, selectedCategories, selectedRatings, categories]);
@@ -101,21 +167,17 @@ const LocalPage = () => {
   React.useEffect(() => {
     const startIndex = 0;
     const endIndex = currentPage * itemsPerPage;
-    setVisibleRestaurants(
-      filteredRestaurants.slice(
-        startIndex,
-        endIndex
-      )
-    );
+    setVisibleRestaurants(filteredRestaurants.slice(startIndex, endIndex));
   }, [filteredRestaurants, currentPage, itemsPerPage]);
 
   const handleLoadMore = () => {
     setCurrentPage(currentPage + 1);
   };
 
-  const handleSearch = () => { };
+  const handleSearch = () => {};
   const handleKeyDown = (event: { key: string }) => {
-    if (event.key === "Enter") { }
+    if (event.key === "Enter") {
+    }
   };
 
   const handleCategoryChange = (categoryName: string) => {
@@ -125,9 +187,13 @@ const LocalPage = () => {
       } else {
         const isAlreadySelected = prevSelected.includes(categoryName);
         if (isAlreadySelected) {
-          return prevSelected.filter((cat) => cat !== categoryName && cat !== "Todos");
+          return prevSelected.filter(
+            (cat) => cat !== categoryName && cat !== "Todos"
+          );
         } else {
-          return prevSelected.filter(cat => cat !== "Todos").concat(categoryName);
+          return prevSelected
+            .filter((cat) => cat !== "Todos")
+            .concat(categoryName);
         }
       }
     });
@@ -145,16 +211,33 @@ const LocalPage = () => {
   };
 
   const getNoRestaurantsMessage = () => {
-    const filtersApplied = selectedCategories.length > 1 || (selectedCategories.length === 1 && selectedCategories[0] !== "Todos") || selectedRatings.length > 0;
+    const filtersApplied =
+      selectedCategories.length > 1 ||
+      (selectedCategories.length === 1 && selectedCategories[0] !== "Todos") ||
+      selectedRatings.length > 0;
     if (filtersApplied && filteredRestaurants.length === 0) {
       let message = "Nenhum restaurante encontrado";
-      if (selectedCategories.length > 1 || (selectedCategories.length === 1 && selectedCategories[0] !== "Todos")) {
-        const selectedCategoriesString = selectedCategories.filter(cat => cat !== "Todos").join(', ');
+      if (
+        selectedCategories.length > 1 ||
+        (selectedCategories.length === 1 && selectedCategories[0] !== "Todos")
+      ) {
+        const selectedCategoriesString = selectedCategories
+          .filter((cat) => cat !== "Todos")
+          .join(", ");
         message += ` na(s) categoria(s) ${selectedCategoriesString}`;
       }
       if (selectedRatings.length > 0) {
-        const selectedRatingsString = selectedRatings.join(', ');
-        message += `${selectedCategories.length > 1 || (selectedCategories.length === 1 && selectedCategories[0] !== "Todos") ? ' e com' : ' com'} média${selectedRatings.length > 1 ? 's' : ''} de ${selectedRatingsString} estrel${selectedRatings.length > 1 ? 'as' : 'a'}`;
+        const selectedRatingsString = selectedRatings.join(", ");
+        message += `${
+          selectedCategories.length > 1 ||
+          (selectedCategories.length === 1 && selectedCategories[0] !== "Todos")
+            ? " e com"
+            : " com"
+        } média${
+          selectedRatings.length > 1 ? "s" : ""
+        } de ${selectedRatingsString} estrel${
+          selectedRatings.length > 1 ? "as" : "a"
+        }`;
       }
       message += ".";
       return <div className="no-ratings-message">{message}</div>;
@@ -167,20 +250,41 @@ const LocalPage = () => {
   return (
     <div className="local-page-container">
       {restaurantSelected ? (
-        <LocalInfoPage data={restaurantSelected} setData={setRestaurantSelected} />
+        <LocalInfoPage
+          data={restaurantSelected}
+          setData={setRestaurantSelected}
+        />
       ) : (
         <div className="local-page-content-wrapper">
           <SectionMenu />
-          <div className="local-page-background" style={{ backgroundImage: "url('/img/localidade.jpg')" }}></div>
+          <div
+            className="local-page-background"
+            style={{ backgroundImage: "url('/img/localidade.jpg')" }}
+          ></div>
           <div className="local-page-main-container">
             <div className="local-page-content-card background">
               <div className="local-explore-header">
                 <h2 className="local-explore-title">Explorar Locais</h2>
-                <Link href="/local-cadastro" className="local-restaurant-button bg-primary">Cadastrar Local</Link>
+                <Link
+                  href="/local-cadastro"
+                  className="local-restaurant-button bg-primary"
+                >
+                  Cadastrar Local
+                </Link>
               </div>
               <div className="local-search-container">
-                <input type="text" placeholder="Buscar restaurantes" className="local-search-input" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} onKeyDown={handleKeyDown} />
-                <button className="local-search-button bg-primary" onClick={handleSearch}>
+                <input
+                  type="text"
+                  placeholder="Buscar restaurantes"
+                  className="local-search-input"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                />
+                <button
+                  className="local-search-button bg-primary"
+                  onClick={handleSearch}
+                >
                   <Search /> Pesquisar
                 </button>
               </div>
@@ -193,16 +297,18 @@ const LocalPage = () => {
               />
 
               <div className="local-loading-container">
-                {loading && <OrbitProgress
-                  style={{
-                    fontSize: 5,
-                    display: "flex",
-                    justifyItems: "center",
-                  }}
-                  color="#000000"
-                  dense
-                  speedPlus={2}
-                />}
+                {loading && (
+                  <OrbitProgress
+                    style={{
+                      fontSize: 5,
+                      display: "flex",
+                      justifyItems: "center",
+                    }}
+                    color="#000000"
+                    dense
+                    speedPlus={2}
+                  />
+                )}
               </div>
 
               {noRestaurantsMessage}
@@ -211,37 +317,88 @@ const LocalPage = () => {
                 <div className="local-restaurants-grid">
                   {visibleRestaurants.map((place, index) => (
                     <div key={index} className="local-restaurant-card">
-                      <img src={place.url_img ?? undefined} alt={place.name} className="local-restaurant-image" />
+                      <img
+                        src={place.url_img ?? undefined}
+                        alt={place.name}
+                        className="local-restaurant-image"
+                      />
                       <div className="local-restaurant-details">
                         <div>
                           <div className="space-between">
-                            <b className="local-restaurant-name">{place.name}</b>
-                            <Bookmark />
+                            <b className="local-restaurant-name">
+                              {place.name}
+                            </b>
+                            <button
+                              className="group"
+                              onClick={() =>
+                                restaurantsFavorites.find(
+                                  (r) => r.restaurantId == +place.id
+                                )
+                                  ? RemoveFavorite(+place.id)
+                                  : AddFavorite(+place.id)
+                              }
+                            >
+                              <Heart
+                                fill={
+                                  restaurantsFavorites.find(
+                                    (r) => r.restaurantId == +place.id
+                                  )
+                                    ? "#ff0000"
+                                    : "#fff"
+                                }
+                                className="text-gray-500 group-hover:text-red-700 transition-colors duration-300"
+                              />
+                            </button>
                           </div>
-                          {place.category && typeof place.category === 'object' && place.category.name && (
-                            <p className="local-restaurant-category">{place.category.name}</p>
-                          )}
+                          {place.category &&
+                            typeof place.category === "object" &&
+                            place.category.name && (
+                              <p className="local-restaurant-category">
+                                {place.category.name}
+                              </p>
+                            )}
                           {place.averageRating !== undefined && (
                             <div className="local-restaurant-rating">
-                              {Array(Math.round(place.averageRating)).fill(0).map((_, starIndex) => (
-                                <img key={`filled-${place.id}-${starIndex}`} className="local-restaurant-star" src="img/estrela-preenchida.png" alt="Estrela" />
-                              ))}
+                              {Array(Math.round(place.averageRating))
+                                .fill(0)
+                                .map((_, starIndex) => (
+                                  <img
+                                    key={`filled-${place.id}-${starIndex}`}
+                                    className="local-restaurant-star"
+                                    src="img/estrela-preenchida.png"
+                                    alt="Estrela"
+                                  />
+                                ))}
                             </div>
                           )}
-                          <p className="local-restaurant-description">{place.aboutUs}</p>
+                          <p className="local-restaurant-description">
+                            {place.aboutUs}
+                          </p>
                         </div>
-                        <button type="button" onClick={() => setRestaurantSelected(place)} className="local-restaurant-button bg-primary">Saiba mais</button>
+                        <button
+                          type="button"
+                          onClick={() => setRestaurantSelected(place)}
+                          className="local-restaurant-button bg-primary"
+                        >
+                          Saiba mais
+                        </button>
                       </div>
                     </div>
                   ))}
                 </div>
               )}
 
-              {!noRestaurantsMessage && visibleRestaurants.length < filteredRestaurants.length && (
-                <div className="local-load-more-container">
-                  <button className="local-load-more-button bg-primary" onClick={handleLoadMore}>Mais</button>
-                </div>
-              )}
+              {!noRestaurantsMessage &&
+                visibleRestaurants.length < filteredRestaurants.length && (
+                  <div className="local-load-more-container">
+                    <button
+                      className="local-load-more-button bg-primary"
+                      onClick={handleLoadMore}
+                    >
+                      Mais
+                    </button>
+                  </div>
+                )}
             </div>
           </div>
           <SectionFooter />
