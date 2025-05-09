@@ -67,8 +67,8 @@ export async function postRestaurant(restaurant: FormData) {
 }
 
 export async function getRestaurantById(id: number): Promise<any> {
-  const data = await api.get(`/restaurant/${id}`);
-  console.log(data)
+  const { data } = await api.get(`/restaurant/${id}`);
+  console.log(data);
   return data;
 }
 

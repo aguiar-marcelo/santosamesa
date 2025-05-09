@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getRestaurantById } from "@/services/routes";
 import { OrbitProgress } from "react-loading-indicators";
+import Image from "next/image";
 
 const LocalInfoPage = ({ id }: { id: number }) => {
   const [estrelas, setEstrelas] = useState<number>(0);
@@ -24,8 +25,6 @@ const LocalInfoPage = ({ id }: { id: number }) => {
   const router = useRouter();
 
   const FetchRestaurant = async () => {
-    if (id) return;
-
     setLoading(true);
     try {
       const response = await getRestaurantById(id);
@@ -165,7 +164,7 @@ const LocalInfoPage = ({ id }: { id: number }) => {
   }
 
   return (
-    <div className="local-info-container background"><button onClick={FetchRestaurant}>log</button>
+    <div className="local-info-container background">
       <div className="local-image-container">
         <img src={data?.url_img} alt="Local" className="local-image" />
         <div className="local-image-gradient"></div>
@@ -181,26 +180,13 @@ const LocalInfoPage = ({ id }: { id: number }) => {
                 <ArrowLeft />
               </button>
               <h1 className="local-title">{data?.name}</h1>
-              {Array(Math.round(averageRating))
-                .fill(0)
-                .map((_, starIndex) => (
-                  <img
-                    key={`filled-${starIndex}`}
-                    className="local-star-filled"
-                    src="img/estrela-preenchida.png"
-                    alt="Estrela Preenchida"
-                  />
-                ))}
-              {Array(5 - Math.round(averageRating))
-                .fill(0)
-                .map((_, starIndex) => (
-                  <img
-                    key={`empty-${starIndex}`}
-                    className="local-star-empty"
-                    src="img/estrela.png"
-                    alt="Estrela Vazia"
-                  />
-                ))}
+              {Array.from({ length: Math.floor(averageRating) }).map((s) => (
+                <img
+                  className="local-star-filled"
+                  src="/img/estrela-preenchida.png"
+                  alt="Estrela Preenchida"
+                />
+              ))}
             </div>
             <h4 className="local-rating-count">
               {avaliacoes.length} avaliações
@@ -208,7 +194,7 @@ const LocalInfoPage = ({ id }: { id: number }) => {
           </div>
 
           <div>
-            <h4 className="local-about">sobre</h4>
+            <h4 className="local-about">{data?.aboutUs}</h4>
           </div>
 
           <div>
@@ -263,7 +249,7 @@ const LocalInfoPage = ({ id }: { id: number }) => {
                             <img
                               key={starIndex}
                               className="local-review-star"
-                              src="img/estrela-preenchida.png"
+                              src="/img/estrela-preenchida.png"
                               alt="Estrela"
                             />
                           ))}
@@ -308,8 +294,8 @@ const LocalInfoPage = ({ id }: { id: number }) => {
                     className="local-rating-star-button"
                     src={
                       starIndex < estrelas
-                        ? "img/estrela-preenchida.png"
-                        : "img/estrela.png"
+                        ? "/img/estrela-preenchida.png"
+                        : "/img/estrela.png"
                     }
                     alt="Estrela"
                     onClick={() => setEstrelas(starIndex + 1)}
