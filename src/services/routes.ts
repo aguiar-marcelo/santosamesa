@@ -66,12 +66,6 @@ export async function postRestaurant(restaurant: FormData) {
   return data;
 }
 
-export async function getRestaurantById(id: number): Promise<any> {
-  const data = await api.get(`/restaurant/${id}`);
-  console.log(data)
-  return data;
-}
-
 export async function postLocationRestaurant(
   address: string,
   city: string,
@@ -107,10 +101,7 @@ export async function postLocalFavorite(restaurantId: number, userId: number) {
   return data;
 }
 
-export async function deleteLocalFavorite(
-  restaurantId: number,
-  userId: number
-) {
+export async function deleteLocalFavorite(restaurantId: number, userId: number) {
   const { data } = await api.delete(`/favorites/${userId}/${restaurantId}`);
   return data;
 }

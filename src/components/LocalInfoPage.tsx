@@ -2,47 +2,34 @@
 import React, { useState, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import "./css/LocalInfoPage.css";
+import './css/LocalInfoPage.css';
 import { apiBaseUrl } from "@/services/api";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { getRestaurantById } from "@/services/routes";
-import { OrbitProgress } from "react-loading-indicators";
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
-const LocalInfoPage = ({ id }: { id: number }) => {
+const LocalInfoPage = ({
+  data,
+  setData,
+}: {
+  data: LocalData | undefined;
+  setData?: any;
+}) => {
   const [estrelas, setEstrelas] = useState<number>(0);
   const [comentario, setComentario] = useState<string>("");
   const [avaliacoes, setAvaliacoes] = useState<Avaliacao[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [averageRating, setAverageRating] = useState<number>(0);
   const [noRatingsMessage, setNoRatingsMessage] = useState<string | null>(null);
-  const [data, setData] = useState<any>();
 
   const { user, token } = useAuth() as { user: User; token: string };
   const router = useRouter();
 
-  const FetchRestaurant = async () => {
-    if (id) return;
-
-    setLoading(true);
-    try {
-      const response = await getRestaurantById(id);
-
-      setData(response);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const FetchRatings = async () => {
-    if (id) return;
+    if (!data?.id) return;
 
     try {
-      const response = await fetch(`${apiBaseUrl}/rating/restaurant/${id}`, {
+      const response = await fetch(`${apiBaseUrl}/rating/restaurant/${data.id}`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -50,13 +37,9 @@ const LocalInfoPage = ({ id }: { id: number }) => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        if (
-          errorData?.message === `No ratings found for restaurant with id ${id}`
-        ) {
+        if (errorData?.message === `No ratings found for restaurant with id ${data.id}`) {
           setAvaliacoes([]);
-          setNoRatingsMessage(
-            "Esse restaurante ainda não tem reviews. Seja o primeiro!"
-          );
+          setNoRatingsMessage("Esse restaurante ainda não tem reviews. Seja o primeiro!");
         } else {
           setError("Falha ao carregar as avaliações.");
           setNoRatingsMessage(null);
@@ -76,9 +59,9 @@ const LocalInfoPage = ({ id }: { id: number }) => {
   };
 
   const fetchAverageRating = async () => {
-    if (!id) return;
+    if (!data?.id) return;
     try {
-      const response = await fetch(`${apiBaseUrl}/restaurant/average/${id}`);
+      const response = await fetch(`${apiBaseUrl}/restaurant/average/${data.id}`);
       if (!response.ok) {
         return;
       }
@@ -95,7 +78,7 @@ const LocalInfoPage = ({ id }: { id: number }) => {
       return;
     }
 
-    if (!id) {
+    if (!data?.id) {
       setError("ID do restaurante inválido.");
       return;
     }
@@ -117,7 +100,7 @@ const LocalInfoPage = ({ id }: { id: number }) => {
         },
         body: JSON.stringify({
           value: estrelas,
-          restaurantId: id,
+          restaurantId: parseInt(data.id, 10),
           userId: user.id,
           comments: comentario || null,
         }),
@@ -141,33 +124,18 @@ const LocalInfoPage = ({ id }: { id: number }) => {
   };
 
   useEffect(() => {
-    FetchRestaurant();
     FetchRatings();
     fetchAverageRating();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center">
-        <OrbitProgress
-          style={{
-            fontSize: 15,
-            display: "flex",
-            justifyItems: "center",
-            marginTop: "30%",
-          }}
-          color="#000000"
-          dense
-          speedPlus={2}
-        />
-      </div>
-    );
-  }
+  }, [data?.id]);
 
   return (
-    <div className="local-info-container background"><button onClick={FetchRestaurant}>log</button>
+    <div className="local-info-container background">
       <div className="local-image-container">
-        <img src={data?.url_img} alt="Local" className="local-image" />
+        <img
+          src={data?.url_img}
+          alt="Local"
+          className="local-image"
+        />
         <div className="local-image-gradient"></div>
       </div>
       <div className="local-content-wrapper">
@@ -175,7 +143,7 @@ const LocalInfoPage = ({ id }: { id: number }) => {
           <div className="local-header">
             <div className="local-header-top">
               <button
-                // onClick={() => setData(undefined)}
+                onClick={() => setData(undefined)}
                 className="local-back-button"
               >
                 <ArrowLeft />
@@ -208,7 +176,7 @@ const LocalInfoPage = ({ id }: { id: number }) => {
           </div>
 
           <div>
-            <h4 className="local-about">sobre</h4>
+            <h4 className="local-about">{data?.aboutUs}</h4>
           </div>
 
           <div>
@@ -223,35 +191,30 @@ const LocalInfoPage = ({ id }: { id: number }) => {
                 <div
                   key={avaliacao.id}
                   style={{ backgroundColor: "white" }}
-                  className={`local-review-card ${
-                    index === avaliacoes.length - 1 && !id
+                  className={`local-review-card ${index === avaliacoes.length - 1 && !data?.id
                       ? "local-review-card:last-child"
                       : ""
-                  }`}
+                    }`}
                 >
                   <div className="local-review-header">
                     <img
                       className="local-review-profile-picture"
-                      src={
-                        avaliacao.user?.profilePicture || "/img/user-null.png"
-                      }
-                      alt={`Foto de Perfil de ${
-                        avaliacao.user?.exibitionName ||
+                      src={avaliacao.user?.profilePicture || "/img/user-null.png"}
+                      alt={`Foto de Perfil de ${avaliacao.user?.exibitionName ||
                         avaliacao.user?.userName ||
                         "Usuário"
-                      }`}
+                        }`}
                     />
                     <div className="local-review-user-info">
                       <div className="local-review-user-name-rating">
                         <h3 className="local-review-user-name">
                           {avaliacao.user?.exibitionName ||
-                          avaliacao.user?.userName ? (
+                            avaliacao.user?.userName ? (
                             <Link
                               href={`/perfil/${avaliacao.userId}`}
                               className="link-username"
                             >
-                              {avaliacao.user.exibitionName ||
-                                avaliacao.user.userName}
+                              {avaliacao.user.exibitionName || avaliacao.user.userName}
                             </Link>
                           ) : (
                             "Usuário Anônimo"
@@ -274,9 +237,7 @@ const LocalInfoPage = ({ id }: { id: number }) => {
                     </div>
                   </div>
                   <h4 className="local-review-comment">
-                    {avaliacao.comments
-                      ? avaliacao.comments
-                      : "(Sem comentários)"}
+                    {avaliacao.comments ? avaliacao.comments : "(Sem comentários)"}
                   </h4>
                 </div>
               ))
@@ -285,7 +246,9 @@ const LocalInfoPage = ({ id }: { id: number }) => {
         </div>
 
         <div className="local-rating-section">
-          <div className="local-rating-card">
+          <div
+            className="local-rating-card"
+          >
             <h2 className="local-rating-title">Deixe sua avaliação!</h2>
             <textarea
               placeholder="Digite sua avaliação aqui..."
