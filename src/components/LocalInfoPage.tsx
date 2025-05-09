@@ -38,7 +38,7 @@ const LocalInfoPage = ({ id }: { id: number }) => {
   };
 
   const FetchRatings = async () => {
-    if (id) return;
+    if (!id) return;
 
     try {
       const response = await fetch(`${apiBaseUrl}/rating/restaurant/${id}`, {
@@ -173,15 +173,16 @@ const LocalInfoPage = ({ id }: { id: number }) => {
         <div className="local-info">
           <div className="local-header">
             <div className="local-header-top">
-              <button
-                // onClick={() => setData(undefined)}
+              <Link
+                href={"/local"}
                 className="local-back-button"
               >
                 <ArrowLeft />
-              </button>
+              </Link>
               <h1 className="local-title">{data?.name}</h1>
-              {Array.from({ length: Math.floor(averageRating) }).map((s) => (
+              {Array.from({ length: Math.floor(averageRating) }).map((_, i) => (
                 <img
+                  key={i}
                   className="local-star-filled"
                   src="/img/estrela-preenchida.png"
                   alt="Estrela Preenchida"
@@ -245,9 +246,9 @@ const LocalInfoPage = ({ id }: { id: number }) => {
                         </h3>
                         {Array(avaliacao.value)
                           .fill(0)
-                          .map((_, starIndex) => (
+                          .map((_, i) => (
                             <img
-                              key={starIndex}
+                              key={i}
                               className="local-review-star"
                               src="/img/estrela-preenchida.png"
                               alt="Estrela"
@@ -288,17 +289,17 @@ const LocalInfoPage = ({ id }: { id: number }) => {
             <div className="local-rating-stars">
               {Array(5)
                 .fill(0)
-                .map((_, starIndex) => (
+                .map((_, i) => (
                   <img
-                    key={starIndex}
+                    key={i}
                     className="local-rating-star-button"
                     src={
-                      starIndex < estrelas
+                      i < estrelas
                         ? "/img/estrela-preenchida.png"
                         : "/img/estrela.png"
                     }
                     alt="Estrela"
-                    onClick={() => setEstrelas(starIndex + 1)}
+                    onClick={() => setEstrelas(i + 1)}
                   />
                 ))}
             </div>

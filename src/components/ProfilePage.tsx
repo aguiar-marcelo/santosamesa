@@ -10,6 +10,7 @@ import ModalDeleteProfile from "@/components/ModalDeleteProfile";
 import "@/components/css/ProfilePage.css";
 import SectionFilterRatingUser from "@/components/SectionFilterRatingUser";
 import { getLocalsFavorites } from "@/services/routes";
+import Link from "next/link";
 
 const ProfilePage: React.FC<ProfilePageProps> = ({ userId }) => {
   const { user, token, signOut, updateUser } = useAuth();
@@ -345,12 +346,13 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId }) => {
                     >
                       {r.restaurant.aboutUs}
                     </p>
-                    <button
+                    <Link
+                      href={`/local-info/${r.restaurant.id}`}
                       className="local-restaurant-button bg-primary text-white rounded-md py-2 px-4 mt-2"
                       style={{ fontSize: "0.8rem" }}
                     >
                       Saiba mais
-                    </button>
+                    </Link>
                   </div>
                 ))}
               </div>

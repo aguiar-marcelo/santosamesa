@@ -23,9 +23,7 @@ const LocalPage = () => {
   const [restaurantsFavorites, setRestaurantsFavorites] = React.useState<any[]>(
     []
   );
-  const [restaurantSelected, setRestaurantSelected] = React.useState<
-    Restaurant | undefined
-  >(undefined);
+
   const [visibleRestaurants, setVisibleRestaurants] = React.useState<
     Restaurant[]
   >([]);
@@ -56,7 +54,7 @@ const LocalPage = () => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const {data} = await response.json();
+      const { data } = await response.json();
       setRestaurants(data);
       setFilteredRestaurants(data);
       setCurrentPage(1);
@@ -249,161 +247,151 @@ const LocalPage = () => {
 
   return (
     <div className="local-page-container">
-      {restaurantSelected ? (
-        <LocalInfoPage
-          data={restaurantSelected}
-          setData={setRestaurantSelected}
-        />
-      ) : (
-        <div className="local-page-content-wrapper">
-          <SectionMenu />
-          <div
-            className="local-page-background"
-            style={{ backgroundImage: "url('/img/localidade.jpg')" }}
-          ></div>
-          <div className="local-page-main-container">
-            <div className="local-page-content-card background">
-              <div className="local-explore-header">
-                <h2 className="local-explore-title">Explorar Locais</h2>
-                <Link
-                  href="/local-cadastro"
-                  className="local-restaurant-button bg-primary"
-                >
-                  Cadastrar Local
-                </Link>
-              </div>
-              <div className="local-search-container">
-                <input
-                  type="text"
-                  placeholder="Buscar restaurantes"
-                  className="local-search-input"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                />
-                <button
-                  className="local-search-button bg-primary"
-                  onClick={handleSearch}
-                >
-                  <Search /> Pesquisar
-                </button>
-              </div>
-              <SectionFilterCategory
-                categories={categories}
-                selectedCategories={selectedCategories}
-                onCategoryChange={handleCategoryChange}
-                selectedRatings={selectedRatings}
-                onRatingChange={handleRatingChange}
+      <div className="local-page-content-wrapper">
+        <SectionMenu />
+        <div
+          className="local-page-background"
+          style={{ backgroundImage: "url('/img/localidade.jpg')" }}
+        ></div>
+        <div className="local-page-main-container">
+          <div className="local-page-content-card background">
+            <div className="local-explore-header">
+              <h2 className="local-explore-title">Explorar Locais</h2>
+              <Link
+                href="/local-cadastro"
+                className="local-restaurant-button bg-primary"
+              >
+                Cadastrar Local
+              </Link>
+            </div>
+            <div className="local-search-container">
+              <input
+                type="text"
+                placeholder="Buscar restaurantes"
+                className="local-search-input"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={handleKeyDown}
               />
+              <button
+                className="local-search-button bg-primary"
+                onClick={handleSearch}
+              >
+                <Search /> Pesquisar
+              </button>
+            </div>
+            <SectionFilterCategory
+              categories={categories}
+              selectedCategories={selectedCategories}
+              onCategoryChange={handleCategoryChange}
+              selectedRatings={selectedRatings}
+              onRatingChange={handleRatingChange}
+            />
 
-              <div className="local-loading-container">
-                {loading && (
-                  <OrbitProgress
-                    style={{
-                      fontSize: 5,
-                      display: "flex",
-                      justifyItems: "center",
-                    }}
-                    color="#000000"
-                    dense
-                    speedPlus={2}
-                  />
-                )}
-              </div>
+            <div className="local-loading-container">
+              {loading && (
+                <OrbitProgress
+                  style={{
+                    fontSize: 5,
+                    display: "flex",
+                    justifyItems: "center",
+                  }}
+                  color="#000000"
+                  dense
+                  speedPlus={2}
+                />
+              )}
+            </div>
 
-              {noRestaurantsMessage}
+            {noRestaurantsMessage}
 
-              {!noRestaurantsMessage && (
-                <div className="local-restaurants-grid">
-                  {visibleRestaurants.map((place, index) => (
-                    <div key={index} className="local-restaurant-card">
-                      <img
-                        src={place.url_img ?? undefined}
-                        alt={place.name}
-                        className="local-restaurant-image"
-                      />
-                      <div className="local-restaurant-details">
-                        <div>
-                          <div className="space-between">
-                            <b className="local-restaurant-name">
-                              {place.name}
-                            </b>
-                            <button
-                              className="group"
-                              onClick={() =>
+            {!noRestaurantsMessage && (
+              <div className="local-restaurants-grid">
+                {visibleRestaurants.map((place, index) => (
+                  <div key={index} className="local-restaurant-card">
+                    <img
+                      src={place.url_img ?? undefined}
+                      alt={place.name}
+                      className="local-restaurant-image"
+                    />
+                    <div className="local-restaurant-details">
+                      <div>
+                        <div className="space-between">
+                          <b className="local-restaurant-name">{place.name}</b>
+                          <button
+                            className="group"
+                            onClick={() =>
+                              restaurantsFavorites.find(
+                                (r) => r.restaurantId == +place.id
+                              )
+                                ? RemoveFavorite(+place.id)
+                                : AddFavorite(+place.id)
+                            }
+                          >
+                            <Heart
+                              fill={
                                 restaurantsFavorites.find(
                                   (r) => r.restaurantId == +place.id
                                 )
-                                  ? RemoveFavorite(+place.id)
-                                  : AddFavorite(+place.id)
+                                  ? "#ff0000"
+                                  : "#fff"
                               }
-                            >
-                              <Heart
-                                fill={
-                                  restaurantsFavorites.find(
-                                    (r) => r.restaurantId == +place.id
-                                  )
-                                    ? "#ff0000"
-                                    : "#fff"
-                                }
-                                className="text-gray-500 group-hover:text-red-700 transition-colors duration-300"
-                              />
-                            </button>
-                          </div>
-                          {place.category &&
-                            typeof place.category === "object" &&
-                            place.category.name && (
-                              <p className="local-restaurant-category">
-                                {place.category.name}
-                              </p>
-                            )}
-                          {place.averageRating !== undefined && (
-                            <div className="local-restaurant-rating">
-                              {Array(Math.round(place.averageRating))
-                                .fill(0)
-                                .map((_, starIndex) => (
-                                  <img
-                                    key={`filled-${place.id}-${starIndex}`}
-                                    className="local-restaurant-star"
-                                    src="img/estrela-preenchida.png"
-                                    alt="Estrela"
-                                  />
-                                ))}
-                            </div>
-                          )}
-                          <p className="local-restaurant-description">
-                            {place.aboutUs}
-                          </p>
+                              className="text-gray-500 group-hover:text-red-700 transition-colors duration-300"
+                            />
+                          </button>
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => setRestaurantSelected(place)}
-                          className="local-restaurant-button bg-primary"
-                        >
-                          Saiba mais
-                        </button>
+                        {place.category &&
+                          typeof place.category === "object" &&
+                          place.category.name && (
+                            <p className="local-restaurant-category">
+                              {place.category.name}
+                            </p>
+                          )}
+                        {place.averageRating !== undefined && (
+                          <div className="local-restaurant-rating">
+                            {Array(Math.round(place.averageRating))
+                              .fill(0)
+                              .map((_, starIndex) => (
+                                <img
+                                  key={`filled-${place.id}-${starIndex}`}
+                                  className="local-restaurant-star"
+                                  src="img/estrela-preenchida.png"
+                                  alt="Estrela"
+                                />
+                              ))}
+                          </div>
+                        )}
+                        <p className="local-restaurant-description">
+                          {place.aboutUs}
+                        </p>
                       </div>
+                      <Link
+                        href={`/local-info/${place.id}`}
+                        className="local-restaurant-button bg-primary"
+                      >
+                        Saiba mais
+                      </Link>
                     </div>
-                  ))}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {!noRestaurantsMessage &&
+              visibleRestaurants.length < filteredRestaurants.length && (
+                <div className="local-load-more-container">
+                  <button
+                    className="local-load-more-button bg-primary"
+                    onClick={handleLoadMore}
+                  >
+                    Mais
+                  </button>
                 </div>
               )}
-
-              {!noRestaurantsMessage &&
-                visibleRestaurants.length < filteredRestaurants.length && (
-                  <div className="local-load-more-container">
-                    <button
-                      className="local-load-more-button bg-primary"
-                      onClick={handleLoadMore}
-                    >
-                      Mais
-                    </button>
-                  </div>
-                )}
-            </div>
           </div>
-          <SectionFooter />
         </div>
-      )}
+        <SectionFooter />
+      </div>
     </div>
   );
 };
