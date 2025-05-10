@@ -370,7 +370,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId }) => {
                       {r.restaurant.category.name}
                     </p>
                     <div className="local-restaurant-rating">
-                      <img
+                      {/* <img
                         className="local-restaurant-star"
                         src="/img/estrela-preenchida.png"
                         alt="Estrela"
@@ -379,7 +379,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId }) => {
                           height: "16px",
                           marginRight: "2px",
                         }}
-                      />
+                      /> */}
                     </div>
                     <p
                       className="local-restaurant-description"
