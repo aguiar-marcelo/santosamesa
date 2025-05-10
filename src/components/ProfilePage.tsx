@@ -4,12 +4,16 @@ import { useAuth } from "@/context/AuthContext";
 import SectionMenu from "@/components/SectionMenu";
 import SectionFooter from "@/components/SectionFooter";
 import { apiBaseUrl } from "@/services/api";
-import { Bookmark, Loader2 } from "lucide-react";
+import { Bookmark, Heart, Loader2 } from "lucide-react";
 import ModalEditProfile from "@/components/ModalEditProfile";
 import ModalDeleteProfile from "@/components/ModalDeleteProfile";
 import "@/components/css/ProfilePage.css";
 import SectionFilterRatingUser from "@/components/SectionFilterRatingUser";
-import { getLocalsFavorites } from "@/services/routes";
+import {
+  deleteLocalFavorite,
+  getLocalsFavorites,
+  postLocalFavorite,
+} from "@/services/routes";
 import Link from "next/link";
 
 const ProfilePage: React.FC<ProfilePageProps> = ({ userId }) => {
@@ -28,7 +32,26 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId }) => {
     []
   );
 
-  const FetchFavoritesLocals = async () => {
+  const AddFavorite = async (restaurantId: number) => {
+    if (!user?.id || !restaurantId) return;
+    try {
+      await postLocalFavorite(restaurantId, user.id);
+      FetchFavorites();
+    } catch (err) {
+      console.error("Falha ao buscar categorias", err);
+    }
+  };
+
+  const RemoveFavorite = async (restaurantId: number) => {
+    if (!user?.id || !restaurantId) return;
+    try {
+      await deleteLocalFavorite(restaurantId, user.id);
+      FetchFavorites();
+    } catch (err) {
+      console.error("Falha ao buscar categorias", err);
+    }
+  };
+  const FetchFavorites = async () => {
     if (!user?.id) return;
     try {
       const results: any[] = await getLocalsFavorites(user.id);
@@ -38,6 +61,10 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId }) => {
       setRestaurantsFavorites([]);
     }
   };
+
+  useEffect(() => {
+    FetchFavorites();
+  }, []);
 
   const handleOpenEditModal = () => {
     setIsEditModalOpen(true);
@@ -172,7 +199,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId }) => {
 
   useEffect(() => {
     fetchProfileData();
-    FetchFavoritesLocals();
+    FetchFavorites();
   }, [fetchProfileData]);
 
   useEffect(() => {
@@ -310,7 +337,27 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId }) => {
                       >
                         {r.restaurant.name}
                       </b>
-                      <Bookmark />
+                      <button
+                        className="group"
+                        onClick={() =>
+                          restaurantsFavorites.find(
+                            (r) => r.restaurantId == +r.id
+                          )
+                            ? RemoveFavorite(+r.id)
+                            : AddFavorite(+r.id)
+                        }
+                      >
+                        <Heart
+                          fill={
+                            restaurantsFavorites.find(
+                              (r) => r.restaurantId == +r.id
+                            )
+                              ? "#ff0000"
+                              : "#fff"
+                          }
+                          className="text-gray-500 group-hover:text-red-700 transition-colors duration-300"
+                        />
+                      </button>{" "}
                     </div>
                     <p
                       className="local-restaurant-category"

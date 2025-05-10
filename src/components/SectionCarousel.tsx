@@ -6,7 +6,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import { Bookmark } from "lucide-react";
+import { Bookmark, Heart } from "lucide-react";
+import {
+  deleteLocalFavorite,
+  getLocalsFavorites,
+  postLocalFavorite,
+} from "@/services/routes";
+import { useAuth } from "@/context/AuthContext";
 
 export type Place = {
   name: string;
@@ -15,10 +21,48 @@ export type Place = {
   url_img?: string;
   averageRating?: number;
   aboutUs?: string;
-  id?: number;
+  id: number;
 };
 
 const SectionCarousel = ({ places }: { places: Place[] }) => {
+  const { user } = useAuth();
+  const [restaurantsFavorites, setRestaurantsFavorites] = React.useState<any[]>(
+    []
+  );
+  const AddFavorite = async (restaurantId: number) => {
+    if (!user?.id || !restaurantId) return;
+    try {
+      await postLocalFavorite(restaurantId, user.id);
+      FetchFavorites();
+    } catch (err) {
+      console.error("Falha ao buscar categorias", err);
+    }
+  };
+
+  const RemoveFavorite = async (restaurantId: number) => {
+    if (!user?.id || !restaurantId) return;
+    try {
+      await deleteLocalFavorite(restaurantId, user.id);
+      FetchFavorites();
+    } catch (err) {
+      console.error("Falha ao buscar categorias", err);
+    }
+  };
+  const FetchFavorites = async () => {
+    if (!user?.id) return;
+    try {
+      const results: any[] = await getLocalsFavorites(user.id);
+      setRestaurantsFavorites(results);
+    } catch (err) {
+      console.error("Falha ao buscar categorias", err);
+      setRestaurantsFavorites([]);
+    }
+  };
+
+  useEffect(() => {
+    FetchFavorites();
+  }, []);
+  
   return (
     <div className="w-[90%] mx-auto py-8">
       <Swiper
@@ -47,7 +91,27 @@ const SectionCarousel = ({ places }: { places: Place[] }) => {
                 <div>
                   <div className="space-between">
                     <h3 className="home-carousel-title">{place.name}</h3>
-                    <Bookmark />
+                    <button
+                      className="group"
+                      onClick={() =>
+                        restaurantsFavorites.find(
+                          (r) => r.restaurantId == +place.id
+                        )
+                          ? RemoveFavorite(+place.id)
+                          : AddFavorite(+place.id)
+                      }
+                    >
+                      <Heart
+                        fill={
+                          restaurantsFavorites.find(
+                            (r) => r.restaurantId == +place.id
+                          )
+                            ? "#ff0000"
+                            : "#fff"
+                        }
+                        className="text-gray-500 group-hover:text-red-700 transition-colors duration-300"
+                      />
+                    </button>
                   </div>
                   {place.category?.name && (
                     <p className="home-carousel-category">
