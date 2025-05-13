@@ -47,27 +47,61 @@ const LocalPage = () => {
     selectedRatings
   );
 
-  const FetchRestaurants = async (url: string) => {
-    setLoading(true);
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const { data } = await response.json();
-      setRestaurants(data);
-      setFilteredRestaurants(data);
-      setCurrentPage(1);
+  const FetchRestaurants = async (page = 1, limit = 8, append = false) => {
+  setLoading(true);
+  try {
+    let url = `${process.env.NEXT_PUBLIC_API_URL}/restaurant?page=${page}&limit=${limit}`;
 
-      FetchFavorites();
-    } catch (err) {
-      console.error("Falha ao pesquisar restaurantes", err);
-      setRestaurants([]);
-      setFilteredRestaurants([]);
-    } finally {
-      setLoading(false);
+    const params: string[] = [];
+
+    if (!selectedCategories.includes("Todos")) {
+      selectedCategories.forEach((selectedCategoryName) => {
+        const category = categories.find(
+          (cat) =>
+            cat.name?.toLowerCase() === selectedCategoryName.toLowerCase()
+        );
+        if (category?.id) {
+          params.push(`categoryId=${category.id}`);
+        }
+      });
     }
-  };
+
+    if (selectedRatings.length > 0) {
+      const ratingsParam = selectedRatings
+        .map((rating) => `ratings[]=${rating}`)
+        .join("&");
+      if (ratingsParam) {
+        params.push(ratingsParam);
+      }
+    }
+
+    if (params.length > 0) {
+      url += `&${params.join("&")}`;
+    }
+
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const { data } = await response.json();
+    const newData = append ? [...restaurants, ...data] : data;
+
+    setRestaurants(newData);
+    setFilteredRestaurants(newData);
+
+    if (!append) setCurrentPage(1); // Só reseta na primeira chamada
+
+    FetchFavorites();
+  } catch (err) {
+    console.error("Falha ao pesquisar restaurantes", err);
+    setRestaurants([]);
+    setFilteredRestaurants([]);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const FetchCategories = async () => {
     try {
@@ -117,60 +151,15 @@ const LocalPage = () => {
   }, []);
 
   React.useEffect(() => {
-    let url = `${process.env.NEXT_PUBLIC_API_URL}/restaurant?`;
-    const params: string[] = [];
+  FetchRestaurants(1, itemsPerPage); // inicial, sem append
+}, [searchTerm, selectedCategories, selectedRatings, categories]);
 
-    if (!selectedCategories.includes("Todos")) {
-      selectedCategories.forEach((selectedCategoryName) => {
-        const category = categories.find(
-          (cat) =>
-            cat.name?.toLowerCase() === selectedCategoryName.toLowerCase()
-        );
-        if (category?.id) {
-          params.push(`categoryId=${category.id}`);
-        }
-      });
-    }
 
-    if (selectedRatings.length > 0) {
-      const ratingsParam = selectedRatings
-        .map((rating) => `ratings=${rating}`)
-        .join("&");
-      if (ratingsParam) {
-        params.push(ratingsParam);
-      }
-    }
-
-    const finalUrl = url + params.join("&");
-    FetchRestaurants(finalUrl);
-
-    let filtered = restaurants;
-    if (searchTerm) {
-      filtered = restaurants.filter((restaurant) =>
-        restaurant.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-    setFilteredRestaurants(filtered);
-    setCurrentPage(1);
-    if (selectedCategories.includes("Todos") && selectedCategories.length > 1) {
-      setSelectedCategories((prev) => prev.filter((cat) => cat !== "Todos"));
-    } else if (
-      selectedCategories.length === 0 &&
-      selectedRatings.length === 0
-    ) {
-      setSelectedCategories(["Todos"]);
-    }
-  }, [searchTerm, selectedCategories, selectedRatings, categories]);
-
-  React.useEffect(() => {
-    const startIndex = 0;
-    const endIndex = currentPage * itemsPerPage;
-    setVisibleRestaurants(filteredRestaurants.slice(startIndex, endIndex));
-  }, [filteredRestaurants, currentPage, itemsPerPage]);
-
-  const handleLoadMore = () => {
-    setCurrentPage(currentPage + 1);
-  };
+const handleLoadMore = () => {
+  const nextPage = currentPage + 1;
+  setCurrentPage(nextPage);
+  FetchRestaurants(nextPage, itemsPerPage, true); // append = true
+};
 
   const handleSearch = () => {};
   const handleKeyDown = (event: { key: string }) => {
@@ -307,7 +296,7 @@ const LocalPage = () => {
 
             {!noRestaurantsMessage && (
               <div className="local-restaurants-grid">
-                {visibleRestaurants.map((place, index) => (
+                {filteredRestaurants.map((place, index) => (
                   <div key={index} className="local-restaurant-card">
                     <img
                       src={place.url_img ?? undefined}
