@@ -237,6 +237,7 @@ const LocalInfoPage = ({ id }: { id: number }) => {
                               href={`/perfil/${avaliacao.userId}`}
                               className="link-username"
                             >
+                              {/* <img src={avaliacao.user.ratings<4?"/img/medalha-de-bronze.png":valiacao.user.ratings<4?"/img/medalha-de-prata.png":"/img/medalha-de-ouro.png"} className="w-6" /> */}
                               {avaliacao.user.exibitionName ||
                                 avaliacao.user.userName}
                             </Link>
