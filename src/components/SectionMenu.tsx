@@ -24,9 +24,6 @@ const SectionMenu = () => {
               <Link href="/local" className="text-white hover:underline">
                 Ver Locais
               </Link>
-              <Link href="/" className="text-white hover:underline">
-                Destaques
-              </Link>
               <Link href="/sobre-nos" className="text-white hover:underline">
                 Sobre Nós
               </Link>

@@ -11,6 +11,7 @@ import {
   getRestaurantsTopRated,
 } from "@/services/routes";
 import { useAuth } from "@/context/AuthContext";
+import Link from "next/link";
 
 const HomePage = () => {
   const { user } = useAuth();
@@ -68,14 +69,9 @@ const HomePage = () => {
                 Descubra lugares incríveis para comer em Santos
               </h2>
               <div className="home-search-container">
-                <input
-                  type="text"
-                  placeholder="Descubra restaurantes, cafés..."
-                  className="home-search-input"
-                />
-                <button className="home-search-button bg-primary">
-                  <Search /> Pesquisar
-                </button>
+                <div className="home-search-button bg-primary">
+                  <Link href="/local" style={{ color: "white"}}> Explorar locais </Link>
+                </div>
               </div>
             </div>
           </div>

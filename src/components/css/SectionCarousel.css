@@ -91,3 +91,14 @@
   color: white;
   text-align: center;
 }
+
+.home-carousel-image-link {
+  display: block;
+  text-decoration: none; 
+  color: inherit; 
+}
+
+.home-carousel-title-link {
+  text-decoration: none;
+  color: inherit; 
+}

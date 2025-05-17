@@ -248,3 +248,14 @@
     height: 15px;
     margin-left: 4px;
 }
+
+.local-restaurant-image-link {
+    display: block;
+    text-decoration: none; 
+    color: inherit;
+  }
+  
+  .local-restaurant-name-link {
+    text-decoration: none;
+    color: inherit;
+  }

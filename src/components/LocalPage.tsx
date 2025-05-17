@@ -7,8 +7,7 @@ import {
   getLocalsFavorites,
   postLocalFavorite,
 } from "@/services/routes";
-import LocalInfoPage from "./LocalInfoPage";
-import Link from "next/link";
+import Link from "next/link"; // Importe o Link do next/link
 import { Loader2 } from "lucide-react";
 import SectionFooter from "./SectionFooter";
 import SectionMenu from "./SectionMenu";
@@ -48,60 +47,59 @@ const LocalPage = () => {
   );
 
   const FetchRestaurants = async (page = 1, limit = 8, append = false) => {
-  setLoading(true);
-  try {
-    let url = `${process.env.NEXT_PUBLIC_API_URL}/restaurant?page=${page}&limit=${limit}`;
+    setLoading(true);
+    try {
+      let url = `${process.env.NEXT_PUBLIC_API_URL}/restaurant?page=${page}&limit=${limit}`;
 
-    const params: string[] = [];
+      const params: string[] = [];
 
-    if (!selectedCategories.includes("Todos")) {
-      selectedCategories.forEach((selectedCategoryName) => {
-        const category = categories.find(
-          (cat) =>
-            cat.name?.toLowerCase() === selectedCategoryName.toLowerCase()
-        );
-        if (category?.id) {
-          params.push(`categoryId=${category.id}`);
-        }
-      });
-    }
-
-    if (selectedRatings.length > 0) {
-      const ratingsParam = selectedRatings
-        .map((rating) => `ratings[]=${rating}`)
-        .join("&");
-      if (ratingsParam) {
-        params.push(ratingsParam);
+      if (!selectedCategories.includes("Todos")) {
+        selectedCategories.forEach((selectedCategoryName) => {
+          const category = categories.find(
+            (cat) =>
+              cat.name?.toLowerCase() === selectedCategoryName.toLowerCase()
+          );
+          if (category?.id) {
+            params.push(`categoryId=${category.id}`);
+          }
+        });
       }
+
+      if (selectedRatings.length > 0) {
+        const ratingsParam = selectedRatings
+          .map((rating) => `ratings[]=${rating}`)
+          .join("&");
+        if (ratingsParam) {
+          params.push(ratingsParam);
+        }
+      }
+
+      if (params.length > 0) {
+        url += `&${params.join("&")}`;
+      }
+
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const { data } = await response.json();
+      const newData = append ? [...restaurants, ...data] : data;
+
+      setRestaurants(newData);
+      setFilteredRestaurants(newData);
+
+      if (!append) setCurrentPage(1); // Só reseta na primeira chamada
+
+      FetchFavorites();
+    } catch (err) {
+      console.error("Falha ao pesquisar restaurantes", err);
+      setRestaurants([]);
+      setFilteredRestaurants([]);
+    } finally {
+      setLoading(false);
     }
-
-    if (params.length > 0) {
-      url += `&${params.join("&")}`;
-    }
-
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const { data } = await response.json();
-    const newData = append ? [...restaurants, ...data] : data;
-
-    setRestaurants(newData);
-    setFilteredRestaurants(newData);
-
-    if (!append) setCurrentPage(1); // Só reseta na primeira chamada
-
-    FetchFavorites();
-  } catch (err) {
-    console.error("Falha ao pesquisar restaurantes", err);
-    setRestaurants([]);
-    setFilteredRestaurants([]);
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   const FetchCategories = async () => {
     try {
@@ -131,7 +129,7 @@ const LocalPage = () => {
       FetchFavorites();
     } catch (err) {
       console.error("Falha ao buscar categorias", err);
-      setCategories([]);
+      setRestaurantsFavorites([]);
     }
   };
 
@@ -151,15 +149,14 @@ const LocalPage = () => {
   }, []);
 
   React.useEffect(() => {
-  FetchRestaurants(1, itemsPerPage); // inicial, sem append
-}, [searchTerm, selectedCategories, selectedRatings, categories]);
+    FetchRestaurants(1, itemsPerPage); // inicial, sem append
+  }, [searchTerm, selectedCategories, selectedRatings, categories]);
 
-
-const handleLoadMore = () => {
-  const nextPage = currentPage + 1;
-  setCurrentPage(nextPage);
-  FetchRestaurants(nextPage, itemsPerPage, true); // append = true
-};
+  const handleLoadMore = () => {
+    const nextPage = currentPage + 1;
+    setCurrentPage(nextPage);
+    FetchRestaurants(nextPage, itemsPerPage, true); // append = true
+  };
 
   const handleSearch = () => {};
   const handleKeyDown = (event: { key: string }) => {
@@ -220,9 +217,7 @@ const handleLoadMore = () => {
           (selectedCategories.length === 1 && selectedCategories[0] !== "Todos")
             ? " e com"
             : " com"
-        } média${
-          selectedRatings.length > 1 ? "s" : ""
-        } de ${selectedRatingsString} estrel${
+        } média${selectedRatings.length > 1 ? "s" : ""} de ${selectedRatingsString} estrel${
           selectedRatings.length > 1 ? "as" : "a"
         }`;
       }
@@ -298,15 +293,28 @@ const handleLoadMore = () => {
               <div className="local-restaurants-grid">
                 {filteredRestaurants.map((place, index) => (
                   <div key={index} className="local-restaurant-card">
-                    <img
-                      src={place.url_img ?? undefined}
-                      alt={place.name}
-                      className="local-restaurant-image"
-                    />
+                    <Link
+                      href={`/local-info/${place.id}`}
+                      className="local-restaurant-image-link"
+                    >
+                      <img
+                        src={place.url_img ?? undefined}
+                        alt={place.name}
+                        className="local-restaurant-image"
+                      />
+                    </Link>
+
                     <div className="local-restaurant-details">
                       <div>
                         <div className="space-between">
-                          <b className="local-restaurant-name">{place.name}</b>
+                          <b className="local-restaurant-name">
+                            <Link
+                              href={`/local-info/${place.id}`}
+                              className="local-restaurant-name-link"
+                            >
+                              {place.name}
+                            </Link>
+                          </b>
                           <button
                             className="group"
                             onClick={() =>
@@ -354,12 +362,6 @@ const handleLoadMore = () => {
                           {place.aboutUs}
                         </p>
                       </div>
-                      <Link
-                        href={`/local-info/${place.id}`}
-                        className="local-restaurant-button bg-primary"
-                      >
-                        Saiba mais
-                      </Link>
                     </div>
                   </div>
                 ))}

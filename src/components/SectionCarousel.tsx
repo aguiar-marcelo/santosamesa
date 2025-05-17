@@ -35,7 +35,7 @@ const SectionCarousel = ({ places }: { places: Place[] }) => {
       await postLocalFavorite(restaurantId, user.id);
       FetchFavorites();
     } catch (err) {
-      console.error("Falha ao buscar categorias", err);
+      console.error("Falha ao adicionar aos favoritos", err);
     }
   };
 
@@ -45,7 +45,7 @@ const SectionCarousel = ({ places }: { places: Place[] }) => {
       await deleteLocalFavorite(restaurantId, user.id);
       FetchFavorites();
     } catch (err) {
-      console.error("Falha ao buscar categorias", err);
+      console.error("Falha ao remover dos favoritos", err);
     }
   };
   const FetchFavorites = async () => {
@@ -54,7 +54,7 @@ const SectionCarousel = ({ places }: { places: Place[] }) => {
       const results: any[] = await getLocalsFavorites(user.id);
       setRestaurantsFavorites(results);
     } catch (err) {
-      console.error("Falha ao buscar categorias", err);
+      console.error("Falha ao buscar os favoritos", err);
       setRestaurantsFavorites([]);
     }
   };
@@ -62,7 +62,7 @@ const SectionCarousel = ({ places }: { places: Place[] }) => {
   useEffect(() => {
     FetchFavorites();
   }, []);
-  
+
   return (
     <div className="w-[90%] mx-auto py-8">
       <Swiper
@@ -80,17 +80,23 @@ const SectionCarousel = ({ places }: { places: Place[] }) => {
         {places.map((place, index) => (
           <SwiperSlide key={index}>
             <div className="home-carousel-card m-auto">
-              {place.url_img && (
-                <img
-                  src={place.url_img}
-                  alt={place.name}
-                  className="home-carousel-image"
-                />
-              )}
+              <Link href={`/local-info/${place.id}`} className="home-carousel-image-link">
+                {place.url_img && (
+                  <img
+                    src={place.url_img}
+                    alt={place.name}
+                    className="home-carousel-image"
+                  />
+                )}
+              </Link>
               <div className="home-carousel-info">
                 <div>
                   <div className="space-between">
-                    <h3 className="home-carousel-title">{place.name}</h3>
+                    <h3 className="home-carousel-title">
+                      <Link href={`/local-info/${place.id}`} className="home-carousel-title-link">
+                        {place.name}
+                      </Link>
+                    </h3>
                     <button
                       className="group"
                       onClick={() =>
@@ -132,14 +138,8 @@ const SectionCarousel = ({ places }: { places: Place[] }) => {
                         ))}
                     </div>
                   )}
-                  <p className="home-carousel-description">{place.aboutUs}</p>
+                  <p className="home-carousel-description truncate">{place.aboutUs}</p>
                 </div>
-                <Link
-                  href={`/local-info/${place.id}`}
-                  className="home-carousel-link bg-primary"
-                >
-                  Saiba mais
-                </Link>
               </div>
             </div>
           </SwiperSlide>
