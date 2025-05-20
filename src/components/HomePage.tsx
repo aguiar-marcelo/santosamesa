@@ -105,6 +105,7 @@ const HomePage = () => {
           </>
         )}
       </div>
+      <div style={{ marginTop: "50px"}}></div>
       <SectionFooter />
     </div>
   );
