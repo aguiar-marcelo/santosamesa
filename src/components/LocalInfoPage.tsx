@@ -21,7 +21,7 @@ const LocalInfoPage = ({ id }: { id: number }) => {
   const [noRatingsMessage, setNoRatingsMessage] = useState<string | null>(null);
   const [data, setData] = useState<any>();
 
-  const { user, token } = useAuth() as { user: User; token: string };
+  const { user, token } = useAuth();
   const router = useRouter();
 
   const FetchRestaurant = async () => {
@@ -173,10 +173,7 @@ const LocalInfoPage = ({ id }: { id: number }) => {
         <div className="local-info">
           <div className="local-header">
             <div className="local-header-top">
-              <Link
-                href={"/local"}
-                className="local-back-button"
-              >
+              <Link href={"/local"} className="local-back-button">
                 <ArrowLeft />
               </Link>
               <h1 className="local-title">{data?.name}</h1>
@@ -228,33 +225,47 @@ const LocalInfoPage = ({ id }: { id: number }) => {
                         "Usuário"
                       }`}
                     />
-                    <div className="local-review-user-info">
-                      <div className="local-review-user-name-rating">
+                    <div className="local-review-user-info ">
+                      <div className="local-review-user-name-rating flex justify-between">
                         <h3 className="local-review-user-name">
                           {avaliacao.user?.exibitionName ||
                           avaliacao.user?.userName ? (
                             <Link
                               href={`/perfil/${avaliacao.userId}`}
-                              className="link-username"
+                              className="link-username flex"
                             >
                               {/* <img src={avaliacao.user.ratings<4?"/img/medalha-de-bronze.png":valiacao.user.ratings<4?"/img/medalha-de-prata.png":"/img/medalha-de-ouro.png"} className="w-6" /> */}
                               {avaliacao.user.exibitionName ||
                                 avaliacao.user.userName}
+                              {avaliacao.user.badges?.length > 0 && (
+                                <img
+                                  className="w-4 h-4 mt-2 ml-2"
+                                  src={`/img/medalha-de-${avaliacao.user.badges[0].name?.toLowerCase()}.png`}
+                                  alt="Foto de Perfil"
+                                  title={avaliacao.user.badges[0].name}
+                                  onError={(e) => {
+                                    (e.target as HTMLImageElement).src =
+                                      "/img/user-null.png";
+                                  }}
+                                />
+                              )}
                             </Link>
                           ) : (
                             "Usuário Anônimo"
                           )}
                         </h3>
-                        {Array(avaliacao.value)
-                          .fill(0)
-                          .map((_, i) => (
-                            <img
-                              key={i}
-                              className="local-review-star"
-                              src="/img/estrela-preenchida.png"
-                              alt="Estrela"
-                            />
-                          ))}
+                        <span className="flex">
+                          {Array(avaliacao.value)
+                            .fill(0)
+                            .map((_, i) => (
+                              <img
+                                key={i}
+                                className="local-review-star"
+                                src="/img/estrela-preenchida.png"
+                                alt="Estrela"
+                              />
+                            ))}
+                        </span>
                       </div>
                       <h5 className="local-review-date">
                         {new Date(avaliacao.createdAt).toLocaleDateString()}

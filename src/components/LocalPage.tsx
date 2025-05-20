@@ -60,7 +60,7 @@ const LocalPage = () => {
               cat.name?.toLowerCase() === selectedCategoryName.toLowerCase()
           );
           if (category?.id) {
-            params.push(`categoryId=${category.id}`);
+            params.push(`categoryId[]=${category.id}`);
           }
         });
       }
