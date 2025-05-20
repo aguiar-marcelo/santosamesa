@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getRestaurantById } from "@/services/routes";
 import { OrbitProgress } from "react-loading-indicators";
-import Image from "next/image";
+
 
 const LocalInfoPage = ({ id }: { id: number }) => {
   const [estrelas, setEstrelas] = useState<number>(0);
@@ -322,7 +322,14 @@ const LocalInfoPage = ({ id }: { id: number }) => {
             >
               {isLoading ? "Enviando..." : "Enviar Avaliação"}
             </button>
-            {error && <p className="local-error-message">{error}</p>}
+            <span className="flex items-center mt-3">
+              {error && <p className="local-error-message">{error}</p>}
+              {error && !user?.id && (
+                <Link href={"/login"} className="mt-1.5 ml-1 text-white hover:underline">
+                  Login
+                </Link>
+              )}
+            </span>
           </div>
         </div>
       </div>
