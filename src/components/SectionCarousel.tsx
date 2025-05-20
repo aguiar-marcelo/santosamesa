@@ -64,7 +64,7 @@ const SectionCarousel = ({ places }: { places: Place[] }) => {
   }, []);
 
   return (
-    <div className="w-[90%] mx-auto py-8">
+    <div className="w-[90%] mx-auto py-2">
       <Swiper
         modules={[Navigation]}
         navigation

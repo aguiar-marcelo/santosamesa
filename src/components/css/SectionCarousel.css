@@ -30,12 +30,10 @@
   flex-direction: column;
 }
 
-/* Estilos para a imagem */
 .home-carousel-image {
   height: 200px;
+  width: 100%;
   object-fit: cover;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
 }
 
 /* Estilos para as informações */
