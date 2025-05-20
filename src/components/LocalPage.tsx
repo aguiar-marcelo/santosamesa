@@ -60,18 +60,22 @@ const LocalPage = () => {
               cat.name?.toLowerCase() === selectedCategoryName.toLowerCase()
           );
           if (category?.id) {
-            params.push(`categoryId[]=${category.id}`);
+            params.push(`categoryId=${category.id}`);
           }
         });
       }
 
       if (selectedRatings.length > 0) {
         const ratingsParam = selectedRatings
-          .map((rating) => `ratings[]=${rating}`)
+          .map((rating) => `ratings=${rating}`)
           .join("&");
         if (ratingsParam) {
           params.push(ratingsParam);
         }
+      }
+
+      if (searchTerm.length > 0) {
+        params.push(`search=${searchTerm}`);
       }
 
       if (params.length > 0) {
@@ -217,7 +221,9 @@ const LocalPage = () => {
           (selectedCategories.length === 1 && selectedCategories[0] !== "Todos")
             ? " e com"
             : " com"
-        } média${selectedRatings.length > 1 ? "s" : ""} de ${selectedRatingsString} estrel${
+        } média${
+          selectedRatings.length > 1 ? "s" : ""
+        } de ${selectedRatingsString} estrel${
           selectedRatings.length > 1 ? "as" : "a"
         }`;
       }
@@ -257,12 +263,12 @@ const LocalPage = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={handleKeyDown}
               />
-              <button
+              {/* <button
                 className="local-search-button bg-primary"
                 onClick={handleSearch}
               >
                 <Search /> Pesquisar
-              </button>
+              </button> */}
             </div>
             <SectionFilterCategory
               categories={categories}
